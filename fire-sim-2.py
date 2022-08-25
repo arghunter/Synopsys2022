@@ -75,9 +75,9 @@ def firerules(X):
                 	 	# If no neighbors are burning, roll the dice (np.random.random()); 
                  		# if the output float is <= f (the probability of a lightning 
                  		# strike), the cell becomes FIRE.
-				else:                     
-					if np.random.random() <= f:                         
-						X1[iy,ix] = FIRE    
+				#else:                     
+				#	if np.random.random() <= f:                         
+				#		X1[iy,ix] = FIRE    
          return X1
     
 
