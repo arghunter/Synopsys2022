@@ -25,30 +25,33 @@ while True:
     for x in range(0, s):
         for y in range(0, s):
             if(ground[x][y] < 1000 and ground[x][y] > 0):
-                c = 0
-                left = x >= 1 and x < s
-                right = x < s-1 and x >= 0
-                up = y > 1 and y < s
-                down = y < s-1 and y >= 0
-                if left and ground[x-1][y] >= 1000:
-                    c += 1
-                if right and ground[x+1][y] >= 1000:
-                    c += 1
-                if up and ground[x][y-1] >= 1000:
-                    c += 1
-                if down and ground[x][y+1] >= 1000:
-                    c += 1
-                if up and right and ground[x+1][y-1] >= 1000:
-                    c += 1
-                if up and left and ground[x-1][y-1] >= 1000:
-                    c += 1
-                if down and right and ground[x+1][y+1] >= 1000:
-                    c += 1
-                if down and left and ground[x-1][y+1] >= 1000:
-                    c += 1
+                for z in range(1, 4):
+                    c = 0
+                    left = x >= z and x < s
+                    right = x < s-z and x >= 0
+                    up = y > z and y < s
+                    down = y < s-z and y >= 0
+                    if left and ground[x-z][y] >= 1000:
+                        c += 1
+                    if right and ground[x+z][y] >= 1000:
+                        c += 1
+                    if up and ground[x][y-z] >= 1000:
+                        c += 1
+                    if down and ground[x][y+z] >= 1000:
+                        c += 1
+                    if up and right and ground[x+z][y-z] >= 1000:
+                        c += 1
+                    if up and left and ground[x-z][y-z] >= 1000:
+                        c += 1
+                    if down and right and ground[x+z][y+z] >= 1000:
+                        c += 1
+                    if down and left and ground[x-z][y+z] >= 1000:
+                        c += 1
 
-                if(c*12.5 >= random.randint(0, 100) and c != 0):
-                    ground[x][y] += 1000
+                    if(c*6.25/(2*z) >= random.randint(0, 100) and c != 0):
+                        ground[x][y] += 1000
+                        break
+
             else:
                 if(ground[x][y] == 1000 or ground[x][y] <= 0):
                     ground[x][y] = 0
