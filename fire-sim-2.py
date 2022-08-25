@@ -109,10 +109,14 @@ X[1:ny-1, 1:nx-1] = np.random.randint(0, 2, size=(ny-2, nx-2))
 X[1:ny-1, 1:nx-1] = np.random.random(size=(ny-2, nx-2)) < forest_fraction
 
 #line bounds
-X[10:90, 10:15] = LINE
-X[10:90, 40:45] = LINE
-X[10:90, 60:65] = LINE
-X[10:90, 80:85] = LINE
+X[0:5, 0:100] = LINE
+X[5:10, 0:30] = LINE
+X[5:10, 70:100] = LINE
+X[10:80, 0:20] = LINE
+X[10:80, 80:100] = LINE
+X[80:90, 0:30] = LINE
+X[80:90, 70:100] = LINE
+X[90:100, 0:100] = LINE
 
 # Adjusts the size of the figure.
 fig = plt.figure(figsize=(25/3, 6.25))
