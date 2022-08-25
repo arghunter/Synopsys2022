@@ -1,3 +1,20 @@
+# Time Scaling:
+
+# Wildfire Spreads at average of  10 mph
+
+# Each square is 0.5m*0.5m = 0.25m^2
+
+# 20 Squares Each Hour
+
+# Each Minute is an Hour
+
+# 20 Ticks in a Minute
+
+# 1 Tick every 3 Seconds 
+
+# Each Tick Spreads by 1 Box
+
+
 # note: line = LINE
 # The NumPy library is used to generate random numbers in the model.
 import numpy as np
