@@ -45,18 +45,36 @@ def firerules(X):
     # RULE 1 OF THE MODEL is handled by setting X1 to 0 initially and having no 
     # rules that update FIRE cells. 
     X1 = np.zeros((ny, nx))    
+	# For all indices on the grid excluding the border region (which is always empty). 
+    	# Note that Python is 0-indexed.
 	for ix in range(1,nx-1):         
-		for iy in range(1,ny-1):            
+		for iy in range(1,ny-1):    
+			# THIS CORRESPONDS TO RULE 4 OF THE MODEL. If the current value at 
+            		# the index is 0 (EMPTY), roll the dice (np.random.random()); if the 
+            		# output float value <= p (the probability of a tree being growing), 
+            		# the future value at the index becomes 1 (i.e., the cell transitions 
+            		# from EMPTY to TREE).
 			if X[iy,ix] == LINE:                 
 				X1[iy,ix] = LINE            
 			if X[iy,ix] == EMPTY and np.random.random() <= p:                 
 				X1[iy,ix] = TREE            
+			# THIS CORRESPONDS TO RULE 2 OF THE MODEL.
+            		# If any of the 8 neighbors of a cell are burning (FIRE), the cell 
+            		# (currently TREE) becomes FIRE.
 			if X[iy,ix] == TREE:                 
-				X1[iy,ix] = TREE                                  
+				X1[iy,ix] = TREE        
+				# To examine neighbors for fire, assign dx and dy to the 
+               	  		# indices that make up the coordinates in neighborhood. E.g., for 
+                 		# the 2nd coordinate in neighborhood (-1, 0), dx is -1 and dy is 0. 
+
 				for dx,dy in neighborhood:                     
 					if X[iy+dy,ix+dx] == FIRE:                         
 						X1[iy,ix] = FIRE                         
-						break                 
+						break    
+				# THIS CORRESPONDS TO RULE 3 OF THE MODEL.
+                	 	# If no neighbors are burning, roll the dice (np.random.random()); 
+                 		# if the output float is <= f (the probability of a lightning 
+                 		# strike), the cell becomes FIRE.
 				else:                     
 					if np.random.random() <= f:                         
 						X1[iy,ix] = FIRE    
