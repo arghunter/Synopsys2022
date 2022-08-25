@@ -1,3 +1,4 @@
+#note: line = LINE
 # The NumPy library is used to generate random numbers in the model.
 import numpy as np
 
@@ -11,9 +12,10 @@ from matplotlib import colors
 # neighboring cells.
 neighborhood = ((-1,-1), (-1,0), (-1,1), (0,-1), (0, 1), (1,-1), (1,0), (1,1))
 
-# Assigns value 0 to EMPTY, 1 to TREE, and 2 to FIRE, 3 to WATER. Each cell in the grid is 
+# Assigns value 0 to EMPTY, 1 to TREE, and 2 to FIRE, 3 to LINE. Each cell in the grid is 
 # assigned one of these values.
-EMPTY, TREE, FIRE, WATER = 0, 1, 2, 3
+#add fireline as LINE
+EMPTY, TREE, FIRE, LINE = 0, 1, 2, 3
 
 
 # colors_list contains colors used in the visualization: brown for EMPTY, 
@@ -45,8 +47,8 @@ def firerules(X):
     X1 = np.zeros((ny, nx))    
 	for ix in range(1,nx-1):         
 		for iy in range(1,ny-1):            
-			if X[iy,ix] == WATER:                 
-				X1[iy,ix] = WATER            
+			if X[iy,ix] == LINE:                 
+				X1[iy,ix] = LINE            
 			if X[iy,ix] == EMPTY and np.random.random() <= p:                 
 				X1[iy,ix] = TREE            
 			if X[iy,ix] == TREE:                 
@@ -88,11 +90,11 @@ X[1:ny-1, 1:nx-1] = np.random.randint(0, 2, size=(ny-2, nx-2))
 # 0 and 1, but this was initialized with integers in the previous line of code.
 X[1:ny-1, 1:nx-1] = np.random.random(size=(ny-2, nx-2)) < forest_fraction
 
-#water bounds
-X[10:90, 10:15] = WATER
-X[10:90, 40:45] = WATER
-X[10:90, 60:65] = WATER
-X[10:90, 80:85] = WATER
+#line bounds
+X[10:90, 10:15] = LINE
+X[10:90, 40:45] = LINE
+X[10:90, 60:65] = LINE
+X[10:90, 80:85] = LINE
 
 # Adjusts the size of the figure.
 fig = plt.figure(figsize=(25/3, 6.25))
