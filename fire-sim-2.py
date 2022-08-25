@@ -77,7 +77,11 @@ def firerules(X):
                  		# strike), the cell becomes FIRE.
 				#else:                     
 				#	if np.random.random() <= f:                         
-				#		X1[iy,ix] = FIRE    
+				# 	X1[iy,ix] = FIRE
+				#initial fire
+				else:                     
+					if np.random.random() <= f:                         
+						X1[50,50] = FIRE    
          return X1
     
 
@@ -108,8 +112,6 @@ X[1:ny-1, 1:nx-1] = np.random.randint(0, 2, size=(ny-2, nx-2))
 # 0 and 1, but this was initialized with integers in the previous line of code.
 X[1:ny-1, 1:nx-1] = np.random.random(size=(ny-2, nx-2)) < forest_fraction
 
-#initial fire
-X[50:50, 50:50] = FIRE
 
 #line bounds
 X[0:5, 0:100] = LINE
