@@ -60,11 +60,7 @@ def firerules(X):
 						X1[iy,ix] = FIRE    
          return X1
     
-#water bounds
-X[10:90, 10:15] = WATER
-X[10:90, 40:45] = WATER
-X[10:90, 60:65] = WATER
-X[10:90, 80:85] = WATER
+
 
 # The initial fraction of the forest occupied by trees.
 forest_fraction = 0.2
@@ -91,6 +87,12 @@ X[1:ny-1, 1:nx-1] = np.random.randint(0, 2, size=(ny-2, nx-2))
 # by forest_fraction. Note that random.random normally returns floats between 
 # 0 and 1, but this was initialized with integers in the previous line of code.
 X[1:ny-1, 1:nx-1] = np.random.random(size=(ny-2, nx-2)) < forest_fraction
+
+#water bounds
+X[10:90, 10:15] = WATER
+X[10:90, 40:45] = WATER
+X[10:90, 60:65] = WATER
+X[10:90, 80:85] = WATER
 
 # Adjusts the size of the figure.
 fig = plt.figure(figsize=(25/3, 6.25))
