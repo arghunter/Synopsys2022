@@ -59,8 +59,8 @@ def firerules(X):
             # from EMPTY to TREE).
             if X[iy, ix] == LINE:
                 X1[iy, ix] = LINE
-            if X[iy, ix] == EMPTY and np.random.random() <= p:
-                X1[iy, ix] = TREE
+            # if X[iy, ix] == EMPTY and np.random.random() <= p:
+            #     X1[iy, ix] = TREE
             # THIS CORRESPONDS TO RULE 2 OF THE MODEL.
             # If any of the 8 neighbors of a cell are burning (FIRE), the cell
             # (currently TREE) becomes FIRE based on a spread chance.
@@ -84,19 +84,19 @@ def firerules(X):
                 # initial fire
                 else:
                     if np.random.random() <= f:
-                        X1[50, 50] = FIRE
+                        X1[125, 125] = FIRE
     return X1
 
 
 # The initial fraction of the forest occupied by trees.
-forest_fraction = 0.8
+forest_fraction = 0.95
 
 # p is the probability of a tree growing in an empty cell; f is the probability of
 # a lightning strike.
 p, f = 0.005, 0.001
 spread_chance=0.4
 # Forest size (number of cells in x and y directions).
-nx, ny = 100, 100
+nx, ny = 250, 250
 
 # Initialize the forest grid. X can be thought of as the current state. Make X an
 # array of 0s.
@@ -116,14 +116,14 @@ X[1:ny-1, 1:nx-1] = np.random.random(size=(ny-2, nx-2)) < forest_fraction
 
 
 # line bounds
-X[0:5, 0:100] = LINE
-X[5:10, 0:30] = LINE
-X[5:10, 70:100] = LINE
-X[10:80, 0:20] = LINE
-X[10:80, 80:100] = LINE
-X[80:90, 0:30] = LINE
-X[80:90, 70:100] = LINE
-X[90:100, 0:100] = LINE
+# X[0:5, 0:100] = LINE
+# X[5:10, 0:30] = LINE
+# X[5:10, 70:100] = LINE
+# X[10:80, 0:20] = LINE
+# X[10:80, 80:100] = LINE
+# X[80:90, 0:30] = LINE
+# X[80:90, 70:100] = LINE
+# X[90:100, 0:100] = LINE
 
 # Adjusts the size of the figure.
 fig = plt.figure(figsize=(25/3, 6.25))
@@ -151,7 +151,7 @@ def animate(i):
 animate.X = X
 
 # Interval between frames (ms).
-interval = 100
+interval = 3000
 
 # animation.FuncAnimation makes an animation by repeatedly calling a function func;
 # fig is the figure object used to resize, etc.; animate is the callable function
