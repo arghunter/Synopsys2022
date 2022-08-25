@@ -22,7 +22,7 @@ EMPTY, TREE, FIRE, LINE = 0, 1, 2, 3
 # dark green for TREE, and orange for FIRE. Note that the list must be 1 larger 
 # than the number of different values in the array. Also note that the 4th entry 
 # (‘orange’) dictates the color of the fire.
-colors_list = [(0.2,0,0), (0,0.5,0), (1,0,0), 'orange', 'blue']
+colors_list = [(0.2,0,0), (0,0.5,0), (1,0,0), 'orange', 'white']
 cmap = colors.ListedColormap(colors_list)
 
 
