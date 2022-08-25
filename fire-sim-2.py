@@ -11,20 +11,23 @@ from matplotlib import colors
 # neighboring cells.
 neighborhood = ((-1,-1), (-1,0), (-1,1), (0,-1), (0, 1), (1,-1), (1,0), (1,1))
 
-# Assigns value 0 to EMPTY, 1 to TREE, and 2 to FIRE. Each cell in the grid is 
+# Assigns value 0 to EMPTY, 1 to TREE, and 2 to FIRE, 3 to WATER. Each cell in the grid is 
 # assigned one of these values.
-EMPTY, TREE, FIRE = 0, 1, 2
+EMPTY, TREE, FIRE, WATER = 0, 1, 2, 3
+
 
 # colors_list contains colors used in the visualization: brown for EMPTY, 
 # dark green for TREE, and orange for FIRE. Note that the list must be 1 larger 
 # than the number of different values in the array. Also note that the 4th entry 
 # (‘orange’) dictates the color of the fire.
-colors_list = [(0.2,0,0), (0,0.5,0), (1,0,0), 'orange']
+colors_list = [(0.2,0,0), (0,0.5,0), (1,0,0), 'orange', 'blue']
 cmap = colors.ListedColormap(colors_list)
+
 
 # The bounds list must also be one larger than the number of different values in 
 # the grid array.
-bounds = [0,1,2,3]
+bounds = [0,1,2,3,4]
+
 
 # Maps the colors in colors_list to bins defined by bounds; data within a bin 
 # is mapped to the color with the same index.
@@ -39,43 +42,29 @@ def firerules(X):
     # array of 0s with 100 rows and 100 columns).
     # RULE 1 OF THE MODEL is handled by setting X1 to 0 initially and having no 
     # rules that update FIRE cells. 
-    X1 = np.zeros((ny, nx))
-
-    # For all indices on the grid excluding the border region (which is always empty). 
-    # Note that Python is 0-indexed.
-    for ix in range(1,nx-1):
-         for iy in range(1,ny-1):
-
-            # THIS CORRESPONDS TO RULE 4 OF THE MODEL. If the current value at 
-            # the index is 0 (EMPTY), roll the dice (np.random.random()); if the 
-            # output float value <= p (the probability of a tree being growing), 
-            # the future value at the index becomes 1 (i.e., the cell transitions 
-            # from EMPTY to TREE).
-            if X[iy,ix] == EMPTY and np.random.random() <= p:
-                 X1[iy,ix] = TREE
-
-            # THIS CORRESPONDS TO RULE 2 OF THE MODEL.
-            # If any of the 8 neighbors of a cell are burning (FIRE), the cell 
-            # (currently TREE) becomes FIRE.
-            if X[iy,ix] == TREE:
-                 X1[iy,ix] = TREE
-
-                 # To examine neighbors for fire, assign dx and dy to the 
-                 # indices that make up the coordinates in neighborhood. E.g., for 
-                 # the 2nd coordinate in neighborhood (-1, 0), dx is -1 and dy is 0. 
-                 for dx,dy in neighborhood:
-                     if X[iy+dy,ix+dx] == FIRE:
-                         X1[iy,ix] = FIRE
-                         break
-
-                 # THIS CORRESPONDS TO RULE 3 OF THE MODEL.
-                 # If no neighbors are burning, roll the dice (np.random.random()); 
-                 # if the output float is <= f (the probability of a lightning 
-                 # strike), the cell becomes FIRE.
-                 else:
-                     if np.random.random() <= f:
-                         X1[iy,ix] = FIRE
+    X1 = np.zeros((ny, nx))    
+	for ix in range(1,nx-1):         
+		for iy in range(1,ny-1):            
+			if X[iy,ix] == WATER:                 
+				X1[iy,ix] = WATER            
+			if X[iy,ix] == EMPTY and np.random.random() <= p:                 
+				X1[iy,ix] = TREE            
+			if X[iy,ix] == TREE:                 
+				X1[iy,ix] = TREE                                  
+				for dx,dy in neighborhood:                     
+					if X[iy+dy,ix+dx] == FIRE:                         
+						X1[iy,ix] = FIRE                         
+						break                 
+				else:                     
+					if np.random.random() <= f:                         
+						X1[iy,ix] = FIRE    
          return X1
+    
+#water bounds
+X[10:90, 10:15] = WATER
+X[10:90, 40:45] = WATER
+X[10:90, 60:65] = WATER
+X[10:90, 80:85] = WATER
 
 # The initial fraction of the forest occupied by trees.
 forest_fraction = 0.2
