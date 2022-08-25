@@ -63,7 +63,7 @@ def firerules(X):
                 X1[iy, ix] = TREE
             # THIS CORRESPONDS TO RULE 2 OF THE MODEL.
             # If any of the 8 neighbors of a cell are burning (FIRE), the cell
-            # (currently TREE) becomes FIRE.
+            # (currently TREE) becomes FIRE based on a spread chance.
             if X[iy, ix] == TREE:
                 X1[iy, ix] = TREE
                 # To examine neighbors for fire, assign dx and dy to the
@@ -71,7 +71,7 @@ def firerules(X):
                 # the 2nd coordinate in neighborhood (-1, 0), dx is -1 and dy is 0.
 
                 for dx, dy in neighborhood:
-                    if X[iy+dy, ix+dx] == FIRE:
+                    if X[iy+dy, ix+dx] == FIRE and np.random.random()<=spread_chance:
                         X1[iy, ix] = FIRE
                         break
                 # THIS CORRESPONDS TO RULE 3 OF THE MODEL.
@@ -89,12 +89,12 @@ def firerules(X):
 
 
 # The initial fraction of the forest occupied by trees.
-forest_fraction = 0.2
+forest_fraction = 0.8
 
 # p is the probability of a tree growing in an empty cell; f is the probability of
 # a lightning strike.
-p, f = 0.05, 0.001
-
+p, f = 0.005, 0.001
+spread_chance=0.4
 # Forest size (number of cells in x and y directions).
 nx, ny = 100, 100
 
