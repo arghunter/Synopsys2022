@@ -1,16 +1,16 @@
 # Time Scaling:
 
-# Wildfire Spreads at average of  10 mph
+# Wildfire Spreads at average of  1.6 mph in windspeeds of 16 mph
 
-# Each square is 0.5m*0.5m = 0.25m^2
+# Each square is 0.4m*0.4m = 0.16m^2 =1 acre
 
-# 20 Squares Each Hour
+# 4 Squares Each Hour
 
 # Each Minute is an Hour
 
-# 20 Ticks in a Minute
+# 40 Ticks in a Minute
 
-# 1 Tick every 3 Seconds 
+# 1 Tick every 1.5 Seconds
 
 # Each Tick Spreads by 1 Box
 
@@ -88,7 +88,7 @@ def firerules(X):
                 # the 2nd coordinate in neighborhood (-1, 0), dx is -1 and dy is 0.
 
                 for dx, dy in neighborhood:
-                    if X[iy+dy, ix+dx] == FIRE and np.random.random()<=spread_chance:
+                    if X[iy+dy, ix+dx] == FIRE and np.random.random() <= spread_chance:
                         X1[iy, ix] = FIRE
                         break
                 # THIS CORRESPONDS TO RULE 3 OF THE MODEL.
@@ -111,7 +111,7 @@ forest_fraction = 0.95
 # p is the probability of a tree growing in an empty cell; f is the probability of
 # a lightning strike.
 p, f = 0.005, 0.001
-spread_chance=0.4
+spread_chance = 0.4
 # Forest size (number of cells in x and y directions).
 nx, ny = 250, 250
 
@@ -168,7 +168,7 @@ def animate(i):
 animate.X = X
 
 # Interval between frames (ms).
-interval = 3000
+interval = 1500
 
 # animation.FuncAnimation makes an animation by repeatedly calling a function func;
 # fig is the figure object used to resize, etc.; animate is the callable function
