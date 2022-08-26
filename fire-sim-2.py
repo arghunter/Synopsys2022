@@ -34,20 +34,21 @@ neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
 # Assigns value 0 to EMPTY, 1 to TREE, and 2 to FIRE, 3 to LINE. Each cell in the grid is
 # assigned one of these values.
 # add fireline as LINE
-EMPTY, TREE, FIRE, LINE, BURNT = 0, 1, 2, 3, 4
+EMPTY, TREE, FIRE, BURNT, LINE = 0, 1, 2, 3, 4
 
 
 # colors_list contains colors used in the visualization: brown for EMPTY,
 # dark green for TREE, and orange for FIRE. Note that the list must be 1 larger
 # than the number of different values in the array. Also note that the 4th entry
 # (‘orange’) dictates the color of the fire.
+#(1,0,0) is red
 colors_list = [(0.2, 0, 0), (0, 0.5, 0), (1, 0, 0), 'orange', 'white', 'black']
 cmap = colors.ListedColormap(colors_list)
 
 
 # The bounds list must also be one larger than the number of different values in
 # the grid array.
-bounds = [0, 1, 2, 3, 4, 5]
+bounds = [0, 1, 2, 3, 4, 5, 6]
 
 
 # Maps the colors in colors_list to bins defined by bounds; data within a bin
@@ -129,12 +130,12 @@ def firerules(X):
                 X1[iy, ix] = LINE
             if X[iy, ix] == FIRE:
                 X1[iy, ix] = BURNT
-            if X[iy, ix] == BURNT:
-                for dx, dy in neighborhood:
-                    if np.random.random() <= f and X[iy+dy, ix+dx] == TREE:
-                        X1[iy, ix] = FIRE
-                else:
-                    X1[iy, ix] = BURNT
+            #if X[iy, ix] == BURNT:
+            #    for dx, dy in neighborhood:
+            #        if np.random.random() <= f and X[iy+dy, ix+dx] == TREE:
+            #            X1[iy, ix] = FIRE
+            #    else:
+            #        X1[iy, ix] = BURNT
 
             # if X[iy, ix] == EMPTY and np.random.random() <= p:
             #     X1[iy, ix] = TREE
@@ -169,10 +170,10 @@ def firerules(X):
 # The initial fraction of the forest occupied by trees.
 forest_fraction = 0.95
 
-# p is the probability of a tree growing in an empty cell; f is the probability of
+# p is the probability of a tree growing in an empty cell (real forest density); f is the probability of
 # a lightning strike.
-p, f = 0.22, 0.01
-spread_chance = 0.5
+p, f = 0.95, 0.01
+spread_chance = 0.3
 # Forest size (number of cells in x and y directions).
 nx, ny = 250, 250
 
@@ -198,7 +199,7 @@ X[int(ny/2)-1][int(nx/2)+1] = TREE
 # X[int(ny/2)+1][int(nx/2)-1] = TREE
 X = popForest(X)
 # line bounds
-# X[0:5, 0:100] = LINE
+X[0:5, 0:100] = LINE
 # X[5:10, 0:30] = LINE
 # X[5:10, 70:100] = LINE
 # X[10:80, 0:20] = LINE
