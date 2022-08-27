@@ -10,6 +10,7 @@ from queue import Queue
 #each minute is an hour
 #50 ticks an minute
 #1.2s per tick
+#each tick is 1 minute and 12 seconds of spread in real life.
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
