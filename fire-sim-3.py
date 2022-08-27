@@ -5,6 +5,8 @@ from matplotlib import animation
 from matplotlib import colors
 from queue import Queue
 
+#scaling: 
+
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
                 (0, 1), (1, -1), (1, 0), (1, 1))
