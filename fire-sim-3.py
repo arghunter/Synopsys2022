@@ -11,7 +11,7 @@ neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
 # Cell types for automata
 EMPTY, TREE, FIRE, BURNT, LINE = 0, 1, 2, 3, 4
 # Collor corresponds to cell type
-colors_list = [(0.2, 0, 0), (0, 0.5, 0), (1, 0, 0), 'orange', 'white', 'black']
+colors_list = [(0.2, 0, 0), (0, 0.5, 0), (1, 0, 0), (1, 0.65, 0), (1, 1, 1), (0, 0, 0)]
 cmap = colors.ListedColormap(colors_list)
 
 # The bounds list must also be one larger than the number of different values in
@@ -96,7 +96,7 @@ forest_fraction = 0.95
 
 # p is the probability of a tree growing in an empty cell (real forest density); f is the probability of
 # a lightning strike.
-p, f = 0.4, 0.01
+p, f = 0.98, 0.01
 spread_chance = 0.3
 # Forest size (number of cells in x and y directions).
 nx, ny = 1000, 1000
@@ -131,7 +131,7 @@ X[int(ny/2)][int(nx/2)] = FIRE
 # X[int(ny/2)+1][int(nx/2)-1] = TREE
 X = popForest(X)
 # line bounds
-X[0:5, 0:100] = LINE
+X[0:100, 0:100] = LINE
 # X[5:10, 0:30] = LINE
 # X[5:10, 70:100] = LINE
 # X[10:80, 0:20] = LINE
