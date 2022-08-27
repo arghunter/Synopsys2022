@@ -29,6 +29,9 @@ bounds = [0, 1, 2, 3, 4, 5, 6]
 # is mapped to the color with the same index.
 norm = colors.BoundaryNorm(bounds, cmap.N)
 
+xdistanceVal = []
+ydistanceVal = []
+
 
 def popForest(X):
     # X1 is the future state of the forest; ny and nx (defined as 100 later in the
@@ -88,7 +91,28 @@ def firerules(X, FIRESX, FIRESY):
         y1 = int(FIRESY.get())
         X[y1][x1] = EMPTY
         for dx, dy in neighborhood:
-            print(str(y1+dy)+" " + str(x1+dx))
+            print("location y: " + str(y1+dy)+" -- "+"distance from start y: "+str((y1+dy)-(ny/2)) +" ------ "+ "location x: "+str(x1+dx)+" -- "+"distance from start x: "+str((x1+dx)-(nx/2)))
+            print("iteration: "+str(len(ydistanceVal)))
+            ydistanceVal.append((y1 + dy) - (ny / 2))
+            xdistanceVal.append((x1 + dx) - (nx / 2))
+            maxYVAL = max(ydistanceVal)
+            minYVAL = min(ydistanceVal)
+            maxy = int(maxYVAL)
+            miny = int(minYVAL)
+            maxXVAL = max(xdistanceVal)
+            minXVAL = min(xdistanceVal)
+            maxx = int(maxXVAL)
+            minx = int(minXVAL)
+            centery = int((ny/2))
+            centerx = int((nx/2))
+            X[maxy + centery + 2, maxx + centerx + 2] = LINE
+            X[miny + centery - 2, minx + centerx - 2] = LINE
+            X[maxy - centery - 2, maxx - centerx - 2] = LINE
+            X[miny - centery + 2, minx - centerx + 2] = LINE
+            #X[(y1+dy) + maxy, (x1+dx) + maxx] = LINE
+            #print(maxYVAL)
+            #print(maxXVAL)
+            #[y1+dy+100, x1+dx+100] = LINE
 
             if int(y1)+dy >= 0 and int(y1)+dy < ny and int(x1)+dx >= 0 and int(x1)+dx < nx and X[int(y1)+dy, int(x1)+dx] == TREE and np.random.random() <= spread_chance:
                 X[int(y1)+dy, int(x1)+dx] = FIRE
@@ -103,7 +127,7 @@ forest_fraction = 0.95
 
 # p is the probability of a tree growing in an empty cell (real forest density); f is the probability of
 # a lightning strike.
-p, f = 0.98, 0.01
+p, f = 0.85, 0.01
 spread_chance = 0.3
 # Forest size (number of cells in x and y directions).
 nx, ny = 1000, 1000
@@ -138,7 +162,7 @@ X[int(ny/2)][int(nx/2)] = FIRE
 # X[int(ny/2)+1][int(nx/2)-1] = TREE
 X = popForest(X)
 # line bounds
-X[0:100, 0:100] = LINE
+#X[0:100, 0:100] = LINE
 # X[5:10, 0:30] = LINE
 # X[5:10, 70:100] = LINE
 # X[10:80, 0:20] = LINE
