@@ -5,7 +5,11 @@ from matplotlib import animation
 from matplotlib import colors
 from queue import Queue
 
-#scaling: 
+#scaling: each box is 20m (0.02km) by 20m (0.02km)
+#fire spreads at 1kmh
+#each minute is an hour
+#50 ticks an minute
+#1.2s per tick
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
@@ -170,7 +174,7 @@ animate.FIRESX = FIRESX
 animate.FIRESY = FIRESY
 
 # Interval between frames (ms).
-interval = 100
+interval = 1200
 
 # animation.FuncAnimation makes an animation by repeatedly calling a function func;
 # fig is the figure object used to resize, etc.; animate is the callable function
