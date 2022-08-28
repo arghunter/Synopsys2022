@@ -50,7 +50,7 @@ iBS = int(bufferSpace)
 
 Tau = (( ((4*iUD)/iLDSST) + ((4*iBS)/iLDSST) + iBS)/((1-(4/iLDSST))))
 print("original Tau: ", Tau)
-upTau  = math.ceil(upTau)
+upTau  = math.ceil(Tau)
 print("rounded-up Tau: ", upTau )
 
 # Tau = sidelength value because square = tick
