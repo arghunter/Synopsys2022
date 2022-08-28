@@ -49,10 +49,14 @@ print()
 iBS = int(bufferSpace)
 
 Tau = (( ((4*iUD)/iLDSST) + ((4*iBS)/iLDSST) + iBS)/((1-(4/iLDSST))))
-print(Tau)
-sideLength = (Tau + iUD + iBS)
+print("original Tau: "+Tau)
+upTau  = math.ceil(upTau)
+print("rounded-up Tau: "+upTau )
 
-print(sideLength)
+# Tau = sidelength value because square = tick
+sideLength = ((upTau + iUD + iBS)
+
+print("side length: "+sideLength)
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
