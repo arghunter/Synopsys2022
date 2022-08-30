@@ -138,6 +138,12 @@ def firerules(X, FIRESX, FIRESY):
     if int(len(tickElapsed)) >= iUD:
         print(str(int(len(tickElapsed))))
         #X[450]
+        
+        # corner1 is top left, corner 2 is bottom left, corner 3 is bottom right, corner 4 is top right.
+        corner1y = (centery + (sideLength/2))
+        corner1x = (centerx - (sideLength/2))
+        print(str(corner1y))
+        print(str(corner1x))
 
 
     while(qs > 0):
