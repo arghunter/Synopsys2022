@@ -25,9 +25,9 @@ print()
 iFSS = int(fireSpreadSpeed)
 
 # iFSSC = Number of Ticks in a Minute (because 1 square every tick)
-iFSSC = (iFSS*1000)/20
+iFSSC = (iFSS * 1000) / 20
 # ms per tick
-tickRATE = (60/iFSSC)*1000
+tickRATE = (60 / iFSSC) * 1000
 iTR = int(tickRATE)
 print("ms per tick for given Spread Speed: ", iTR)
 print()
@@ -35,9 +35,9 @@ print()
 lineDrawSpeed = input("Fireline Draw Speed (kmh): ")
 print()
 iLDS = int(lineDrawSpeed)
-iLDSS = (iLDS *1000)/20
+iLDSS = (iLDS * 1000) / 20
 # fireline draw speed in squares per tick = iLDSST
-iLDSST = iLDSS/iFSSC
+iLDSST = iLDSS / iFSSC
 print("Fireline Draw Speed in Squares per Tick: ", iLDSST)
 print()
 
@@ -48,10 +48,10 @@ bufferSpace = input("Buffer in # of Squares: ")
 print()
 iBS = int(bufferSpace)
 
-Tau = (( ((4*iUD)/iLDSST) + ((4*iBS)/iLDSST) + iBS)/((1-(4/iLDSST))))
+Tau = ((((4 * iUD) / iLDSST) + ((4 * iBS) / iLDSST) + iBS) / ((1 - (4 / iLDSST))))
 print("original Tau: ", Tau)
-upTau  = math.ceil(Tau)
-print("rounded-up Tau: ", upTau )
+upTau = math.ceil(Tau)
+print("rounded-up Tau: ", upTau)
 
 # Tau = sidelength value because square = tick
 sideLength = ((upTau + iUD + iBS))
@@ -89,8 +89,8 @@ def popForest(X):
     X1 = np.zeros((ny, nx))
     # For all indices on the grid excluding the border region (which is always empty).
     # Note that Python is 0-indexed.
-    for ix in range(1, nx-1):
-        for iy in range(1, ny-1):
+    for ix in range(1, nx - 1):
+        for iy in range(1, ny - 1):
             # THIS CORRESPONDS TO RULE 4 OF THE MODEL. If the current value at
             # the index is 0 (EMPTY), roll the dice (np.random.random()); if the
             # output float value <= p (the probability of a tree being growing),
@@ -105,16 +105,17 @@ def popForest(X):
             # (currently TREE) becomes FIRE based on a spread chance.
             if X[iy, ix] == TREE:
                 X1[iy, ix] = TREE
-                for iyf in range(iy-20, iy+20):
-                    for ixf in range(ix-20, ix+20):
-                        if(iyf > 0 and ixf > 0 and ixf < nx and iyf < ny and ((iy-iyf)**2+(ix-ixf)**2 < 400 or np.random.random() <= f*100) and np.random.random() < p):
+                for iyf in range(iy - 20, iy + 20):
+                    for ixf in range(ix - 20, ix + 20):
+                        if (iyf > 0 and ixf > 0 and ixf < nx and iyf < ny and ((iy - iyf) ** 2 + (
+                                ix - ixf) ** 2 < 400 or np.random.random() <= f * 100) and np.random.random() < p):
                             X1[iyf, ixf] = TREE
                 # To examine neighbors for fire, assign dx and dy to the
                 # indices that make up the coordinates in neighborhood. E.g., for
                 # the 2nd coordinate in neighborhood (-1, 0), dx is -1 and dy is 0.
 
                 for dx, dy in neighborhood:
-                    if X[iy+dy, ix+dx] == FIRE and np.random.random() <= spread_chance:
+                    if X[iy + dy, ix + dx] == FIRE and np.random.random() <= spread_chance:
                         X1[iy, ix] = FIRE
                         break
                 # THIS CORRESPONDS TO RULE 3 OF THE MODEL.
@@ -134,24 +135,53 @@ def firerules(X, FIRESX, FIRESY):
     qs = FIRESX.qsize()
     centery = int((ny / 2))
     centerx = int((nx / 2))
+    print(str(int(len(tickElapsed))))
     # sideLength = 100
     if int(len(tickElapsed)) >= iUD:
-        print(str(int(len(tickElapsed))))
-        #X[450]
-        
         # corner1 is top left, corner 2 is bottom left, corner 3 is bottom right, corner 4 is top right.
-        corner1y = (centery + (sideLength/2))
-        corner1x = (centerx - (sideLength/2))
-        print(str(corner1y))
-        print(str(corner1x))
+
+        # corner1
+        corner1y = (centery - (sideLength / 2))
+        corner1x = (centerx - (sideLength / 2))
+        corner1y = int(corner1y)
+        corner1x = int(corner1x)
+        print("corner 1y: " + str(corner1y))
+        print("corner 1x: " + str(corner1x))
+        X[corner1y, corner1x] = LINE
+
+        # corner2
+        corner2y = (centery + (sideLength / 2))
+        corner2x = (centerx - (sideLength / 2))
+        corner2y = int(corner2y)
+        corner2x = int(corner2x)
+        print("corner 2y: "+str(corner2y))
+        print("corner 2x: "+str(corner2x))
+        X[corner2y, corner2x] = LINE
+
+        # corner3
+        corner3y = (centery + (sideLength / 2))
+        corner3x = (centerx + (sideLength / 2))
+        corner3y = int(corner3y)
+        corner3x = int(corner3x)
+        print("corner 3y: " + str(corner3y))
+        print("corner 3x: " + str(corner3x))
+        X[corner3y, corner3x] = LINE
+
+        # corner4
+        corner4y = (centery - (sideLength / 2))
+        corner4x = (centerx + (sideLength / 2))
+        corner4y = int(corner4y)
+        corner4x = int(corner4x)
+        print("corner 4y: " + str(corner4y))
+        print("corner 4x: " + str(corner4x))
+        X[corner4y, corner4x] = LINE
 
 
-    while(qs > 0):
+    while (qs > 0):
         qs -= 1
         x1 = int(FIRESX.get())
         y1 = int(FIRESY.get())
         X[y1][x1] = EMPTY
-
 
         for dx, dy in neighborhood:
             # print("location y: " + str(y1+dy)+" -- "+"distance from start y: "+str((y1+dy)-(ny/2)) +" ------ "+ "location x: "+str(x1+dx)+" -- "+"distance from start x: "+str((x1+dx)-(nx/2)))
@@ -171,17 +201,16 @@ def firerules(X, FIRESX, FIRESY):
             # X[miny + centery - 2, minx + centerx - 2] = LINE
             # X[maxy - centery - 2, maxx - centerx - 2] = LINE
             # X[miny - centery + 2, minx - centerx + 2] = LINE
-            #X[(y1+dy) + maxy, (x1+dx) + maxx] = LINE
-            #print(maxYVAL)
-            #print(maxXVAL)
-            #[y1+dy+100, x1+dx+100] = LINE
+            # X[(y1+dy) + maxy, (x1+dx) + maxx] = LINE
+            # print(maxYVAL)
+            # print(maxXVAL)
+            # [y1+dy+100, x1+dx+100] = LINE
 
-
-
-            if int(y1)+dy >= 0 and int(y1)+dy < ny and int(x1)+dx >= 0 and int(x1)+dx < nx and X[int(y1)+dy, int(x1)+dx] == TREE and np.random.random() <= spread_chance:
-                X[int(y1)+dy, int(x1)+dx] = FIRE
-                FIRESX.put(int(x1)+dx)
-                FIRESY.put(int(y1)+dy)
+            if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
+                int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance:
+                X[int(y1) + dy, int(x1) + dx] = FIRE
+                FIRESX.put(int(x1) + dx)
+                FIRESY.put(int(y1) + dy)
 
     return X
 
@@ -200,8 +229,8 @@ nx, ny = 1000, 1000
 # array of 0s.
 FIRESX = Queue(maxsize=0)
 FIRESY = Queue(maxsize=0)
-FIRESY.put(int(ny/2))
-FIRESX.put(int(nx/2))
+FIRESY.put(int(ny / 2))
+FIRESX.put(int(nx / 2))
 # FIRES[0, 0] = int(ny/2)
 # FIRES[0, 1] = int(nx/2)
 
@@ -212,24 +241,24 @@ X = np.zeros((ny, nx))
 # np.random.randint(0, 2, size=(ny-2, nx-2)) randomly assigns all non-border cells
 # 0 or 1 (2, the upper limit, is excluded). Since the border (2 rows and 2 columns)
 # is excluded, size=(ny-2, nx-2).
-X[1:ny-1, 1:nx-1] = np.random.randint(0, 2, size=(ny-2, nx-2))
+X[1:ny - 1, 1:nx - 1] = np.random.randint(0, 2, size=(ny - 2, nx - 2))
 
 # This ensures that the number of 1s in the array is below the threshold established
 # by forest_fraction. Note that random.random normally returns floats between
 # 0 and 1, but this was initialized with integers in the previous line of code.
-X[1:ny-1, 1:nx -
-    1] = np.random.random(size=(ny-2, nx-2)) < forest_fraction/300+0.00001
-X[int(ny/2)+1][int(nx/2)+1] = TREE
-X[int(ny/2)-1][int(nx/2)-1] = TREE
-X[int(ny/2)-1][int(nx/2)+1] = TREE
-X[int(ny/2)][int(nx/2)] = FIRE
+X[1:ny - 1, 1:nx -
+              1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
+X[int(ny / 2) + 1][int(nx / 2) + 1] = TREE
+X[int(ny / 2) - 1][int(nx / 2) - 1] = TREE
+X[int(ny / 2) - 1][int(nx / 2) + 1] = TREE
+X[int(ny / 2)][int(nx / 2)] = FIRE
 # X[int(ny/2)+1][int(nx/2)-1] = TREE
 X = popForest(X)
 # line bounds
-X[450:550, 449:450] = LINE
-X[450:550, 550:551] = LINE
-X[449:450, 449:551] = LINE
-X[550:551, 449:551] = LINE
+# X[450:550, 449:450] = LINE
+# X[450:550, 550:551] = LINE
+# X[449:450, 449:551] = LINE
+# X[550:551, 449:551] = LINE
 # X[450:550, 450:451] = LINE
 # X[450:550, 450:451] = LINE
 # X[5:10, 0:30] = LINE
@@ -241,7 +270,7 @@ X[550:551, 449:551] = LINE
 # X[90:100, 0:100] = LINE
 
 # Adjusts the size of the figure.
-fig = plt.figure(figsize=(25/3, 6.25))
+fig = plt.figure(figsize=(25 / 3, 6.25))
 
 # Creates 1x1 grid subplot.
 ax = fig.add_subplot(111)
@@ -253,6 +282,7 @@ ax.set_axis_off()
 # square for each array element. X is the data of the image; cmap is a colormap;
 # norm maps the data to colormap colors.
 im = ax.imshow(X, cmap=cmap, norm=norm)  # , interpolation='nearest')
+
 
 # The animate function is called to produce a frame for each generation.
 
