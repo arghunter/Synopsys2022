@@ -222,6 +222,7 @@ def firerules(X, FIRESX, FIRESY, A):
 
             if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
                     int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000.0):
+                print(str(len(tickElapsed)))
                 print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE
                 FIRESX.put(int(x1) + dx)
