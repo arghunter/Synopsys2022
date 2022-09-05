@@ -224,6 +224,12 @@ def firerules(X, FIRESX, FIRESY, A):
         X[corner1y, corner1x:corner4x] = LINE
         X[corner2y, corner2x:corner3x] = LINE
 
+    if(qs == 0):
+        xt = np.random.random()*tickElapsed-tickElapsed/2
+        yt = np.random.random()*tickElapsed-tickElapsed/2
+        X[yt][xt] = FIRE
+        FIRESX.push(xt)
+        FIRESY.push(yt)
     while (qs > 0):
         qs -= 1
         x1 = int(FIRESX.get())
@@ -233,7 +239,7 @@ def firerules(X, FIRESX, FIRESY, A):
         for dx, dy in neighborhood:
 
             if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
-                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(1000.0):
+                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000.0):
                 print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE
                 FIRESX.put(int(x1) + dx)
