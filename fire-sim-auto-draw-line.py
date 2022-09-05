@@ -64,7 +64,7 @@ neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
                 (0, 1), (1, -1), (1, 0), (1, 1))
 # Cell types for automata
 EMPTY, TREE, FIRE, BURNT, LINE = 0, 1, 2, 3, 4
-# Collor corresponds to cell type
+# Color corresponds to cell type
 colors_list = [(0.2, 0, 0), (0, 0.5, 0), (1, 0, 0),
                (1, 0.65, 0), (1, 1, 1), (0, 0, 0)]
 cmap = colors.ListedColormap(colors_list)
@@ -235,6 +235,8 @@ FIRESX.put(int(nx / 2))
 X = np.zeros((ny, nx))
 A = np.zeros((ny, nx))  # the altitude of the ground
 
+
+
 # X[1:ny-1, 1:nx-1] grabs the subset of X from indices 1-99 EXCLUDING 99. Since 0 is
 # the index, this excludes 2 rows and 2 columns (the border).
 # np.random.randint(0, 2, size=(ny-2, nx-2)) randomly assigns all non-border cells
@@ -254,17 +256,28 @@ X[int(ny / 2)][int(nx / 2)] = FIRE
 # X[int(ny/2)+1][int(nx/2)-1] = TREE
 X = popForest(X)
 # line bounds
+#define A values
 popAlttitude(A)
+
+#list ranges after A values are defined
+xAltList = list(range(0,int(nx)))
+yAltList = list(range(0,int(ny)))
 
 t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY))
 # Adjusts the size of the figure.
+
+plt.figure(1)
 fig = plt.figure(figsize=(25 / 3, 6.25))
+
+
 
 # Creates 1x1 grid subplot.
 ax = fig.add_subplot(111)
 
+
 # Turns off the x and y axis.
-ax.set_axis_off()
+# ax.set_axis_off()
+
 
 # The matplotlib function imshow() creates an image from a 2D numpy array with 1
 # square for each array element. X is the data of the image; cmap is a colormap;
@@ -295,6 +308,14 @@ interval = iTR
 # called at each frame; interval is the delay between frames (in ms).
 anim = animation.FuncAnimation(fig, animate, interval=interval)
 
+
+#figure 2 for contour
+plt.figure(2)
+#draw contour
+plt.contour(xAltList, yAltList, A)
+plt.colorbar()
+
+
+
 # Display the animated figure
 plt.show()
-
