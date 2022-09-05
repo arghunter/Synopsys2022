@@ -141,19 +141,35 @@ def popForest(X):
 def popAlttitude(A):
     A[1:ny - 1, 1:nx -
         1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 400 + 0.00001
+
+    print(altitude_vari / 400 + 0.00001)
+    # for ix in range(1, nx - 1):
+    #     # print(A[ix])
     for ix in range(1, nx - 1):
+        # print(A[ix])
         for iy in range(1, ny - 1):
-            if(A[ix][iy] == 1):
-                A[ix][iy] = A[ix][iy]*80*np.random.random()+80
-                # d = np.random.random()*200
+
+            if(A[iy][ix] == 1):
                 print("Altitude"+str(ix)+" "+str(iy))
+                # print("("+str(ix)+","+str(iy)+")")
+
+                A[iy][ix] = A[iy][ix]*80*np.random.random()+80
+                # d = np.random.random()*200
+
                 for tx in range(ix-80, ix+80):
                     for ty in range(iy-80, iy + 80):
-                        # print("INSIDE")
-                        if(tx >= 0 and tx < nx and ty >= 0 and ty < ny and (tx-ix)**2 + (ty-tx)**2 <= 80**2 and A[tx][ty] != 1):
-                            A[tx][ty] += A[ix][iy] - \
-                                math.sqrt((tx-ix)**2 + (ty-tx) **
-                                          2)+30*np.random.random()
+
+                        if(tx >= 0 and tx < nx and ty >= 0 and ty < ny and (tx-ix)**2 + (ty-iy)**2 <= (80)**2 and A[ty][tx] != 1):
+                            A[ty][tx] += A[iy][ix] - \
+                                math.sqrt((tx-ix)**2 + (ty-tx) ** 2) + \
+                                30*np.random.random()
+                            if A[ty][tx] == 1:
+                                A[ty][tx] = 2
+                            # print("("+str(ty)+","+str(tx)+")")
+                            # print(str(iy)+" "+str(ix) + " " + str(ty) +
+                            #       " "+str(tx)+" "+str(A[ty][tx]))
+    # for ix in range(1, nx - 1):
+    #     print(A[ix])
 
 
 def firerules(X, FIRESX, FIRESY, A):
@@ -219,7 +235,7 @@ altitude_vari = 0.3
 # p is the probability of a tree growing in an empty cell (real forest density); f is the probability of
 # a lightning strike.
 p, f = 0.85, 0.01
-spread_chance = 0.5
+spread_chance = 0.35
 # Forest size (number of cells in x and y directions).
 nx, ny = 1000, 1000
 
@@ -234,7 +250,6 @@ FIRESX.put(int(nx / 2))
 
 X = np.zeros((ny, nx))
 A = np.zeros((ny, nx))  # the altitude of the ground
-
 
 
 # X[1:ny-1, 1:nx-1] grabs the subset of X from indices 1-99 EXCLUDING 99. Since 0 is
@@ -256,19 +271,18 @@ X[int(ny / 2)][int(nx / 2)] = FIRE
 # X[int(ny/2)+1][int(nx/2)-1] = TREE
 X = popForest(X)
 # line bounds
-#define A values
+# define A values
 popAlttitude(A)
 
-#list ranges after A values are defined
-xAltList = list(range(0,int(nx)))
-yAltList = list(range(0,int(ny)))
+# list ranges after A values are defined
+xAltList = list(range(0, int(nx)))
+yAltList = list(range(0, int(ny)))
 
 t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY))
 # Adjusts the size of the figure.
 
 plt.figure(1)
 fig = plt.figure(figsize=(25 / 3, 6.25))
-
 
 
 # Creates 1x1 grid subplot.
@@ -309,12 +323,11 @@ interval = iTR
 anim = animation.FuncAnimation(fig, animate, interval=interval)
 
 
-#figure 2 for contour
+# figure 2 for contour
 plt.figure(2)
-#draw contour
+# draw contour
 plt.contour(xAltList, yAltList, A)
 plt.colorbar()
-
 
 
 # Display the animated figure
