@@ -21,7 +21,6 @@ print("----------------------")
 
 print()
 
-
 fireSpreadSpeed = input("Fire Spread Speed (kmh): ")
 print()
 iFSS = float(fireSpreadSpeed)
@@ -33,7 +32,6 @@ tickRATE = (60 / iFSSC) * 1000
 iTR = int(tickRATE)
 print("ms per tick for given Spread Speed: ", iTR)
 print()
-
 
 lineDrawSpeed = input("Fireline Draw Speed (kmh): ")
 print()
@@ -257,6 +255,8 @@ X[int(ny / 2)][int(nx / 2)] = FIRE
 X = popForest(X)
 # line bounds
 popAlttitude(A)
+
+t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY))
 # Adjusts the size of the figure.
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
@@ -297,3 +297,4 @@ anim = animation.FuncAnimation(fig, animate, interval=interval)
 
 # Display the animated figure
 plt.show()
+
