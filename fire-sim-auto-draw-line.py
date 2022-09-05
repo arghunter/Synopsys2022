@@ -140,7 +140,7 @@ def popForest(X):
 
 def popAlttitude(A):
     A[1:ny - 1, 1:nx -
-        1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 400 + 0.00001
+        1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
 
     print(altitude_vari / 400 + 0.00001)
     # for ix in range(1, nx - 1):
@@ -150,19 +150,32 @@ def popAlttitude(A):
         for iy in range(1, ny - 1):
 
             if(A[iy][ix] == 1):
+                if(np.random.random() < 0.5):
+                    A[iy][ix] = -1
+
                 print("Altitude"+str(ix)+" "+str(iy))
                 # print("("+str(ix)+","+str(iy)+")")
 
-                A[iy][ix] = A[iy][ix]*80*np.random.random()+80
+                A[iy][ix] = A[iy][ix]*80*np.random.random()+80*A[iy][ix]
                 # d = np.random.random()*200
 
                 for tx in range(ix-80, ix+80):
                     for ty in range(iy-80, iy + 80):
 
                         if(tx >= 0 and tx < nx and ty >= 0 and ty < ny and (tx-ix)**2 + (ty-iy)**2 <= (80)**2 and A[ty][tx] != 1):
-                            A[ty][tx] += A[iy][ix] - \
-                                math.sqrt((tx-ix)**2 + (ty-tx) ** 2) + \
-                                30*np.random.random()
+
+                            if(A[iy][ix] < 0):
+                                t = A[iy][ix] + \
+                                    math.sqrt((tx-ix)**2 + (ty-tx) ** 2)/2
+                                A[ty][tx] -= abs(t)
+                            else:
+                                t = A[iy][ix] - \
+                                    math.sqrt((tx-ix)**2 + (ty-tx) ** 2)/2
+                                A[ty][tx] += abs(t)
+
+                            # if(t >= 0):
+                            #     A[ty][tx] += t
+
                             if A[ty][tx] == 1:
                                 A[ty][tx] = 2
                             # print("("+str(ty)+","+str(tx)+")")
@@ -220,7 +233,7 @@ def firerules(X, FIRESX, FIRESY, A):
         for dx, dy in neighborhood:
 
             if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
-                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000.0):
+                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(1000.0):
                 print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE
                 FIRESX.put(int(x1) + dx)
