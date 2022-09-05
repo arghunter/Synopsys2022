@@ -21,17 +21,19 @@ print("----------------------")
 
 print()
 
+
 fireSpreadSpeed = input("Fire Spread Speed (kmh): ")
 print()
-iFSS = int(fireSpreadSpeed)
+iFSS = float(fireSpreadSpeed)
 
 # iFSSC = Number of Ticks in a Minute (because 1 square every tick)
-iFSSC = (iFSS * 1000) / 20
+iFSSC = int((iFSS * 1000) / 20)
 # ms per tick
 tickRATE = (60 / iFSSC) * 1000
 iTR = int(tickRATE)
 print("ms per tick for given Spread Speed: ", iTR)
 print()
+
 
 lineDrawSpeed = input("Fireline Draw Speed (kmh): ")
 print()
