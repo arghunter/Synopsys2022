@@ -64,7 +64,8 @@ neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
 # Cell types for automata
 EMPTY, TREE, FIRE, BURNT, LINE = 0, 1, 2, 3, 4
 # Collor corresponds to cell type
-colors_list = [(0.2, 0, 0), (0, 0.5, 0), (1, 0, 0), (1, 0.65, 0), (1, 1, 1), (0, 0, 0)]
+colors_list = [(0.2, 0, 0), (0, 0.5, 0), (1, 0, 0),
+               (1, 0.65, 0), (1, 1, 1), (0, 0, 0)]
 cmap = colors.ListedColormap(colors_list)
 
 # The bounds list must also be one larger than the number of different values in
@@ -130,7 +131,25 @@ def popForest(X):
     return X1
 
 
-def firerules(X, FIRESX, FIRESY):
+def popAlttitude(A):
+    A[1:ny - 1, 1:nx -
+        1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 400 + 0.00001
+    for ix in range(1, nx - 1):
+        for iy in range(1, ny - 1):
+            if(A[ix][iy] == 1):
+                A[ix][iy] = A[ix][iy]*80*np.random.random()+80
+                # d = np.random.random()*200
+                print("Altitude"+str(ix)+" "+str(iy))
+                for tx in range(ix-80, ix+80):
+                    for ty in range(iy-80, iy + 80):
+                        # print("INSIDE")
+                        if(tx >= 0 and tx < nx and ty >= 0 and ty < ny and (tx-ix)**2 + (ty-tx)**2 <= 80**2 and A[tx][ty] != 1):
+                            A[tx][ty] += A[ix][iy] - \
+                                math.sqrt((tx-ix)**2 + (ty-tx) **
+                                          2)+30*np.random.random()
+
+
+def firerules(X, FIRESX, FIRESY, A):
     # print(len(FIRES))
     qs = FIRESX.qsize()
     centery = int((ny / 2))
@@ -139,7 +158,6 @@ def firerules(X, FIRESX, FIRESY):
     # sideLength = 100
     if int(len(tickElapsed)) >= iUD:
         # corner1 is top left, corner 2 is bottom left, corner 3 is bottom right, corner 4 is top right.
-
 
         # corner1
         corner1y = (centery - (sideLength / 2))
@@ -170,7 +188,6 @@ def firerules(X, FIRESX, FIRESY):
         X[corner1y, corner1x:corner4x] = LINE
         X[corner2y, corner2x:corner3x] = LINE
 
-
     while (qs > 0):
         qs -= 1
         x1 = int(FIRESX.get())
@@ -180,7 +197,8 @@ def firerules(X, FIRESX, FIRESY):
         for dx, dy in neighborhood:
 
             if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
-                int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance:
+                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000.0):
+                print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE
                 FIRESX.put(int(x1) + dx)
                 FIRESY.put(int(y1) + dy)
@@ -190,7 +208,7 @@ def firerules(X, FIRESX, FIRESY):
 
 # The initial fraction of the forest occupied by trees.
 forest_fraction = 0.95
-
+altitude_vari = 0.3
 # p is the probability of a tree growing in an empty cell (real forest density); f is the probability of
 # a lightning strike.
 p, f = 0.85, 0.01
@@ -208,6 +226,7 @@ FIRESX.put(int(nx / 2))
 # FIRES[0, 1] = int(nx/2)
 
 X = np.zeros((ny, nx))
+A = np.zeros((ny, nx))  # the altitude of the ground
 
 # X[1:ny-1, 1:nx-1] grabs the subset of X from indices 1-99 EXCLUDING 99. Since 0 is
 # the index, this excludes 2 rows and 2 columns (the border).
@@ -220,7 +239,7 @@ X[1:ny - 1, 1:nx - 1] = np.random.randint(0, 2, size=(ny - 2, nx - 2))
 # by forest_fraction. Note that random.random normally returns floats between
 # 0 and 1, but this was initialized with integers in the previous line of code.
 X[1:ny - 1, 1:nx -
-              1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
+  1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
 X[int(ny / 2) + 1][int(nx / 2) + 1] = TREE
 X[int(ny / 2) - 1][int(nx / 2) - 1] = TREE
 X[int(ny / 2) - 1][int(nx / 2) + 1] = TREE
@@ -228,7 +247,7 @@ X[int(ny / 2)][int(nx / 2)] = FIRE
 # X[int(ny/2)+1][int(nx/2)-1] = TREE
 X = popForest(X)
 # line bounds
-
+popAlttitude(A)
 # Adjusts the size of the figure.
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
@@ -249,12 +268,13 @@ im = ax.imshow(X, cmap=cmap, norm=norm)  # , interpolation='nearest')
 
 def animate(i):
     im.set_data(animate.X)
-    animate.X = firerules(animate.X, animate.FIRESX, animate.FIRESY)
+    animate.X = firerules(animate.X, animate.FIRESX, animate.FIRESY, animate.A)
     tickElapsed.append(1)
 
 
 # Binds the grid to the identifier X in the animate function's namespace.
 animate.X = X
+animate.A = A
 animate.FIRESX = FIRESX
 animate.FIRESY = FIRESY
 
