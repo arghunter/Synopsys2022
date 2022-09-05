@@ -219,7 +219,7 @@ altitude_vari = 0.3
 # p is the probability of a tree growing in an empty cell (real forest density); f is the probability of
 # a lightning strike.
 p, f = 0.85, 0.01
-spread_chance = 0.3
+spread_chance = 0.5
 # Forest size (number of cells in x and y directions).
 nx, ny = 1000, 1000
 
