@@ -83,9 +83,9 @@ ydistanceVal = []
 tickElapsed = []
 
 
-def loopFire(X, FIRESX, FIRESY):
+def loopFire(X, FIRESX, FIRESY, A):
     while True:
-        firerules(X, FIRESX, FIRESY)
+        firerules(X, FIRESX, FIRESY, A)
 
 
 def popForest(X):
@@ -138,7 +138,7 @@ def popForest(X):
     return X1
 
 
-def popAlttitude(A):
+def popAltitude(A):
     A[1:ny - 1, 1:nx -
         1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
 
@@ -285,13 +285,13 @@ X[int(ny / 2)][int(nx / 2)] = FIRE
 X = popForest(X)
 # line bounds
 # define A values
-popAlttitude(A)
+popAltitude(A)
 
 # list ranges after A values are defined
 xAltList = list(range(0, int(nx)))
 yAltList = list(range(0, int(ny)))
 
-t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY))
+t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY, A))
 # Adjusts the size of the figure.
 
 fig = plt.figure(figsize=(25 / 3, 6.25))
@@ -336,7 +336,7 @@ anim = animation.FuncAnimation(fig, animate, interval=interval)
 
 
 # figure 2 for contour
-plt.figure(2)
+# plt.figure(2)
 # draw contour
 
 # only figure 1 for now
