@@ -83,6 +83,7 @@ ydistanceVal = []
 tickElapsed = []
 
 
+
 def loopFire(X, FIRESX, FIRESY, A):
     while True:
         firerules(X, FIRESX, FIRESY, A)
