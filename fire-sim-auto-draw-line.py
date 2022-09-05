@@ -281,7 +281,6 @@ yAltList = list(range(0, int(ny)))
 t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY))
 # Adjusts the size of the figure.
 
-plt.figure(1)
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
 
@@ -322,10 +321,18 @@ interval = iTR
 # called at each frame; interval is the delay between frames (in ms).
 anim = animation.FuncAnimation(fig, animate, interval=interval)
 
+<< << << < HEAD
 
 # figure 2 for contour
 plt.figure(2)
 # draw contour
+== == == =
+# only figure 1 for now
+plt.figure(1)
+# figure 2 for contour
+# plt.figure(2)
+# draw contour
+>>>>>> > 48740c5a3654c3e94f63fd00e9696641549d4aad
 plt.contour(xAltList, yAltList, A)
 plt.colorbar()
 
