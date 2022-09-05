@@ -219,7 +219,7 @@ altitude_vari = 0.3
 # p is the probability of a tree growing in an empty cell (real forest density); f is the probability of
 # a lightning strike.
 p, f = 0.85, 0.01
-spread_chance = 0.5
+spread_chance = 0.35
 # Forest size (number of cells in x and y directions).
 nx, ny = 1000, 1000
 
@@ -266,7 +266,6 @@ yAltList = list(range(0,int(ny)))
 t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY))
 # Adjusts the size of the figure.
 
-plt.figure(1)
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
 
@@ -308,9 +307,10 @@ interval = iTR
 # called at each frame; interval is the delay between frames (in ms).
 anim = animation.FuncAnimation(fig, animate, interval=interval)
 
-
+#only figure 1 for now
+plt.figure(1)
 #figure 2 for contour
-plt.figure(2)
+#plt.figure(2)
 #draw contour
 plt.contour(xAltList, yAltList, A)
 plt.colorbar()
