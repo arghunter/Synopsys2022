@@ -5,6 +5,7 @@ import math
 from matplotlib import animation
 from matplotlib import colors
 from queue import Queue
+import threading
 
 # scaling: each box is 20m (0.02km) by 20m (0.02km)
 # fire spreads at 1kmh
@@ -75,9 +76,14 @@ bounds = [0, 1, 2, 3, 4, 5, 6]
 # is mapped to the color with the same index.
 norm = colors.BoundaryNorm(bounds, cmap.N)
 
+
 xdistanceVal = []
 ydistanceVal = []
 tickElapsed = []
+
+def loopFire(X, FIRESX, FIRESY):
+    while True:
+        firerules(X, FIRESX, FIRESY)
 
 
 def popForest(X):
@@ -228,7 +234,7 @@ X[int(ny / 2)][int(nx / 2)] = FIRE
 # X[int(ny/2)+1][int(nx/2)-1] = TREE
 X = popForest(X)
 # line bounds
-
+t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY))
 # Adjusts the size of the figure.
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
