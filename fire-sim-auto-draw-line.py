@@ -78,9 +78,10 @@ bounds = [0, 1, 2, 3, 4, 5, 6]
 norm = colors.BoundaryNorm(bounds, cmap.N)
 
 
-xdistanceVal = []
-ydistanceVal = []
+# lists location
 tickElapsed = []
+currentBurntList = []
+totalBurntList = []
 
 
 def loopFire(X, FIRESX, FIRESY, A):
@@ -245,6 +246,7 @@ def firerules(X, FIRESX, FIRESY, A):
                 FIRESX.put(int(x1) + dx)
                 FIRESY.put(int(y1) + dy)
 
+
     return X
 
 
@@ -320,10 +322,27 @@ im = ax.imshow(X, cmap=cmap, norm=norm)  # , interpolation='nearest')
 # The animate function is called to produce a frame for each generation.
 
 
+# for things that are done every tick, do them here:
 def animate(i):
+    # animate figure
     im.set_data(animate.X)
     animate.X = firerules(animate.X, animate.FIRESX, animate.FIRESY, animate.A)
+
+    # track number of ticks elapsed
     tickElapsed.append(1)
+
+    # track current burnt squares using queue size
+    currentBurnt = FIRESX.qsize()
+    currentBurntList.append(currentBurnt)
+
+    # sum currentBurnt for total squares burnt
+    totalBurnt = sum(currentBurntList)
+    # append to list for future record
+    totalBurntList.append(totalBurnt)
+    # print current total burnt = current score
+    print(totalBurnt)
+
+
 
 
 # Binds the grid to the identifier X in the animate function's namespace.
