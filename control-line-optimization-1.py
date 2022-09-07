@@ -57,7 +57,7 @@ while True:
                     ground[x][y] = 0
                 else:
                     ground[x][y] -= 1
-
+#
     for x in range(0, len(ground)):
         print(ground[x])
         # for y in range(0, len(ground[x])):
