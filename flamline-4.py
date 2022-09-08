@@ -240,19 +240,18 @@ def firerules(X, FIRESX, FIRESY, A):
         for dx, dy in neighborhood:
 
             if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
-                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000.0):
+                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(1000.0):
                 print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE
                 FIRESX.put(int(x1) + dx)
                 FIRESY.put(int(y1) + dy)
-
 
     return X
 
 
 # The initial fraction of the forest occupied by trees.
 forest_fraction = 0.95
-altitude_vari = 0.3
+altitude_vari = 0.5
 # p is the probability of a tree growing in an empty cell (real forest density); f is the probability of
 # a lightning strike.
 p, f = 0.85, 0.01
@@ -341,8 +340,6 @@ def animate(i):
     totalBurntList.append(totalBurnt)
     # print current total burnt = current score
     print(totalBurnt)
-
-
 
 
 # Binds the grid to the identifier X in the animate function's namespace.
