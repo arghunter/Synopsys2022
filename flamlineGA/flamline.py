@@ -8,6 +8,9 @@ from matplotlib import colors
 from queue import Queue
 import threading
 
+# import files
+from userInfo import userInfo
+
 # scaling: each box is 20m (0.02km) by 20m (0.02km)
 # fire spreads at 1kmh
 # each minute is an hour
@@ -16,49 +19,8 @@ import threading
 # each tick is 1 minute and 12 seconds of spread in real life.
 
 # user information
-print("----------------------")
-print("a Square is 20m by 20m")
-print("----------------------")
+userInfo()
 
-print()
-
-fireSpreadSpeed = input("Fire Spread Speed (kmh): ")
-print()
-iFSS = float(fireSpreadSpeed)
-
-# iFSSC = Number of Ticks in a Minute (because 1 square every tick)
-iFSSC = int((iFSS * 1000) / 20)
-# ms per tick
-tickRATE = (60 / iFSSC) * 1000
-iTR = int(tickRATE)
-print("ms per tick for given Spread Speed: ", iTR)
-print()
-
-lineDrawSpeed = input("Fireline Draw Speed (kmh): ")
-print()
-iLDS = int(lineDrawSpeed)
-iLDSS = (iLDS * 1000) / 20
-# fireline draw speed in squares per tick = iLDSST
-iLDSST = iLDSS / iFSSC
-print("Fireline Draw Speed in Squares per Tick: ", iLDSST)
-print()
-
-userDelay = input("Delay time before drawing fireline in # of Ticks: ")
-print()
-iUD = int(userDelay)
-bufferSpace = input("Buffer in # of Squares: ")
-print()
-iBS = int(bufferSpace)
-
-Tau = ((((4 * iUD) / iLDSST) + ((4 * iBS) / iLDSST) + iBS) / ((1 - (4 / iLDSST))))
-print("original Tau: ", Tau)
-upTau = math.ceil(Tau)
-print("rounded-up Tau: ", upTau)
-
-# Tau = sidelength value because square = tick
-sideLength = ((upTau + iUD + iBS))
-
-print("side length: ", sideLength)
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
