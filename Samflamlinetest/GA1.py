@@ -9,9 +9,6 @@ from queue import Queue
 import threading
 
 
-# import files
-from userInfo import userInfo
-
 maxGenerations = input("Number of Generations: ")
 intmaxGenerations = int(maxGenerations)
 
