@@ -8,8 +8,6 @@ from matplotlib import colors
 from queue import Queue
 import threading
 
-# import files
-from userInfo import userInfo
 
 # scaling: each box is 20m (0.02km) by 20m (0.02km)
 # fire spreads at 1kmh
@@ -18,7 +16,53 @@ from userInfo import userInfo
 # 1.2s per tick
 # each tick is 1 minute and 12 seconds of spread in real life.
 
+
 # user information
+def userInfo():
+    print("----------------------")
+    print("a Square is 20m by 20m")
+    print("----------------------")
+
+    print()
+
+    fireSpreadSpeed = input("Fire Spread Speed (kmh): ")
+    print()
+    iFSS = float(fireSpreadSpeed)
+
+    # iFSSC = Number of Ticks in a Minute (because 1 square every tick)
+    iFSSC = int((iFSS * 1000) / 20)
+    # ms per tick
+    tickRATE = (60 / iFSSC) * 1000
+    iTR = int(tickRATE)
+    print("ms per tick for given Spread Speed: ", iTR)
+    print()
+
+    lineDrawSpeed = input("Fireline Draw Speed (kmh): ")
+    print()
+    iLDS = int(lineDrawSpeed)
+    iLDSS = (iLDS * 1000) / 20
+    # fireline draw speed in squares per tick = iLDSST
+    iLDSST = iLDSS / iFSSC
+    print("Fireline Draw Speed in Squares per Tick: ", iLDSST)
+    print()
+
+    userDelay = input("Delay time before drawing fireline in # of Ticks: ")
+    print()
+    iUD = int(userDelay)
+    bufferSpace = input("Buffer in # of Squares: ")
+    print()
+    iBS = int(bufferSpace)
+
+    Tau = ((((4 * iUD) / iLDSST) + ((4 * iBS) / iLDSST) + iBS) / ((1 - (4 / iLDSST))))
+    print("original Tau: ", Tau)
+    upTau = math.ceil(Tau)
+    print("rounded-up Tau: ", upTau)
+
+    # Tau = sidelength value because square = tick
+    sideLength = ((upTau + iUD + iBS))
+
+    print("side length: ", sideLength)
+
 userInfo()
 
 
@@ -151,7 +195,7 @@ def popAltitude(A):
     A[1:ny - 1, 1:nx -
         1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
 
-    print(altitude_vari / 400 + 0.00001)
+    print("Percent Done:", ((altitude_vari / 400 + 0.00001) ), "%")
     # for ix in range(1, nx - 1):
     #     # print(A[ix])
 
@@ -160,7 +204,7 @@ def popAltitude(A):
         for iy in range(0, ny - 1, 256):
             t = (threading.Thread(target=popAltSeg, args=(A, ix, iy)))
             t.start()
-            print("new Thread " + str(ix)+" "+str(iy))
+            # print("new Thread " + str(ix)+" "+str(iy))
 
     while A[1023][1023] != -101:
         time.sleep(1)
@@ -194,7 +238,7 @@ def firerules(X, FIRESX, FIRESY, A):
 
             if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
                     int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(1000.0):
-                print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
+                # print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE
                 FIRESX.put(int(x1) + dx)
                 FIRESY.put(int(y1) + dy)
