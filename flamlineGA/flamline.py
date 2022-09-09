@@ -217,8 +217,8 @@ def firerules(X, FIRESX, FIRESY, A):
     # sideLength = 100
 
     if(qs == 0):
-        xt = np.random.random()*tickElapsed-tickElapsed/2
-        yt = np.random.random()*tickElapsed-tickElapsed/2
+        xt = int(np.random.random()*tickElapsed-tickElapsed/2)
+        yt = int(np.random.random()*tickElapsed-tickElapsed/2)
         X[yt][xt] = FIRE
         FIRESX.push(xt)
         FIRESY.push(yt)
