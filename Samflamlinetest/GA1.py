@@ -8,12 +8,16 @@ from matplotlib import colors
 from queue import Queue
 import threading
 
+# import files
+from userInfo import *
 
 maxGenerations = input("Number of Generations: ")
 intmaxGenerations = int(maxGenerations)
 
 
 generationBig = []
+
+
 
 if len(generationBig) <= intmaxGenerations:
     generationBig.append(1)
