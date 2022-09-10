@@ -7,6 +7,7 @@ from matplotlib import animation
 from matplotlib import colors
 from queue import Queue
 import threading
+import random
 
 # import files and variables
 from userInfo import *
@@ -17,7 +18,6 @@ from userInfo import *
 # 50 ticks an minute (1kmh)
 # 1.2s per tick
 # each tick is 1 minute and 12 seconds of spread in real life.
-
 
 
 # The neightbors of a cells
@@ -101,68 +101,64 @@ def popForest(X):
     return X1
 
 
-def popAltSeg(A, x, y):
-    for ix in range(x, x+256):
-        print(ix-x)
-        # print(A[ix])
-        for iy in range(y, y+256):
-            # print("here")
-            if(A[iy][ix] == 1):
-                if(np.random.random() < 0.5):
-                    A[iy][ix] = -1
+def popAltSeg(A, ix, iy):
+    A[iy][ix] = 1
 
-                # print("Altitude"+str(ix)+" "+str(iy))
-                # print("("+str(ix)+","+str(iy)+")")
+    # if(np.random.random() < 0.3):
+    #     A[iy][ix] = -1
 
-                A[iy][ix] = A[iy][ix]*80*np.random.random()+80*A[iy][ix]
-                # d = np.random.random()*200
+    # print("Altitude"+str(ix)+" "+str(iy))
+    # print("("+str(ix)+","+str(iy)+")")
 
-                for tx in range(ix-80, ix+80):
-                    for ty in range(iy-80, iy + 80):
+    A[iy][ix] = A[iy][ix]*240*np.random.random()+80*A[iy][ix]
+    # d = np.random.random()*200
 
-                        if(tx >= 0 and tx < nx and ty >= 0 and ty < ny and (tx-ix)**2 + (ty-iy)**2 <= (80)**2 and A[ty][tx] != 1):
+    for tx in range(ix-80, ix+80):
+        # print(tx-ix)
+        for ty in range(iy-80, iy + 80):
 
-                            if(A[iy][ix] < 0):
-                                t = A[iy][ix] + \
-                                    math.sqrt((tx-ix)**2 + (ty-tx) ** 2)/2
-                                A[ty][tx] -= abs(t)
-                            else:
-                                t = A[iy][ix] - \
-                                    math.sqrt((tx-ix)**2 + (ty-tx) ** 2)/2
-                                A[ty][tx] += abs(t)
+            if((tx-ix)**2 + (ty-iy)**2 <= (80)**2 and A[ty][tx] != 1):
 
-                            # if(t >= 0):
-                            #     A[ty][tx] += t
+                if(A[iy][ix] < 0):
+                    t = A[iy][ix] + \
+                        (abs(tx-ix) + abs(ty-tx))/2
+                    A[ty][tx] -= abs(t)
+                else:
+                    t = A[iy][ix] - \
+                        (abs(tx-ix) + abs(ty-tx))/2
+                    A[ty][tx] += abs(t)
 
-                            if A[ty][tx] == 1:
-                                A[ty][tx] = 2
-                            # print("("+str(ty)+","+str(tx)+")")
-                            # print(str(iy)+" "+str(ix) + " " + str(ty) +
-                            #       " "+str(tx)+" "+str(A[ty][tx]))
-    # for ix in range(1, nx - 1):
-    #     print(A[ix]
-    A[x+255][y+255] = -101
+                    # if(t >= 0):
+                    #     A[ty][tx] += t
+
+                if A[ty][tx] == 1:
+                    A[ty][tx] = 2
+                    # print("("+str(ty)+","+str(tx)+")")
+                    # print(str(iy)+" "+str(ix) + " " + str(ty) +
+                    #       " "+str(tx)+" "+str(A[ty][tx]))
+    A[1023][1023] = A[1023][1023]-1
 
 
 def popAltitude(A):
-    threadDone = 0
-    A[1:ny - 1, 1:nx -
-        1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
 
-    print("Percent Done:", ((altitude_vari / 400 + 0.00001) ), "%")
+    tc = 0
+    for i in range(0, 1024):
+        tc += 1
+        tx = int(random.random()*(nx-160))+80
+        ty = int(random.random()*(ny-160))+80
+        t = (threading.Thread(target=popAltSeg, args=(
+            A, tx, ty)))
+        print(tc)
+        t.start()
+
+    print("Percent Done:", ((altitude_vari / 400 + 0.00001)), "%")
     # for ix in range(1, nx - 1):
     #     # print(A[ix])
 
-    for ix in range(0, nx - 1, 256):
-        # print(A[ix])
-        for iy in range(0, ny - 1, 256):
-            t = (threading.Thread(target=popAltSeg, args=(A, ix, iy)))
-            t.start()
-            # print("new Thread " + str(ix)+" "+str(iy))
-
-    while A[1023][1023] != -101:
+    while A[1023][1023] != -1024:
         time.sleep(1)
-        # print("Thread " + str(threadDone))
+        print(
+            A[1023][1023])
 
     # for ix in range(1, nx - 1):
     #     print(A[ix])
@@ -177,11 +173,11 @@ def firerules(X, FIRESX, FIRESY, A):
     # sideLength = 100
 
     if(qs == 0):
-        xt = int(np.random.random()*tickElapsed-tickElapsed/2)
-        yt = int(np.random.random()*tickElapsed-tickElapsed/2)
+        xt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
+        yt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
         X[yt][xt] = FIRE
-        FIRESX.push(xt)
-        FIRESY.push(yt)
+        FIRESX.put(xt)
+        FIRESY.put(yt)
     while (qs > 0):
         qs -= 1
         x1 = int(FIRESX.get())
@@ -228,12 +224,12 @@ A = np.zeros((ny, nx))  # the altitude of the ground
 # np.random.randint(0, 2, size=(ny-2, nx-2)) randomly assigns all non-border cells
 # 0 or 1 (2, the upper limit, is excluded). Since the border (2 rows and 2 columns)
 # is excluded, size=(ny-2, nx-2).
-X[1:ny - 1, 1:nx - 1] = np.random.randint(0, 2, size=(ny - 2, nx - 2))
+X[1: ny - 1, 1: nx - 1] = np.random.randint(0, 2, size=(ny - 2, nx - 2))
 
 # This ensures that the number of 1s in the array is below the threshold established
 # by forest_fraction. Note that random.random normally returns floats between
 # 0 and 1, but this was initialized with integers in the previous line of code.
-X[1:ny - 1, 1:nx -
+X[1: ny - 1, 1: nx -
   1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
 X[int(ny / 2) + 1][int(nx / 2) + 1] = TREE
 X[int(ny / 2) - 1][int(nx / 2) - 1] = TREE
