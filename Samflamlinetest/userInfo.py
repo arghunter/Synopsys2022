@@ -30,8 +30,8 @@ iLDSST = iLDSS / iFSSC
 iUD = int(userDelay)
 iBS = int(bufferSpace)
 
-Tau = ((((4 * iUD) / iLDSST) + ((4 * iBS) / iLDSST) + iBS) / ((1 - (4 / iLDSST))))
-upTau = math.ceil(Tau)
+iTau = ((((4 * iUD) / iLDSST) + ((4 * iBS) / iLDSST) + iBS) / ((1 - (4 / iLDSST))))
+upTau = math.ceil(iTau)
 
 # Tau = sidelength value because square = tick
 sideLength = ((upTau + iUD + iBS))
