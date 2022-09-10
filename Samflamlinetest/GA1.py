@@ -14,15 +14,26 @@ from userInfo import *
 maxGenerations = input("Number of Generations: ")
 intmaxGenerations = int(maxGenerations)
 
+iFSS = iFSS
+iTR = iTR
+iLDSS = iLDSS
+iLDSST = iLDSST
+iUD = iUD
+iBS = iBS
+Tau = Tau
+upTau = upTau
+sideLength = sideLength
+
 
 generationBig = []
-
 
 
 if len(generationBig) <= intmaxGenerations:
     generationBig.append(1)
     print("GENERATION: ", len(generationBig), "OUT OF", intmaxGenerations)
-    import flamlineGA
+    from flamlineGA import *
+
+
 
 else:
     print("complete")

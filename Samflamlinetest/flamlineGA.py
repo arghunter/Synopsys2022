@@ -18,6 +18,15 @@ from userInfo import *
 # 1.2s per tick
 # each tick is 1 minute and 12 seconds of spread in real life.
 
+iFSS = iFSS
+iTR = iTR
+iLDSS = iLDSS
+iLDSST = iLDSST
+iUD = iUD
+iBS = iBS
+Tau = Tau
+upTau = upTau
+sideLength = sideLength
 
 
 # The neightbors of a cells
@@ -175,6 +184,37 @@ def firerules(X, FIRESX, FIRESY, A):
     centerx = int((nx / 2))
     print(str(int(len(tickElapsed))))
     # sideLength = 100
+    if int(len(tickElapsed)) >= iUD:
+        # corner1 is top left, corner 2 is bottom left, corner 3 is bottom right, corner 4 is top right.
+
+        # corner1
+        corner1y = (centery - (sideLength / 2))
+        corner1x = (centerx - (sideLength / 2))
+        corner1y = int(corner1y)
+        corner1x = int(corner1x)
+
+        # corner2
+        corner2y = (centery + (sideLength / 2))
+        corner2x = (centerx - (sideLength / 2))
+        corner2y = int(corner2y)
+        corner2x = int(corner2x)
+
+        # corner3
+        corner3y = (centery + (sideLength / 2))
+        corner3x = (centerx + (sideLength / 2))
+        corner3y = int(corner3y)
+        corner3x = int(corner3x)
+
+        # corner4
+        corner4y = (centery - (sideLength / 2))
+        corner4x = (centerx + (sideLength / 2))
+        corner4y = int(corner4y)
+        corner4x = int(corner4x)
+
+        X[corner1y:corner2y, corner1x] = LINE
+        X[corner4y:corner3y, corner4x] = LINE
+        X[corner1y, corner1x:corner4x] = LINE
+        X[corner2y, corner2x:corner3x] = LINE
 
     if(qs == 0):
         xt = int(np.random.random()*tickElapsed-tickElapsed/2)
@@ -284,6 +324,10 @@ def animate(i):
     # track current burnt squares using queue size
     currentBurnt = FIRESX.qsize()
     currentBurntList.append(currentBurnt)
+
+    if len(tickElapsed) >= iUD:
+        if currentBurnt == 0:
+            print("fire over")
 
     # sum currentBurnt for total squares burnt
     totalBurnt = sum(currentBurntList)
