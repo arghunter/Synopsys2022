@@ -29,6 +29,9 @@ iTau = iTau
 upTau = upTau
 sideLength = sideLength
 
+# fire status
+fireStatus = True
+
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
@@ -213,12 +216,13 @@ def firerules(X, FIRESX, FIRESY, A):
         X[corner1y, corner1x:corner4x] = LINE
         X[corner2y, corner2x:corner3x] = LINE
 
-    if(qs == 0):
-        xt = int(int(np.random.random() * len(tickElapsed)) - len(tickElapsed) / 2)
-        yt = int(int(np.random.random() * len(tickElapsed)) - len(tickElapsed) / 2)
-        X[yt][xt] = FIRE
-        FIRESX.put(xt)
-        FIRESY.put(yt)
+    # generate new fire after fire is over
+    # if(qs == 0):
+    #     xt = int(np.random.random() * tickElapsed - (tickElapsed / 2))
+    #     yt = int(np.random.random() * tickElapsed - (tickElapsed / 2))
+    #     X[yt][xt] = FIRE
+    #     FIRESX.put(xt)
+    #     FIRESY.put(yt)
     while (qs > 0):
         qs -= 1
         x1 = int(FIRESX.get())
@@ -277,8 +281,9 @@ X[int(ny / 2) - 1][int(nx / 2) - 1] = TREE
 X[int(ny / 2) - 1][int(nx / 2) + 1] = TREE
 X[int(ny / 2)][int(nx / 2)] = FIRE
 # X[int(ny/2)+1][int(nx/2)-1] = TREE
+
 X = popForest(X)
-# line bounds
+
 # define A values
 popAltitude(A)
 
@@ -286,9 +291,10 @@ popAltitude(A)
 xAltList = list(range(0, int(nx)))
 yAltList = list(range(0, int(ny)))
 
+# threading
 t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY, A))
-# Adjusts the size of the figure.
 
+# Adjusts the size of the figure.
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
 
@@ -325,6 +331,7 @@ def animate(i):
     if int(len(tickElapsed)) >= iUD:
         if int(currentBurnt) == 0:
             print("fire over")
+            fireStatus = False
 
 
     # sum currentBurnt for total squares burnt
@@ -347,9 +354,8 @@ interval = iTR
 # animation.FuncAnimation makes an animation by repeatedly calling a function func;
 # fig is the figure object used to resize, etc.; animate is the callable function
 # called at each frame; interval is the delay between frames (in ms).
+
 anim = animation.FuncAnimation(fig, animate, interval=interval)
-
-
 # figure 2 for contour
 # plt.figure(2)
 # draw contour
@@ -363,6 +369,8 @@ plt.figure(1)
 plt.contour(xAltList, yAltList, A)
 plt.colorbar()
 
-
 # Display the animated figure
 plt.show()
+
+
+
