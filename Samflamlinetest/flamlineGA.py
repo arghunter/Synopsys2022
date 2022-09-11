@@ -152,6 +152,10 @@ def firerules(X, FIRESX, FIRESY, A):
         corner4y = int(corner4y)
         corner4x = int(corner4x)
 
+        X[corner1y, corner1x] = LINE
+        X[corner2y, corner2x] = LINE
+        X[corner3y, corner3x] = LINE
+        X[corner4y, corner4x] = LINE
         X[corner1y:corner2y, corner1x] = LINE
         X[corner4y:corner3y, corner4x] = LINE
         X[corner1y, corner1x:corner4x] = LINE
@@ -189,7 +193,7 @@ forest_fraction = 0.95
 # p is the probability of a tree growing in an empty cell (real forest density); f is the probability of
 # a lightning strike.
 p, f = 0.85, 0.01
-spread_chance = 0.35
+spread_chance = 0.5
 # Forest size (number of cells in x and y directions).
 nx, ny = 1024, 1024
 
@@ -278,6 +282,8 @@ def animate(i):
             print("fire over")
             fireStatus = False
             anim.event_source.stop()
+            print("dbg: anim stopped")
+            quit()
 
 
     # sum currentBurnt for total squares burnt
