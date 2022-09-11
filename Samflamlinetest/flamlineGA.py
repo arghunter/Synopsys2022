@@ -265,13 +265,13 @@ A = np.zeros((ny, nx))  # the altitude of the ground
 # np.random.randint(0, 2, size=(ny-2, nx-2)) randomly assigns all non-border cells
 # 0 or 1 (2, the upper limit, is excluded). Since the border (2 rows and 2 columns)
 # is excluded, size=(ny-2, nx-2).
-X[1: ny - 1, 1: nx - 1] = np.random.randint(0, 2, size=(ny - 2, nx - 2))
+X[1:(ny - 1), 1:(nx - 1)] = np.random.randint(0, 2, size=(ny - 2, nx - 2))
 
 # This ensures that the number of 1s in the array is below the threshold established
 # by forest_fraction. Note that random.random normally returns floats between
 # 0 and 1, but this was initialized with integers in the previous line of code.
-X[1: ny - 1, 1: nx -
-  1] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
+X[1:(ny - 1), 1:(nx -
+  1)] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
 X[int(ny / 2) + 1][int(nx / 2) + 1] = TREE
 X[int(ny / 2) - 1][int(nx / 2) - 1] = TREE
 X[int(ny / 2) - 1][int(nx / 2) + 1] = TREE
