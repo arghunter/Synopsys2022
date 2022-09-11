@@ -326,6 +326,7 @@ def animate(i):
         if int(currentBurnt) == 0:
             print("fire over")
 
+
     # sum currentBurnt for total squares burnt
     totalBurnt = sum(currentBurntList)
     # append to list for future record
