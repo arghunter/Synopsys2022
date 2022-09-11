@@ -14,6 +14,9 @@ from userInfo import *
 maxGenerations = input("Number of Generations: ")
 intmaxGenerations = int(maxGenerations)
 
+populationSize = input("Population Size in Each Generation: ")
+intpopulationSize = int(populationSize)
+
 iFSS = iFSS
 iTR = iTR
 iLDSS = iLDSS
@@ -26,11 +29,15 @@ sideLength = sideLength
 
 
 generationBig = []
+populationBig = []
 
+fireStatus = True
 
 if len(generationBig) <= intmaxGenerations:
     generationBig.append(1)
     print("GENERATION: ", len(generationBig), "OUT OF", intmaxGenerations)
+
+    
     from flamlineGA import *
 
 
