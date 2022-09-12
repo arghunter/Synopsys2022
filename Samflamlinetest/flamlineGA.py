@@ -234,7 +234,10 @@ X = popForest(X)
 # popAltitude(A) # moved to altitudeGen.py
 
 # import altitude
+nx, ny = 1024, 1024
 from altitudeGen import *
+A = valueA.valAlt
+
 
 # list ranges after A values are defined
 xAltList = list(range(0, int(nx)))
