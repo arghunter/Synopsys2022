@@ -4,7 +4,7 @@ import math
 
 # set values here
 
-fireSpreadSpeed = 1
+fireSpreadSpeed = 2
 lineDrawSpeed = 10
 userDelay = 20
 bufferSpace = 20
