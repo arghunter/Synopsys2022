@@ -8,7 +8,14 @@ fireSpreadSpeed = 10
 lineDrawSpeed = 10
 userDelay = 20
 bufferSpace = 20
-
+nx = 1024
+ny = 1024
+forest_fraction = 0.95
+altitude_vari = 0.5
+p, f = 0.85, 0.01
+spread_chance = 0.35
+centerx = nx/2
+centery = ny/2
 # set values here
 
 ########################################################
@@ -34,4 +41,5 @@ Tau = ((((4 * iUD) / iLDSST) + ((4 * iBS) / iLDSST) + iBS) / ((1 - (4 / iLDSST))
 upTau = math.ceil(Tau)
 
 # Tau = sidelength value because square = tick
-sideLength = ((upTau + iUD + iBS))
+# sideLength = ((upTau + iUD + iBS))
+sideLength = 60
