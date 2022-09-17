@@ -17,8 +17,8 @@ from genome import *
 gnme = Genome(10)
 gnmeQ = gnme.bx.qsize()
 # for i in range(gnmeQ):
-     # print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
-     # print(str("(" + str(gnme.bx.get())) + "," + str(gnme.by.get()) + ")")
+# print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
+# print(str("(" + str(gnme.bx.get())) + "," + str(gnme.by.get()) + ")")
 
 ########################################################################
 
@@ -161,7 +161,8 @@ def popAltitude(A):
             A, tx, ty)))
         statusAltPop = float(((int(tc)) / 1024))
         percentAltPop = math.ceil((statusAltPop * 100))
-        print("Altitude Generated: ", tc, "Out Of", "1024", "----------", int(percentAltPop), "%")
+        print("Altitude Generated: ", tc, "Out Of", "1024",
+              "----------", int(percentAltPop), "%")
         t.start()
 
     # for ix in range(1, nx - 1):
@@ -185,8 +186,11 @@ def firerules(X, FIRESX, FIRESY, A):
     # sideLength = 100
 
     if int(len(tickElapsed)) >= iUD:
-        for i in range(lineDrawSpeed):
-            X[gnme.by.get()][gnme.bx.get()] = LINE
+        if(gnme.bx.qsize() > 0):
+            for i in range(lineDrawSpeed):
+                print(gnme.bx.qsize())
+                if(gnme.bx.qsize() != 0):
+                    X[gnme.by.get()][gnme.bx.get()] = LINE
 
     # if(qs == 0):
     #     xt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
@@ -297,7 +301,6 @@ def animate(i):
             anim.event_source.stop()
             print("dbg: anim stopped")
             quit()
-
 
     # sum currentBurnt for total squares burnt
     totalBurnt = sum(currentBurntList)

@@ -4,8 +4,8 @@ import math
 
 # set values here
 
-fireSpreadSpeed = 1
-lineDrawSpeed = 10
+fireSpreadSpeed = 4
+lineDrawSpeed = 40
 userDelay = 20
 bufferSpace = 20
 nx = 1024
@@ -43,4 +43,3 @@ upTau = math.ceil(Tau)
 
 # Tau = sidelength value because square = tick
 sideLength = ((upTau + iUD + iBS))
-
