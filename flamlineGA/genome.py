@@ -14,6 +14,7 @@ class Genome:
         print("ere")
         self.v = np.zeros((self.nV, 2))
         r = (sideLength/2.0)
+        sqrt2 = int(round(math.sqrt(2)))
         # r = 60
         # r = 30
 
@@ -27,16 +28,17 @@ class Genome:
 
                 # angle = ((np.pi*2)/self.nV)*(i+qoffset)
 
-                mag = abs(
-                    (3*r/4)/np.cos((np.abs(angle % np.pi/2)*180/np.pi))+r/4)
+                # mag = abs(
+                #     (3*r/4)/np.cos((np.abs(angle % np.pi/2)*180/np.pi))+r/4)
+                mag = abs(sqrt2*r)
                 # mag = r
                 # mag = abs(r*np.sqrt(2)*np.tan((angle)*180/np.pi))
                 # print(mag)
                 print(angle*180/np.pi)
                 print(np.sin(angle))
                 # mag = r/np.cos((np.abs(angle*180/np.pi) % 90))
-                self.v[i][0] = centery + mag*np.sin(angle)
-                self.v[i][1] = centerx + mag*np.cos(angle)
+                self.v[i][0] = centery + mag*(np.sin(angle))
+                self.v[i][1] = centerx + mag*(np.cos(angle))
                 # print(str(self.v[i][0])+" "+str(self.v[i][1]))
                 if((self.v[i][0] <= centery+r+8 and self.v[i][1] >= centerx-r-8 and self.v[i][0] >= centery-r-8 and self.v[i][1] <= centerx+r+8)) and (i == 0 or (self.v[i][0]-self.v[i-1][0])**2+(self.v[i][1]-self.v[i-1][1])**2 >= ((r/(2*np.pi))/nV))**2:
                     break
@@ -177,11 +179,13 @@ class Genome:
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
-        qs = self.bx.qsize()
-        for i in range(qs):
-            print("("+str(self.bx.get())+","+str(self.by.get())+")")
+        # qs = self.bx.qsize()
+        # for i in range(qs):
+             # print("("+str(self.bx.get())+","+str(self.by.get())+")")
 
 
-gnme = Genome(12)
-for i in range(11):
-    print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
+
+
+# gnme = Genome(12)
+# for i in range(12):
+#      print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
