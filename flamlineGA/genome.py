@@ -13,7 +13,8 @@ class Genome:
         self.forwards = np.random.random() <= 0.5
         print("ere")
         self.v = np.zeros((self.nV, 2))
-        r = (sideLength/2.0)*np.sqrt(2)
+        r = (sideLength/2.0)
+        # r = 60
         # r = 30
 
         qoffset = int(np.random.random()*self.nV)
@@ -181,6 +182,6 @@ class Genome:
             print("("+str(self.bx.get())+","+str(self.by.get())+")")
 
 
-gnme = Genome(10)
+gnme = Genome(12)
 for i in range(11):
     print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
