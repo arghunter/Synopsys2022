@@ -67,10 +67,11 @@ class Genome:
                             int(abs(cy-int(self.v[t][0])) /
                                 (cy-int(self.v[t][0])))
                         cx += d/slope
-                        if(cx-lx >= 1):
+                        if(abs(cx-lx) >= 1):
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
-                            lx = cx
+                            cx = int(cx)
+                            lx = int(cx)
                         cy += d
                         # print(str(cx)+" "+str(cy)+" " +
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
@@ -93,10 +94,11 @@ class Genome:
                             int(abs(cx-int(self.v[t][1])) /
                                 (cx-int(self.v[t][1])))
                         cy += slope
-                        if ly-cy >= 1:
+                        if abs(ly-cy) >= 1:
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
-                            ly = cy
+                            cy = int(cy)
+                            ly = int(cy)
                         cx += d
 
                         # print(str(cx)+" "+str(cy)+" " +
@@ -134,10 +136,12 @@ class Genome:
                             int(abs(cy-int(self.v[t][0])) /
                                 (cy-int(self.v[t][0])))
                         cx += d/slope
-                        if(cx-lx >= 1):
+                        if(abs(cx-lx) >= 1):
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
-                            lx = cx
+                            cx = int(cx)
+
+                            lx = int(cx)
                         cy += d
                         # print(str(cx)+" "+str(cy)+" " +
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
@@ -159,10 +163,11 @@ class Genome:
                             int(abs(cx-int(self.v[t][1])) /
                                 (cx-int(self.v[t][1])))
                         cy += slope
-                        if ly-cy >= 1:
+                        if abs(ly-cy) >= 1:
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
-                            ly = cy
+                            cy = int(cy)
+                            ly = int(cy)
                         cx += d
                         # print(str(cx)+" "+str(cy)+" " +
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
