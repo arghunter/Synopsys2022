@@ -172,12 +172,12 @@ def firerules(X, FIRESX, FIRESY, A):
     print(str(int(len(tickElapsed))))
     # sideLength = 100
 
-    if(qs == 0):
-        xt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
-        yt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
-        X[yt][xt] = FIRE
-        FIRESX.put(xt)
-        FIRESY.put(yt)
+    # if(qs == 0):
+    #     xt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
+    #     yt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
+    #     X[yt][xt] = FIRE
+    #     FIRESX.put(xt)
+    #     FIRESY.put(yt)
     while (qs > 0):
         qs -= 1
         x1 = int(FIRESX.get())
