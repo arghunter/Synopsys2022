@@ -4,8 +4,8 @@ import math
 
 # set values here
 
-fireSpreadSpeed = 4
-lineDrawSpeed = 40
+fireSpreadSpeed = 1
+lineDrawSpeed = 10
 userDelay = 20
 bufferSpace = 20
 nx = 1024
