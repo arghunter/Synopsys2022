@@ -9,8 +9,18 @@ from queue import Queue
 import threading
 import random
 
+
 # import files and variables
+
 from userInfo import *
+from genome import *
+gnme = Genome(10)
+gnmeQ = gnme.bx.qsize()
+# for i in range(gnmeQ):
+     # print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
+     # print(str("(" + str(gnme.bx.get())) + "," + str(gnme.by.get()) + ")")
+
+########################################################################
 
 # scaling: each box is 20m (0.02km) by 20m (0.02km)
 # fire spreads at 1kmh
@@ -19,6 +29,7 @@ from userInfo import *
 # 1.2s per tick
 # each tick is 1 minute and 12 seconds of spread in real life.
 
+########################################################################
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
@@ -144,14 +155,15 @@ def popAltitude(A):
     tc = 0
     for i in range(0, 1024):
         tc += 1
-        tx = int(random.random()*(nx-160))+80
-        ty = int(random.random()*(ny-160))+80
+        tx = int(random.random() * (nx - 160)) + 80
+        ty = int(random.random() * (ny - 160)) + 80
         t = (threading.Thread(target=popAltSeg, args=(
             A, tx, ty)))
-        print(tc)
+        statusAltPop = float(((int(tc)) / 1024))
+        percentAltPop = math.ceil((statusAltPop * 100))
+        print("Altitude Generated: ", tc, "Out Of", "1024", "----------", int(percentAltPop), "%")
         t.start()
 
-    print("Percent Done:", ((altitude_vari / 400 + 0.00001)), "%")
     # for ix in range(1, nx - 1):
     #     # print(A[ix])
 
@@ -169,8 +181,12 @@ def firerules(X, FIRESX, FIRESY, A):
     qs = FIRESX.qsize()
     centery = int((ny / 2))
     centerx = int((nx / 2))
-    print(str(int(len(tickElapsed))))
+    print("tick #:", str(int(len(tickElapsed))))
     # sideLength = 100
+
+    if int(len(tickElapsed)) >= iUD:
+        for i in range(lineDrawSpeed):
+            X[gnme.by.get()][gnme.bx.get()] = LINE
 
     # if(qs == 0):
     #     xt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
@@ -178,6 +194,7 @@ def firerules(X, FIRESX, FIRESY, A):
     #     X[yt][xt] = FIRE
     #     FIRESX.put(xt)
     #     FIRESY.put(yt)
+
     while (qs > 0):
         qs -= 1
         x1 = int(FIRESX.get())
@@ -187,7 +204,7 @@ def firerules(X, FIRESX, FIRESY, A):
         for dx, dy in neighborhood:
 
             if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
-                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(1000.0):
+                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(1200.0):
                 # print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE
                 FIRESX.put(int(x1) + dx)
@@ -273,12 +290,21 @@ def animate(i):
     currentBurnt = FIRESX.qsize()
     currentBurntList.append(currentBurnt)
 
+    if int(len(tickElapsed)) >= iUD:
+        if int(currentBurnt) == 0:
+            print("fire over")
+            fireStatus = False
+            anim.event_source.stop()
+            print("dbg: anim stopped")
+            quit()
+
+
     # sum currentBurnt for total squares burnt
     totalBurnt = sum(currentBurntList)
     # append to list for future record
     totalBurntList.append(totalBurnt)
     # print current total burnt = current score
-    print(totalBurnt)
+    print("totalBurnt: ", totalBurnt)
 
 
 # Binds the grid to the identifier X in the animate function's namespace.
