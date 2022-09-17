@@ -185,8 +185,15 @@ def firerules(X, FIRESX, FIRESY, A):
     # sideLength = 100
 
     if int(len(tickElapsed)) >= iUD:
-        for i in range(lineDrawSpeed):
-            X[gnme.by.get()][gnme.bx.get()] = LINE
+        queueSizeLine = int(gnme.bx.qsize())
+        if queueSizeLine >= lineDrawSpeed:
+            for i in range(lineDrawSpeed):
+                X[gnme.by.get()][gnme.bx.get()] = LINE
+        elif queueSizeLine != 0 and queueSizeLine <= lineDrawSpeed:
+            for i in range(int(queueSizeLine)):
+                X[gnme.by.get()][gnme.bx.get()] = LINE
+        else:
+            print("Line Draw Finished")
 
     # if(qs == 0):
     #     xt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)

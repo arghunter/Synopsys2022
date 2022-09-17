@@ -43,4 +43,3 @@ upTau = math.ceil(Tau)
 
 # Tau = sidelength value because square = tick
 sideLength = ((upTau + iUD + iBS))
-

@@ -1,5 +1,7 @@
 from queue import Queue
 import numpy as np
+import random
+
 # import files and variables
 from userInfo import *
 
@@ -14,7 +16,8 @@ class Genome:
         print("ere")
         self.v = np.zeros((self.nV, 2))
         r = (sideLength/2.0)
-        sqrt2 = int(round(math.sqrt(2)))
+        sqrt2 = float(round(math.sqrt(2)))
+        magFactor = float(random.uniform(0.7,1.0))
         # r = 60
         # r = 30
 
@@ -30,7 +33,7 @@ class Genome:
 
                 # mag = abs(
                 #     (3*r/4)/np.cos((np.abs(angle % np.pi/2)*180/np.pi))+r/4)
-                mag = abs(sqrt2*r)
+                mag = abs(int(sqrt2*r*magFactor))
                 # mag = r
                 # mag = abs(r*np.sqrt(2)*np.tan((angle)*180/np.pi))
                 # print(mag)
