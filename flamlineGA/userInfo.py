@@ -4,7 +4,7 @@ import math
 
 # set values here
 
-fireSpreadSpeed = 10
+fireSpreadSpeed = 1
 lineDrawSpeed = 10
 userDelay = 20
 bufferSpace = 20
@@ -16,6 +16,7 @@ p, f = 0.85, 0.01
 spread_chance = 0.35
 centerx = nx/2
 centery = ny/2
+
 # set values here
 
 ########################################################
@@ -41,5 +42,5 @@ Tau = ((((4 * iUD) / iLDSST) + ((4 * iBS) / iLDSST) + iBS) / ((1 - (4 / iLDSST))
 upTau = math.ceil(Tau)
 
 # Tau = sidelength value because square = tick
-# sideLength = ((upTau + iUD + iBS))
-sideLength = 60
+sideLength = ((upTau + iUD + iBS))
+
