@@ -182,6 +182,8 @@ class Genome:
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
+
+
         # qs = self.bx.qsize()
         # for i in range(qs):
              # print("("+str(self.bx.get())+","+str(self.by.get())+")")
