@@ -30,7 +30,12 @@ class Genome:
 
                 # mag = abs(
                 #     (3*r/4)/np.cos((np.abs(angle % np.pi/2)*180/np.pi))+r/4)
-                mag = abs(sqrt2*r)
+                mag = 0
+                if(angle % np.pi/2 == 0):
+                    mag = r
+                else:
+                    mag = (r+(np.sqrt(r**2+(np.tan(angle)*r)**2) *
+                              ((np.random.random()-0.6)+0.6)))/2
                 # mag = r
                 # mag = abs(r*np.sqrt(2)*np.tan((angle)*180/np.pi))
                 # print(mag)
@@ -186,11 +191,9 @@ class Genome:
                         self.by.put(int(cy))
         # qs = self.bx.qsize()
         # for i in range(qs):
-             # print("("+str(self.bx.get())+","+str(self.by.get())+")")
-
-
+        #     print("("+str(self.bx.get())+","+str(self.by.get())+")")
 
 
 # gnme = Genome(12)
 # for i in range(12):
-#      print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
+#     print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
