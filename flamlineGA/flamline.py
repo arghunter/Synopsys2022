@@ -13,12 +13,12 @@ import random
 # import files and variables
 
 from userInfo import *
-from genome import *
-gnme = Genome(10)
-gnmeQ = gnme.bx.qsize()
+# from genome import *
+# gnme = Genome(vertexNum)
+# gnmeQ = gnme.bx.qsize()
 # for i in range(gnmeQ):
-# print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
-# print(str("(" + str(gnme.bx.get())) + "," + str(gnme.by.get()) + ")")
+     # print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
+     # print(str("(" + str(gnme.bx.get())) + "," + str(gnme.by.get()) + ")")
 
 ########################################################################
 
@@ -112,69 +112,68 @@ def popForest(X):
     return X1
 
 
-def popAltSeg(A, ix, iy):
-    A[iy][ix] = 1
-
-    # if(np.random.random() < 0.3):
-    #     A[iy][ix] = -1
-
-    # print("Altitude"+str(ix)+" "+str(iy))
-    # print("("+str(ix)+","+str(iy)+")")
-
-    A[iy][ix] = A[iy][ix]*240*np.random.random()+80*A[iy][ix]
-    # d = np.random.random()*200
-
-    for tx in range(ix-80, ix+80):
-        # print(tx-ix)
-        for ty in range(iy-80, iy + 80):
-
-            if((tx-ix)**2 + (ty-iy)**2 <= (80)**2 and A[ty][tx] != 1):
-
-                if(A[iy][ix] < 0):
-                    t = A[iy][ix] + \
-                        (abs(tx-ix) + abs(ty-tx))/2
-                    A[ty][tx] -= abs(t)
-                else:
-                    t = A[iy][ix] - \
-                        (abs(tx-ix) + abs(ty-tx))/2
-                    A[ty][tx] += abs(t)
-
-                    # if(t >= 0):
-                    #     A[ty][tx] += t
-
-                if A[ty][tx] == 1:
-                    A[ty][tx] = 2
-                    # print("("+str(ty)+","+str(tx)+")")
-                    # print(str(iy)+" "+str(ix) + " " + str(ty) +
-                    #       " "+str(tx)+" "+str(A[ty][tx]))
-    A[1023][1023] = A[1023][1023]-1
-
-
-def popAltitude(A):
-
-    tc = 0
-    for i in range(0, 1024):
-        tc += 1
-        tx = int(random.random() * (nx - 160)) + 80
-        ty = int(random.random() * (ny - 160)) + 80
-        t = (threading.Thread(target=popAltSeg, args=(
-            A, tx, ty)))
-        statusAltPop = float(((int(tc)) / 1024))
-        percentAltPop = math.ceil((statusAltPop * 100))
-        print("Altitude Generated: ", tc, "Out Of", "1024",
-              "----------", int(percentAltPop), "%")
-        t.start()
-
-    # for ix in range(1, nx - 1):
-    #     # print(A[ix])
-
-    while A[1023][1023] != -1024:
-        time.sleep(1)
-        print(
-            A[1023][1023])
-
-    # for ix in range(1, nx - 1):
-    #     print(A[ix])
+# def popAltSeg(A, ix, iy):
+#     A[iy][ix] = 1
+#
+#     # if(np.random.random() < 0.3):
+#     #     A[iy][ix] = -1
+#
+#     # print("Altitude"+str(ix)+" "+str(iy))
+#     # print("("+str(ix)+","+str(iy)+")")
+#
+#     A[iy][ix] = A[iy][ix]*240*np.random.random()+80*A[iy][ix]
+#     # d = np.random.random()*200
+#
+#     for tx in range(ix-80, ix+80):
+#         # print(tx-ix)
+#         for ty in range(iy-80, iy + 80):
+#
+#             if((tx-ix)**2 + (ty-iy)**2 <= (80)**2 and A[ty][tx] != 1):
+#
+#                 if(A[iy][ix] < 0):
+#                     t = A[iy][ix] + \
+#                         (abs(tx-ix) + abs(ty-tx))/2
+#                     A[ty][tx] -= abs(t)
+#                 else:
+#                     t = A[iy][ix] - \
+#                         (abs(tx-ix) + abs(ty-tx))/2
+#                     A[ty][tx] += abs(t)
+#
+#                     # if(t >= 0):
+#                     #     A[ty][tx] += t
+#
+#                 if A[ty][tx] == 1:
+#                     A[ty][tx] = 2
+#                     # print("("+str(ty)+","+str(tx)+")")
+#                     # print(str(iy)+" "+str(ix) + " " + str(ty) +
+#                     #       " "+str(tx)+" "+str(A[ty][tx]))
+#     A[1023][1023] = A[1023][1023]-1
+#
+#
+# def popAltitude(A):
+#
+#     tc = 0
+#     for i in range(0, 1024):
+#         tc += 1
+#         tx = int(random.random() * (nx - 160)) + 80
+#         ty = int(random.random() * (ny - 160)) + 80
+#         t = (threading.Thread(target=popAltSeg, args=(
+#             A, tx, ty)))
+#         statusAltPop = float(((int(tc)) / 1024))
+#         percentAltPop = math.ceil((statusAltPop * 100))
+#         print("Altitude Generated: ", tc, "Out Of", "1024", "----------", int(percentAltPop), "%")
+#         t.start()
+#
+#     # for ix in range(1, nx - 1):
+#     #     # print(A[ix])
+#
+#     while A[1023][1023] != -1024:
+#         time.sleep(1)
+#         print(
+#             A[1023][1023])
+#
+#     # for ix in range(1, nx - 1):
+#     #     print(A[ix])
 
 
 def firerules(X, FIRESX, FIRESY, A):
@@ -186,11 +185,15 @@ def firerules(X, FIRESX, FIRESY, A):
     # sideLength = 100
 
     if int(len(tickElapsed)) >= iUD:
-        if(gnme.bx.qsize() > 0):
+        queueSizeLine = int((globals()['gnme' + str((len(popComplete) - 1))]).bx.qsize())
+        if queueSizeLine >= lineDrawSpeed:
             for i in range(lineDrawSpeed):
-                print(gnme.bx.qsize())
-                if(gnme.bx.qsize() != 0):
-                    X[gnme.by.get()][gnme.bx.get()] = LINE
+                X[(globals()['gnme' + str((len(popComplete) - 1))]).by.get()][(globals()['gnme' + str((len(popComplete) - 1))]).bx.get()] = LINE
+        elif queueSizeLine != 0 and queueSizeLine <= lineDrawSpeed:
+            for i in range(int(queueSizeLine)):
+                X[(globals()['gnme' + str((len(popComplete) - 1))]).by.get()][(globals()['gnme' + str((len(popComplete) - 1))]).bx.get()] = LINE
+        else:
+            print("Line Draw Finished")
 
     # if(qs == 0):
     #     xt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
@@ -215,6 +218,8 @@ def firerules(X, FIRESX, FIRESY, A):
                 FIRESY.put(int(y1) + dy)
 
     return X
+
+from altitudeGen import *
 
 
 # Forest size (number of cells in x and y directions).
@@ -296,11 +301,13 @@ def animate(i):
 
     if int(len(tickElapsed)) >= iUD:
         if int(currentBurnt) == 0:
+            (globals()['score' + str((len(popComplete) - 1))]) = sum(currentBurntList)
             print("fire over")
-            fireStatus = False
+            fireStatus = 0
             anim.event_source.stop()
             print("dbg: anim stopped")
             quit()
+
 
     # sum currentBurnt for total squares burnt
     totalBurnt = sum(currentBurntList)

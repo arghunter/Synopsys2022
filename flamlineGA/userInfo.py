@@ -16,6 +16,12 @@ p, f = 0.85, 0.01
 spread_chance = 0.35
 centerx = nx/2
 centery = ny/2
+vertexNum = 10
+maxGenerations = 2
+intmaxGenerations = int(maxGenerations)
+
+maxPopSize = 2
+intmaxPopSize = int(maxPopSize)
 
 # set values here
 
