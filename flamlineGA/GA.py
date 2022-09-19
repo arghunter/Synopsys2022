@@ -97,8 +97,3 @@ for i in range(intmaxGenerations):
     #     print("POPULATION: ", len(populationBig), "OUT OF", intpopulationSize)
 
 
-
-# finish
-else:
-    print("complete")
-
