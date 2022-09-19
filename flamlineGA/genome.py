@@ -64,7 +64,7 @@ class Genome:
                 t = i+1
                 if(not(i < nV-1)):
                     t = 0
-                print(str(i)+" "+str(t))
+                # print(str(i)+" "+str(t))
                 if(cx == int(self.v[t][1])):
                     slope = 0
                 else:
@@ -76,12 +76,16 @@ class Genome:
                         d = - \
                             int(abs(cy-int(self.v[t][0])) /
                                 (cy-int(self.v[t][0])))
+                        # print(str(cx)+" "+str(cy)+" "+str(lx))
+
                         cx += d/slope
-                        if(cx-lx >= 1):
+                        if(abs(int(cx)-lx) >= 1):
+                            # print(str(cx)+" "+str(cy)+" "+str(lx)+"2")
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
-                            lx = cx
+                            lx = int(cx)
                         cy += d
+                        # print(d/slope)
                         # print(str(cx)+" "+str(cy)+" " +
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
 
@@ -102,11 +106,15 @@ class Genome:
                         d = - \
                             int(abs(cx-int(self.v[t][1])) /
                                 (cx-int(self.v[t][1])))
+                        # print(str(cx)+" "+str(cy)+" "+str(ly))
                         cy += slope
-                        if ly-cy >= 1:
+
+                        if abs(ly-int(cy)) >= 1:
+                            # print(str(cx)+" "+str(cy)+" "+str(ly)+"2")
+
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
-                            ly = cy
+                            ly = int(cy)
                         cx += d
 
                         # print(str(cx)+" "+str(cy)+" " +
@@ -143,11 +151,15 @@ class Genome:
                         d = - \
                             int(abs(cy-int(self.v[t][0])) /
                                 (cy-int(self.v[t][0])))
+                        # print(str(cx)+" "+str(cy)+" "+str(lx))
+
                         cx += d/slope
-                        if(cx-lx >= 1):
+
+                        if(abs(int(cx)-lx) >= 1):
+                            # print(str(cx)+" "+str(cy)+" "+str(lx)+"2")
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
-                            lx = cx
+                            lx = int(cx)
                         cy += d
                         # print(str(cx)+" "+str(cy)+" " +
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
@@ -168,11 +180,14 @@ class Genome:
                         d = - \
                             int(abs(cx-int(self.v[t][1])) /
                                 (cx-int(self.v[t][1])))
+                        # print(str(cx)+" "+str(cy)+" "+str(ly))
+
                         cy += slope
-                        if ly-cy >= 1:
+                        if abs(ly-int(cy)) >= 1:
+                            # print(str(cx)+" "+str(cy)+" "+str(ly)+"2")
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
-                            ly = cy
+                            ly = int(cy)
                         cx += d
                         # print(str(cx)+" "+str(cy)+" " +
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
@@ -188,9 +203,9 @@ class Genome:
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
 
-        # qs = self.bx.qsize()
-        # for i in range(qs):
-        #     print("("+str(self.bx.get())+","+str(self.by.get())+")")
+#         qs = self.bx.qsize()
+#         for i in range(qs):
+#             print("("+str(self.bx.get())+","+str(self.by.get())+")")
 
 
 # gnme = Genome(12)
