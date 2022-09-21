@@ -14,8 +14,8 @@ import random
 
 from userInfo import *
 from genome import *
-gnme = Genome(10)
-gnmeQ = gnme.bx.qsize()
+# gnme = Genome(10)
+# gnmeQ = gnme.bx.qsize()
 # for i in range(gnmeQ):
 # print(str("("+str(gnme.v[i][1]))+","+str(gnme.v[i][0])+")")
 # print(str("(" + str(gnme.bx.get())) + "," + str(gnme.by.get()) + ")")
@@ -186,13 +186,13 @@ def firerules(X, FIRESX, FIRESY, A):
     # sideLength = 100
 
     if int(len(tickElapsed)) >= iUD:
-        queueSizeLine = int(gnme.bx.qsize())
+        queueSizeLine = int((globals()['gnme' + str(x)]).bx.qsize())
         if queueSizeLine >= lineDrawSpeed:
             for i in range(lineDrawSpeed):
-                X[gnme.by.get()][gnme.bx.get()] = LINE
+                X[(globals()['gnme' + str(x)]).by.get()][(globals()['gnme' + str(x)]).bx.get()] = LINE
         elif queueSizeLine != 0 and queueSizeLine <= lineDrawSpeed:
             for i in range(int(queueSizeLine)):
-                X[gnme.by.get()][gnme.bx.get()] = LINE
+                X[(globals()['gnme' + str(x)]).by.get()][(globals()['gnme' + str(x)]).bx.get()] = LINE
         else:
             print("Line Draw Finished")
 
@@ -301,6 +301,7 @@ def animate(i):
     if int(len(tickElapsed)) >= iUD:
         if int(currentBurnt) == 0:
             print("fire over")
+            (globals()['score' + str((len(popComplete) - 1))]) = sum(currentBurntList)
             fireStatus = False
             anim.event_source.stop()
             print("dbg: anim stopped")
