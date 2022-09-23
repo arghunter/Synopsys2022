@@ -57,6 +57,7 @@ totalBurntList = []
 threadDone = 0
 
 
+jfksdjfsdh=0
 def loopFire(X, FIRESX, FIRESY, A):
     while True:
         firerules(X, FIRESX, FIRESY, A)
