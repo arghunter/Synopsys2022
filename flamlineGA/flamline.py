@@ -151,12 +151,12 @@ def popAltSeg(A, ix, iy):
 
 
 def popAltitude(A):
-
+    np.random.seed(0)  # Dont touch this
     tc = 0
     for i in range(0, 1024):
         tc += 1
-        tx = int(random.random() * (nx - 160)) + 80
-        ty = int(random.random() * (ny - 160)) + 80
+        tx = int(np.random.random() * (nx - 160)) + 80
+        ty = int(np.random.random() * (ny - 160)) + 80
         t = (threading.Thread(target=popAltSeg, args=(
             A, tx, ty)))
         statusAltPop = float(((int(tc)) / 1024))
@@ -257,7 +257,7 @@ X = popForest(X)
 # line bounds
 # define A values
 popAltitude(A)
-
+# np.random.seed()
 # list ranges after A values are defined
 xAltList = list(range(0, int(nx)))
 yAltList = list(range(0, int(ny)))
