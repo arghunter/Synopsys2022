@@ -66,12 +66,12 @@ popComplete = []
 fireStatus = 1
 
 # Generation Run
-for i in range(intmaxGenerations):
+for i in range(int(intmaxGenerations - 1)):
     genComplete.append(1)
 
     print("GENERATION: ", len(genComplete), "OUT OF", intmaxGenerations)
 
-    for i in range(intmaxPopSize):
+    for i in range(int(intmaxPopSize - 1)):
         popComplete.append(1)
 
         print("INDIVIDUAL: ", len(popComplete), "OUT OF", intmaxPopSize)
