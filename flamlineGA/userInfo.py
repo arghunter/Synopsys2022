@@ -35,6 +35,8 @@ intmaxPopSize = int(maxPopSize)
 # Rothermel Model Inputs
 # use generic values first
 
+# assume TU5: Very High Load, Dry Climate Timber-Shrub
+
 # packing ratio (dimentionless)
 beta = 0.02009
 
