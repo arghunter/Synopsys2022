@@ -148,31 +148,31 @@ def popAltSeg(A, ix, iy):
                     # print("("+str(ty)+","+str(tx)+")")
                     # print(str(iy)+" "+str(ix) + " " + str(ty) +
                     #       " "+str(tx)+" "+str(A[ty][tx]))
-    A[1023][1023] = A[1023][1023]-1
+    A[rlandSideLength][rlandSideLength] = A[rlandSideLength][rlandSideLength]-1
 
 
 def popAltitude(A):
     np.random.seed(0)  # Dont touch this
     tc = 0
-    for i in range(0, 1024):
+    for i in range(0, landSideLength):
         tc += 1
         tx = int(np.random.random() * (nx - 160)) + 80
         ty = int(np.random.random() * (ny - 160)) + 80
         t = (threading.Thread(target=popAltSeg, args=(
             A, tx, ty)))
-        statusAltPop = float(((int(tc)) / 1024))
+        statusAltPop = float(((int(tc)) / landSideLength))
         percentAltPop = math.ceil((statusAltPop * 100))
-        print("Altitude Generated: ", tc, "Out Of", "1024",
+        print("Altitude Generated: ", tc, "Out Of", landSideLength,
               "----------", int(percentAltPop), "%")
         t.start()
 
     # for ix in range(1, nx - 1):
     #     # print(A[ix])
 
-    while A[1023][1023] != -1024:
+    while A[rlandSideLength][rlandSideLength] != -landSideLength:
         time.sleep(1)
         print(
-            A[1023][1023])
+            A[rlandSideLength][rlandSideLength])
 
     # for ix in range(1, nx - 1):
     #     print(A[ix])
@@ -212,8 +212,36 @@ def firerules(X, FIRESX, FIRESY, A):
 
         for dx, dy in neighborhood:
 
-            if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
-                    int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(1200.0):
+            if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+((A[y1+dy][x1+dx]-A[y1][x1])/(1200.0)):
+                # slope from current cell to spread to cell
+
+                # altitude of spread to cell
+                z2 = (A[y1+dy][x1+dx])
+                # altitude of current cell
+                z1 = (A[y1][x1])
+                # delta = z diff
+                dz = float((A[y1+dy][x1+dx])-(A[y1][x1]))
+                rdz = float(round(dz, 10))
+
+                x2 = (x1+dx) #x2
+                x1 = (x1) #x1
+                dx = (x2-x1)
+                sdx = ((dx)**2)
+                y2 = (y1+dy) #y2
+                y1 = (y1) #y1
+                dy = (y2-y1)
+                sdy = ((dy)**2)
+
+                # 2d distance = dxy
+                dxy = math.sqrt((sdx+sdy))
+                rdxy = float(round(dxy, 10))
+
+                # 3d slope between (x1,y1,z1), (x2,y2,z2)
+                tanPhi = float(rdz/rdxy)
+                Phi = math.degrees(math.atan(tanPhi))
+                print("slope", tanPhi)
+                print("degree Phi", Phi)
+
                 # print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE
                 FIRESX.put(int(x1) + dx)
