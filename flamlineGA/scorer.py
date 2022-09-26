@@ -10,7 +10,7 @@ class Scorer:
 
     def __init__(self, gnme, X, A):
         self.gnme = gnme
-        self.X = np.zeros((sideLength*2, sideLength*2))
+        self.X = np.zeros((sideLength*2+1, sideLength*2+1))
         self.A = A
         self.offsety = (int(ny/2)-sideLength)
         self.offsetx = (int(nx/2)-sideLength)
@@ -27,6 +27,7 @@ class Scorer:
     def score(self):
         # print(len(FIRES))
         bs = self.gnme.bx.qsize()
+        ts=bs
         count = 0
         offset = seed
         while (self.FIRESX.qsize() > 0):
@@ -40,7 +41,8 @@ class Scorer:
                         x = self.gnme.bx.get()
                         y = self.gnme.by.get()
                         bs -= 1
-                        self.X[y-self.offsety, x-self.offsetx] = Scorer.LINE
+                        if(y-self.offsety>=0 and y-self.offsety<sideLength*2 and x-self.offsetx>=0 and x-self.offsetx<sideLength*2):
+                            self.X[y-self.offsety, x-self.offsetx] = Scorer.LINE
                         self.gnme.bx.put(x)
                         self.gnme.by.put(y)
 
@@ -59,4 +61,4 @@ class Scorer:
                         count += 1
                         self.FIRESX.put(int(x1) + dx)
                         self.FIRESY.put(int(y1) + dy)
-        return count
+        return count+int(ts/1.2)

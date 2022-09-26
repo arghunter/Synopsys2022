@@ -19,9 +19,9 @@ from userInfo import *
 # genome init
 from genome import *
 
-popCount = 100
-genCount=100
-elite=8
+popCount = 800
+genCount=800
+elite=80
 # sol = Genome(4)
 
 
@@ -34,10 +34,12 @@ def getSol(X, A):
     # mini = 0
     # min2 = 21347000000
     # minii = 0
+    # print("Here")
     for i in range(popCount):
+        # print("HHere")
         population[i] = Genome(12)
         print(i)
-        t= (threading.Thread(target=test_genome, args=(population[i],X,A,i,scores,count)))
+        t= (threading.Thread(target=test_genome, args=(population[i],X,A,i,scores,count,population,population)))
         
         t.start()
     while count[0]!=-popCount:
@@ -49,13 +51,21 @@ def getSol(X, A):
     population=population[ind]
     for i in range(genCount):
         print(i/genCount)
-        randCount=int(np.random.random()*25)
+        randCount=int(np.random.random()*240)
         parents=np.empty(elite+randCount,Genome)
         for i in range(elite):
             parents[i]=population[i]
         for i in range(elite,elite+randCount):
             parents[i]=population[np.random.randint(popCount)]
         replaced=0
+        for i in range(elite):
+            p1=np.random.randint(0,elite)
+            p2=np.random.randint(0,elite)
+            split=np.random.randint(12)
+            population[replaced]=Genome(12,parents[p1],parents[p2],split)
+            replaced+=1
+            if(replaced<popCount):
+                population[replaced]=Genome(12,parents[p2],parents[p1],split)
         while replaced<popCount:
             p1=np.random.randint(0,elite+randCount)
             p2=np.random.randint(0,elite+randCount)
@@ -63,10 +73,10 @@ def getSol(X, A):
             population[replaced]=Genome(12,parents[p1],parents[p2],split)
             replaced+=1
             if(replaced<popCount):
-                population[replaced]=Genome(12,parents[p2],parents[p2],split)
+                population[replaced]=Genome(12,parents[p2],parents[p1],split)
         count[0]=0
         for i in range(popCount):
-            t= (threading.Thread(target=test_genome, args=(population[i],X,A,i,scores,count)))
+            t= (threading.Thread(target=test_genome, args=(population[i],X,A,i,scores,count,population,parents)))
             t.start()
         while count[0]!=-popCount:
             time.sleep(1)
@@ -75,6 +85,7 @@ def getSol(X, A):
         ind= np.argsort(scores)
         scores=scores[ind]
         population=population[ind]
+        print(scores)
         
         
             
@@ -86,10 +97,19 @@ def getSol(X, A):
     # for i in range(popCount):
     #     print(population[i].nV)
 
-def test_genome(gnme,X,A,i,scores,count):
-    print("Testing: "+str(i))
-    scorer = Scorer(gnme, X, A)
-    scores[i] = scorer.score()
+def test_genome(gnme,X,A,i,scores,count,population,parents):
+    # print("Testing: "+str(i))
+    passed=False
+    while not passed:
+        try:
+            scorer = Scorer(gnme, X, A)
+            scores[i] = scorer.score()
+            passed=True   
+        except:
+            print("Failed to score")
+            population[i]=Genome(12,parents[np.random.randint(elite)],parents[np.random.randint(elite)],np,random.randint(12))
+            genome=population[i]
+    
     count[0]-=1;
     
     

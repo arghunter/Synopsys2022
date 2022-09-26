@@ -5,7 +5,7 @@ import random
 
 # set values here
 
-fireSpreadSpeed = 4
+fireSpreadSpeed = 1
 lineDrawSpeed = 40
 userDelay = 20
 bufferSpace = 20

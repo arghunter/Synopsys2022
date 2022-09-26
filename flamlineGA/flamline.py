@@ -181,6 +181,7 @@ def popAltitude(A):
 
 def firerules(X, FIRESX, FIRESY, A):
     # print(len(FIRES))
+    np.random.seed(seed+len(tickElapsed)-iUD)
     qs = FIRESX.qsize()
     centery = int((ny / 2))
     centerx = int((nx / 2))
@@ -312,7 +313,7 @@ def animate(i):
             anim.event_source.stop()
             print("dbg: anim stopped")
             # quit()
-
+  
     # sum currentBurnt for total squares burnt
     totalBurnt = sum(currentBurntList)
     # append to list for future record

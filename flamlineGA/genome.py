@@ -11,6 +11,7 @@ class Genome:
     # v = np.zeros((nV, 2))  # y,x
 
     def __init__(self, nV, gnme1=None, gnme2=None,split=-1):
+        # print("yCalled")
         self.nV = int(nV)
         if(split == -1):
             self.forwards = np.random.random() <= 0.5
@@ -73,6 +74,10 @@ class Genome:
                     ti-=nV
                 self.v[i][0] = gnme2.v[ti][0]
                 self.v[i][1] = gnme2.v[ti][1]
+                if(np.random.random()<0.028):
+                    self.v[i][0] = self.v[i][0]+(np.random.random()-0.5)*sideLength
+                    self.v[i][1] = self.v[i][1]+(np.random.random()-0.5)*sideLength
+                    
                 
 
         self.bx = Queue(maxsize=0)
