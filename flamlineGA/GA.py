@@ -7,6 +7,7 @@ from matplotlib import animation
 from matplotlib import colors
 from queue import Queue
 import threading
+from scorer import Scorer
 
 # import files
 from userInfo import *
@@ -18,82 +19,81 @@ from userInfo import *
 # genome init
 from genome import *
 
-
-# create Genome objects and sizes
-gnme_var_holder = {}
-gnme_Q_var_holder = {}
-
-for x in range(0, intmaxPopSize):
-    gnme_var_holder['gnme' + str(x)] = Genome(vertexNum)
-
-globals().update(gnme_var_holder)
-
-for x in range(0, intmaxPopSize):
-    gnme_Q_var_holder['gnmeQ' + str(x)] = (globals()['gnme' + str(x)]).bx.qsize()
-
-globals().update(gnme_Q_var_holder)
-
-print("gnme 0", gnme0)
-print("size gnme0", gnmeQ0)
-
-print("gnme 0", gnme1)
-print("size gnme0", gnmeQ1)
-
-# scores
-score_var_holder = {}
-
-for x in range(0, intmaxPopSize):
-    score_var_holder['score' + str(x)] = 0
-
-globals().update(score_var_holder)
-
-############################################################
-
-# other init
+popCount = 100
+genCount=100
+elite=8
+# sol = Genome(4)
 
 
+def getSol(X, A):
+    print("Solvin")
+    population = np.empty(popCount, Genome)
+    scores = np.zeros(popCount)
+    count=np.zeros(1)
+    # min = 21347000000
+    # mini = 0
+    # min2 = 21347000000
+    # minii = 0
+    for i in range(popCount):
+        population[i] = Genome(12)
+        print(i)
+        t= (threading.Thread(target=test_genome, args=(population[i],X,A,i,scores,count)))
+        
+        t.start()
+    while count[0]!=-popCount:
+        time.sleep(1)
+        print(count[0])
 
-############################################################
+    ind= np.argsort(scores)
+    scores=scores[ind]
+    population=population[ind]
+    for i in range(genCount):
+        print(i/genCount)
+        randCount=int(np.random.random()*25)
+        parents=np.empty(elite+randCount,Genome)
+        for i in range(elite):
+            parents[i]=population[i]
+        for i in range(elite,elite+randCount):
+            parents[i]=population[np.random.randint(popCount)]
+        replaced=0
+        while replaced<popCount:
+            p1=np.random.randint(0,elite+randCount)
+            p2=np.random.randint(0,elite+randCount)
+            split=np.random.randint(12)
+            population[replaced]=Genome(12,parents[p1],parents[p2],split)
+            replaced+=1
+            if(replaced<popCount):
+                population[replaced]=Genome(12,parents[p2],parents[p2],split)
+        count[0]=0
+        for i in range(popCount):
+            t= (threading.Thread(target=test_genome, args=(population[i],X,A,i,scores,count)))
+            t.start()
+        while count[0]!=-popCount:
+            time.sleep(1)
+            print(count[0])
+            print("Computing")
+        ind= np.argsort(scores)
+        scores=scores[ind]
+        population=population[ind]
+        
+        
+            
+        
+    print(scores)
+    # sol = population[mini]
+    # return population[mini]
+    return population[0]
+    # for i in range(popCount):
+    #     print(population[i].nV)
 
-# lists for gen status
-
-genComplete = []
-popComplete = []
-
-
-
-# fire status
-fireStatus = 1
-
-# Generation Run
-for i in range(intmaxGenerations):
-    genComplete.append(1)
-
-    print("GENERATION: ", len(genComplete), "OUT OF", intmaxGenerations)
-
-    for i in range(intmaxPopSize):
-        popComplete.append(1)
-
-        print("INDIVIDUAL: ", len(popComplete), "OUT OF", intmaxPopSize)
-        exec(open('flamline.py').read())
-        print("score", len(popComplete), ":", (globals()['score' + str((len(popComplete) - 1))]))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # population in generation
-    # if len(populationBig) <= intpopulationSize:
-    #     populationBig.append(1)
-    #     print("POPULATION: ", len(populationBig), "OUT OF", intpopulationSize)
-
-
+def test_genome(gnme,X,A,i,scores,count):
+    print("Testing: "+str(i))
+    scorer = Scorer(gnme, X, A)
+    scores[i] = scorer.score()
+    count[0]-=1;
+    
+    
+# population in generation
+# if len(populationBig) <= intpopulationSize:
+#     populationBig.append(1)
+#     print("POPULATION: ", len(populationBig), "OUT OF", intpopulationSize)

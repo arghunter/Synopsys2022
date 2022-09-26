@@ -8,12 +8,14 @@ from matplotlib import colors
 from queue import Queue
 import threading
 import random
+# from flamlineGA.GA import getSol
 
 
 # import files and variables
 
 from userInfo import *
 from genome import *
+from GA import *
 # gnme = Genome(10)
 # gnmeQ = gnme.bx.qsize()
 # for i in range(gnmeQ):
@@ -57,7 +59,6 @@ totalBurntList = []
 threadDone = 0
 
 
-jfksdjfsdh=0
 def loopFire(X, FIRESX, FIRESY, A):
     while True:
         firerules(X, FIRESX, FIRESY, A)
@@ -186,23 +187,26 @@ def firerules(X, FIRESX, FIRESY, A):
     print("tick #:", str(int(len(tickElapsed))))
     # sideLength = 100
 
+    if(int(len(tickElapsed)) == iUD):
+        global gnme
+        gnme = getSol(X, A)
+        np.random.seed(seed)
     if int(len(tickElapsed)) >= iUD:
-        queueSizeLine = int((globals()['gnme' + str(x)]).bx.qsize())
-        if queueSizeLine >= lineDrawSpeed:
+        bs = gnme.bx.qsize()
+        if bs > 0:
             for i in range(lineDrawSpeed):
-                X[(globals()['gnme' + str(x)]).by.get()][(globals()['gnme' + str(x)]).bx.get()] = LINE
-        elif queueSizeLine != 0 and queueSizeLine <= lineDrawSpeed:
-            for i in range(int(queueSizeLine)):
-                X[(globals()['gnme' + str(x)]).by.get()][(globals()['gnme' + str(x)]).bx.get()] = LINE
-        else:
-            print("Line Draw Finished")
+                if(bs > 0):
+                    x = gnme.bx.get()
+                    y = gnme.by.get()
+                    bs -= 1
+                    X[y, x] = Scorer.LINE
 
-    # if(qs == 0):
-    #     xt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
-    #     yt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
-    #     X[yt][xt] = FIRE
-    #     FIRESX.put(xt)
-    #     FIRESY.put(yt)
+        # if(qs == 0):
+        #     xt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
+        #     yt = int(int(np.random.random()*len(tickElapsed))-len(tickElapsed)/2)
+        #     X[yt][xt] = FIRE
+        #     FIRESX.put(xt)
+        #     FIRESY.put(yt)
 
     while (qs > 0):
         qs -= 1
@@ -262,8 +266,9 @@ popAltitude(A)
 # list ranges after A values are defined
 xAltList = list(range(0, int(nx)))
 yAltList = list(range(0, int(ny)))
-
-t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY, A))
+# gnme = Genome(4)
+# t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY, A))
+# t1.start()
 # Adjusts the size of the figure.
 
 fig = plt.figure(figsize=(25 / 3, 6.25))
@@ -302,11 +307,11 @@ def animate(i):
     if int(len(tickElapsed)) >= iUD:
         if int(currentBurnt) == 0:
             print("fire over")
-            (globals()['score' + str((len(popComplete) - 1))]) = sum(currentBurntList)
+
             fireStatus = False
             anim.event_source.stop()
             print("dbg: anim stopped")
-            quit()
+            # quit()
 
     # sum currentBurnt for total squares burnt
     totalBurnt = sum(currentBurntList)

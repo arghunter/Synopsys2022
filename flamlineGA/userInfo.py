@@ -1,4 +1,5 @@
 import math
+import random
 
 ########################################################
 
@@ -19,7 +20,7 @@ centery = ny/2
 vertexNum = 10
 maxGenerations = 2
 intmaxGenerations = int(maxGenerations)
-
+seed = random.randint(0, 1000000)
 maxPopSize = 2
 intmaxPopSize = int(maxPopSize)
 
