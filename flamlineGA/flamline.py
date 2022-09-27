@@ -13,6 +13,7 @@ import random
 # import files and variables
 
 from userInfo import *
+from rothermelModel import *
 from genome import *
 # gnme = Genome(10)
 # gnmeQ = gnme.bx.qsize()
