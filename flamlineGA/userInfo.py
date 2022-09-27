@@ -32,27 +32,7 @@ intmaxGenerations = int(maxGenerations)
 maxPopSize = 2
 intmaxPopSize = int(maxPopSize)
 
-# Rothermel Model Inputs
-# use generic values first
-
-# assume TU5: Very High Load, Dry Climate Timber-Shrub
-
-# packing ratio (dimentionless)
-beta = 0.02009
-
-
-
-# Moisture Damping Coefficient from [0,1]
-# etaM =
-# Mineral Damping Coefficient from [0,1]
-# etaS =
-# Potential Reaction Velocity (min^-1)
-# gammaPrime =
-
-
-# set values here
-
-########################################################
+##################################################################
 
 iFSS = float(fireSpreadSpeed)
 
@@ -76,5 +56,4 @@ upTau = math.ceil(Tau)
 
 # Tau = sidelength value because square = tick
 sideLength = ((upTau + iUD + iBS))
-
 
