@@ -53,8 +53,27 @@ U = 0
 # The energy per unit mass required for ignition is the heat of preignition, Qig:
 Qig = (250 + (1116 * Mf))
 
-# propogating flux ratio (dimentionless)
+# propogating flux ratio (dimentionless) xi
 xi =((math.exp(((0.792 + (0.681*((sigma)**0.5)))*(beta + 0.1))))/(192+(0.2595*sigma)))
+
+# oven dry bulk density (lb/ft^3)
+rhob = (beta * rhop)
+
+# effective heating number
+epsilon = ((math.exp((-138/sigma))))
+
+# Maximum reaction velocity (min^-1)
+gammaprimeMax = (((sigma**1.5))/(495+(0.0594*(sigma**1.5))))
+
+# A coefficient for optimum reaction velocity
+A = (133*(1/(sigma**0.7913)))
+
+# optimum packing ratio
+betaOP = (3.348*(1/(sigma**0.8189)))
+
+# optimum reaction velocity (min^-1)
+gammaprime = ((gammaprimeMax*((beta/betaOP)**A))*(math.exp((A*(1-(beta/betaOP))))))
+
 
 
 ########################################################
