@@ -4,6 +4,7 @@ import random
 
 # import files and variables
 from userInfo import *
+from rothermelModel import *
 
 
 class Genome:
