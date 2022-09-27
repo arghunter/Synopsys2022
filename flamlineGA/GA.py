@@ -10,6 +10,7 @@ import threading
 
 # import files
 from userInfo import *
+from rothermelModel import *
 
 
 # altitude init
