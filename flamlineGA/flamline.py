@@ -239,9 +239,10 @@ def firerules(X, FIRESX, FIRESY, A):
 
                 # 3d slope between (x1,y1,z1), (x2,y2,z2)
                 tanPhi = float(rdz/rdxy)
-                Phi = math.degrees(math.atan(tanPhi))
                 print("slope", tanPhi)
-                print("degree Phi", Phi)
+
+                rothermelRate(tanPhi)
+
 
                 # print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE

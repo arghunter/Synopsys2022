@@ -20,6 +20,12 @@ beta = 0.02009 # assume - add in future
 # ratio of fuel moisture to ovendry weight Mf (lb moisture/ lb wood)
 Mf = 0.05 # assume - add in future
 
+# dead fuel moisture of extinction (fraction)
+Mx = 0.10
+
+# ratio of moistures (Mf/Mx) (max 1.0)
+rm = (Mf/Mx)
+
 # Surface-area-to-volume ratio of tree (ft^2/ft^3) assume Pinus Ponderosa
 sigma = 12.4968 # assume - add real in future
 
@@ -74,6 +80,25 @@ betaOP = (3.348*(1/(sigma**0.8189)))
 # optimum reaction velocity (min^-1)
 gammaprime = ((gammaprimeMax*((beta/betaOP)**A))*(math.exp((A*(1-(beta/betaOP))))))
 
+# net fuel load (lb/ft^2)
+wn = (w0*(1-ST))
 
+# moisture dampening coefficient
+etaM = (((1)-(2.59*rm))+(5.11*(rm**2))-(3.51*(rm**3)))
+
+# mineral dampening coefficient (max 1.0)
+etaS = (0.174*(1/(SE**0.19)))
+
+# reaction intensity (btu/ft^2 -min)
+IR = (gammaprime*h*etaM*etaS)
 
 ########################################################
+
+def rothermelRate(tanPhi):
+    phiS = (5.275*(1/(beta**0.3))*(tanPhi**2))
+
+    # rate of spread in feet/min
+    Rftmin = ((IR*xi*(1+phiS))/(rhob*epsilon*Qig))
+    Rmhr = (Rftmin*18.288)
+    print("rate of spread - meters per hour", Rmhr)
+
