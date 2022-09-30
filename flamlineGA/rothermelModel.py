@@ -6,7 +6,7 @@ import math
 ###################################################
 # Assumed Values
 
-# assume TU5: Very High Load, Dry Climate Timber-Shrub
+# assume Timber, grass with understory values as outlined by Rothermel
 
 
 # surface area to volume ratio (dimentionless)
@@ -99,10 +99,12 @@ IR = (gammaprime*h*etaM*etaS)
 ########################################################
 
 def rothermelRate(Phi):
-    phiS = (5.275*(1/(beta**0.3))*((math.tan(Phi))**2))
+    # tan Phi - make sure
+    phiS = (5.275*(1/(beta**0.3))*(((math.tan(Phi))**2)))
 
     # rate of spread in feet/min
     Rftmin = ((IR*xi*(1+phiS))/(rhob*epsilon*Qig))
     Rmhr = (Rftmin*18.288)
-    print("rate of spread - meters per hour", Rmhr)
+    Rkmhr = (Rmhr/1000)
+    print("rate of spread - kilometers per hour", Rkmhr)
 
