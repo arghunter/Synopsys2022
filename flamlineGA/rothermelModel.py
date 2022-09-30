@@ -70,7 +70,7 @@ xi =((math.exp(((0.792 + (0.681*((sigma)**0.5)))*(beta + 0.1))))/(192+(0.2595*si
 # effective heating number
 epsilon = ((math.exp((-138/sigma))))
 
-# Maximum reaction velocity (min^-1)
+# Maximum reaction velocity (min^-1) 
 gammaprimeMax = (((sigma**1.5))/(495+(0.0594*(sigma**1.5))))
 
 # A coefficient for optimum reaction velocity
