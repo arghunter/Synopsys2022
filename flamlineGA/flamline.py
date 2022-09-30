@@ -238,10 +238,14 @@ def firerules(X, FIRESX, FIRESY, A):
                 rdxy = float(round(dxy, 10))
 
                 # 3d slope between (x1,y1,z1), (x2,y2,z2)
-                Phi = float(rdz/rdxy)
-                print("slope", Phi)
+                Phi = (float(rdz/rdxy)*100)
+                print("slope %", Phi)
 
-                rothermelRate(Phi)
+
+                # wind velocity at midflame height (ft/min)
+                U = 0
+
+                rothermelRate(Phi, U)
 
 
                 # print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
