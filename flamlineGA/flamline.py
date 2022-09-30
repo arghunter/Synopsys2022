@@ -238,10 +238,10 @@ def firerules(X, FIRESX, FIRESY, A):
                 rdxy = float(round(dxy, 10))
 
                 # 3d slope between (x1,y1,z1), (x2,y2,z2)
-                tanPhi = float(rdz/rdxy)
-                print("slope", tanPhi)
+                Phi = float(rdz/rdxy)
+                print("slope", Phi)
 
-                rothermelRate(tanPhi)
+                rothermelRate(Phi)
 
 
                 # print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
