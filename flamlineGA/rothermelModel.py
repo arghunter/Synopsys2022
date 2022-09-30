@@ -50,8 +50,6 @@ rhob = (w0*delta)
 # oven dry particle density (lb/ft^3) always constant
 rhop = 32
 
-# wind velocity at midflame height (ft/min)
-U = 0
 
 #########################################
 
@@ -96,15 +94,36 @@ etaS = (0.174*(1/(SE**0.19)))
 # reaction intensity (btu/ft^2 -min)
 IR = (gammaprime*h*etaM*etaS)
 
+# wind constants based on sigma
+windC = (7.47*(math.exp(((-0.133)*(sigma**0.55)))))
+windB = (0.02526 * (sigma**0.54))
+windE = (0.715 * (math.exp((-3.59*(1/(10**4)))*sigma)))
+
 ########################################################
 
-def rothermelRate(Phi):
+def rothermelRate(Phi, U):
     # tan Phi - make sure
     phiS = (5.275*(1/(beta**0.3))*(((math.tan(Phi))**2)))
 
-    # rate of spread in feet/min
-    Rftmin = ((IR*xi*(1+phiS))/(rhob*epsilon*Qig))
-    Rmhr = (Rftmin*18.288)
-    Rkmhr = (Rmhr/1000)
-    print("rate of spread - kilometers per hour", Rkmhr)
+    # phiW wind
+    phiW = (windC*(U**windB)*(1/((beta/betaOP)**windE)))
 
+    # rate of spread in feet/min
+
+    # albini extension
+    if U >= 0:
+        if Phi >= 0:
+            Rftmin = ((IR * xi * (1 + phiS + phiW)) / (rhob * epsilon * Qig))
+        elif Phi < 0:
+            Rftmin = ((IR * xi * (1 + (max(0, (phiW - phiS))))) / (rhob * epsilon * Qig))
+    elif U < 0:
+        if Phi >= 0:
+            Rftmin = ((IR * xi * (1 + (max(0, (phiS - phiW))))) / (rhob * epsilon * Qig))
+        elif Phi < 0:
+            Rftmin = (((IR * xi)) / (rhob * epsilon * Qig))
+
+    # unit conversion
+    Rmh = (Rftmin*18.288)
+    Rkmh = (Rmh/1000)
+
+    print("Rothermel rate, kmh", Rkmh)
