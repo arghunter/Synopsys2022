@@ -14,7 +14,7 @@ class Fire:
             
             self.direction=1.5 +(np.random.random()-0.5)#TODO change this  # Direction in radians
             # self.coneAngle=0.08 #TODO change this # Angle of cone in direction  image the direction is the center of an arc and fire spreads in through the cone at that rate
-            self.speed=np.random.randint(600)  #TODO change this # Speed in m/min 
+            self.speed=np.random.randint(60)  #TODO change this # Speed in m/min 
             self.nextT=[]
             BURN[ry][rx][0]=self.speed
             BURN[ry][rx][1]=self.direction
@@ -29,20 +29,18 @@ class Fire:
         tx=p*np.cos(self.direction)
         ty=p*np.sin(self.direction)  
         
-        while(dx**2+dy**2>p**2):
+        if(dx**2+dy**2>p**2):
       
-            dx-=tx
-            dy-=ty
+            
             x+=tx
             y+=ty
             if(x>=0 and y>=0 and x<50000 and y<50000):
+                Fire(x,y,BURN,tick+p/np.sqrt(dx**2+dy**2),p)
+        else:
+            x+=dx
+            y+=dy
+            if(x>=0 and y>=0 and x<50000 and y<50000):
                 Fire(x,y,BURN,tick+1,p)
-            else:
-                break
-        x+=dx
-        y+=dy
-        if(x>=0 and y>=0 and x<50000 and y<50000):
-            Fire(x,y,BURN,tick+1,p)
    
    
         
