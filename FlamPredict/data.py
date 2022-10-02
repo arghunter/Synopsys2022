@@ -19,7 +19,7 @@ if geoTIFFPath=="":
     B=np.zeros((10000, 10000,3)) # each cell i 5mx5m with level 0 = speed level 1 = direction in radians with +x being 0 level 2= time of ignition
     print("B")
     T=0 # Time in seconds since ignition
-    p=8
+    p=4
     
             
    

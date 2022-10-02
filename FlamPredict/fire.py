@@ -12,9 +12,9 @@ class Fire:
 
             # rothermel stuff here
             
-            self.direction=1.5 +(np.random.random()-0.5)#TODO change this  # Direction in radians
+            self.direction=(np.random.random())*2*3.14#TODO change this  # Direction in radians
             # self.coneAngle=0.08 #TODO change this # Angle of cone in direction  image the direction is the center of an arc and fire spreads in through the cone at that rate
-            self.speed=np.random.randint(60)  #TODO change this # Speed in m/min 
+            self.speed=np.random.randint(60)+10  #TODO change this # Speed in m/min 
             self.nextT=[]
             BURN[ry][rx][0]=self.speed
             BURN[ry][rx][1]=self.direction
@@ -23,7 +23,8 @@ class Fire:
             t.start()
     
     def preCompute(self,x,y,p,tick,BURN):
-        print(str(tick) +" "+str(x)+" "+str(y)+" \n")
+        # print(str(tick) +" "+str(x)+" "+str(y)+" \n")
+        print(" ("+str(x)+","+str(y)+") \n")
         dx=self.speed*np.cos(self.direction)
         dy=self.speed*np.sin(self.direction)
         tx=p*np.cos(self.direction)
