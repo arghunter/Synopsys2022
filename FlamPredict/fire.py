@@ -35,12 +35,12 @@ class Fire:
             
             x+=tx
             y+=ty
-            if(x>=0 and y>=0 and x<50000 and y<50000):
+            if(x>=0 and y>=0 and x<48000 and y<48000):
                 Fire(x,y,BURN,tick+p/np.sqrt(dx**2+dy**2),p)
         else:
             x+=dx
             y+=dy
-            if(x>=0 and y>=0 and x<50000 and y<50000):
+            if(x>=0 and y>=0 and x<48000 and y<48000):
                 Fire(x,y,BURN,tick+1,p)
    
    
