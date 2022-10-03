@@ -3,7 +3,7 @@ import time
 import numpy as np
 
 class Fire:
-    def __init__(self,x,y,BURN,tick,p):
+    def __init__(self,x,y,BURN,tick,p,lastX,lastY,A):
         self.x=x
         self.y=y
         rx=int(self.x/p)
@@ -19,10 +19,10 @@ class Fire:
             BURN[ry][rx][0]=self.speed
             BURN[ry][rx][1]=self.direction
             BURN[ry][rx][2]=tick
-            t=threading.Thread(target=self.preCompute, args=(x,y,p,tick,BURN))
+            t=threading.Thread(target=self.preCompute, args=(x,y,p,tick,BURN,A))
             t.start()
     
-    def preCompute(self,x,y,p,tick,BURN):
+    def preCompute(self,x,y,p,tick,BURN,A):
         # print(str(tick) +" "+str(x)+" "+str(y)+" \n")
         print(" ("+str(x)+","+str(y)+") \n")
         dx=self.speed*np.cos(self.direction)
@@ -36,12 +36,12 @@ class Fire:
             x+=tx
             y+=ty
             if(x>=0 and y>=0 and x<48000 and y<48000):
-                Fire(x,y,BURN,tick+p/np.sqrt(dx**2+dy**2),p)
+                Fire(x,y,BURN,tick+p/np.sqrt(dx**2+dy**2),p,self.x,self.y,A)
         else:
             x+=dx
             y+=dy
             if(x>=0 and y>=0 and x<48000 and y<48000):
-                Fire(x,y,BURN,tick+1,p)
+                Fire(x,y,BURN,tick+1,p,self.x,self.y,A)
    
    
         

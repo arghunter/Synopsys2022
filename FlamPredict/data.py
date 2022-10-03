@@ -21,9 +21,9 @@ if geoTIFFPath=="":
     W[0].fill(5)
     print("W")
     C=np.zeros((square, square))
-    for y in range(0,square):
-        for x in range(0,square):
-            C[y,x]=A[y,x]+10*np.random.random()
+    # for y in range(0,square):
+    #     for x in range(0,square):
+    #         C[y,x]=A[y,x]+10*np.random.random()
     print("C")
     B=np.zeros((square, square,3)) # each cell i 5mx5m with level 0 = speed level 1 = direction in radians with +x being 0 level 2= time of ignition
     print("B")
