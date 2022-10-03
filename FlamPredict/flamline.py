@@ -2,15 +2,15 @@
 
 from data import *
 from fire import *
-global compute
-compute=0
 
-fire=Fire(25000-1,25000,B,1,p,25000,25000,A)
-fire=Fire(25000,25000-1,B,1,p,25000,25000,A)
-fire=Fire(25000+1,25000,B,1,p,25000,25000,A)
-fire=Fire(25000,25000+1,B,1,p,25000,25000,A)
-fire=Fire(25000-1,25000-1,B,1,p,25000,25000,A)
-fire=Fire(25000+1,25000-1,B,1,p,25000,25000,A)
-fire=Fire(25000+1,25000+1,B,1,p,25000,25000,A)
-fire=Fire(25000-1,25000+1,B,1,p,25000,25000,A)
+print("AAAAAAAAAAAAAAAAAAAAAAA")
+print(a)
+fire=Fire(25000-1,25000,b,1,p,25000,25000,a)
+fire=Fire(25000,25000-1,b,1,p,25000,25000,a)
+fire=Fire(25000+1,25000,b,1,p,25000,25000,a)
+fire=Fire(25000,25000+1,b,1,p,25000,25000,a)
+fire=Fire(25000-1,25000-1,b,1,p,25000,25000,a)
+fire=Fire(25000+1,25000-1,b,1,p,25000,25000,a)
+fire=Fire(25000+1,25000+1,b,1,p,25000,25000,a)
+fire=Fire(25000-1,25000+1,b,1,p,25000,25000,a)
 # print(B)

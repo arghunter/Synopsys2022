@@ -127,5 +127,5 @@ def rothermelRate(Phi, U):
     Rmm = (Rmh / 60)
     # Rkmh = (Rmh/1000)
 
-    print("Rothermel rate, meters per min", Rmm)
+    # print("Rothermel rate, meters per min", Rmm)
     return Rmm

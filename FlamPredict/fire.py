@@ -16,7 +16,7 @@ class Fire:
             # rothermel stuff here
 
             # slope from current cell to spread to cell
-
+            # print(A)
             # altitude of spread to cell
             z2 = (A[ry][rx])
             # altitude of current cell
@@ -64,7 +64,10 @@ class Fire:
 
     def preCompute(self, x, y, p, tick, BURN, A):
         # print(str(tick) +" "+str(x)+" "+str(y)+" \n")
-        print(" (" + str(x) + "," + str(y) + ") \n")
+        # print(" (" + str(x) + "," + str(y) + ") \n")
+        f =open("output.txt", "a")
+        f.write(" (" + str(x) + "," + str(y) + ") \n")
+        f.close()
         dx = self.speed * np.cos(self.direction)
         dy = self.speed * np.sin(self.direction)
         tx = p * np.cos(self.direction)
