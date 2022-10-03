@@ -124,6 +124,8 @@ def rothermelRate(Phi, U):
 
     # unit conversion
     Rmh = (Rftmin*18.288)
-    Rkmh = (Rmh/1000)
+    Rmm = (Rmh / 60)
+    # Rkmh = (Rmh/1000)
 
-    print("Rothermel rate, kmh", Rkmh)
+    print("Rothermel rate, meters per min", Rmm)
+    return Rmm
