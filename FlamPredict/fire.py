@@ -24,7 +24,7 @@ class Fire:
             # delta = z diff
             dz = float(z2-z1)
             rdz = float(round(dz, 10))
-
+            # if rx ry changes ingnite the nearest 3 squares
             x2 = (rx)  # x2
             x1 = (rlastX)  # x1
             dx = (x2 - x1)
