@@ -24,31 +24,36 @@ class Fire:
             # delta = z diff
             dz = float(z2-z1)
             rdz = float(round(dz, 10))
-            # if rx ry changes ingnite the nearest 3 squares
-            x2 = (rx)  # x2
-            x1 = (rlastX)  # x1
-            dx = (x2 - x1)
+            # if rx ry changes ingnite the nearest 3 squaesi
+            
+               
+           
+            x1 = (lastX)  # x1
+            dx = (x - lastX)
             sdx = ((dx) ** 2)
-            y2 = (ry)  # y2
-            y1 = (rlastY)  # y1
-            dy = (y2 - y1)
+        
+            dy = (y - lastY)
             sdy = ((dy) ** 2)
+            
 
             # 2d distance = dxy
             dxy = np.sqrt((sdx + sdy))
             rdxy = float(round(dxy, 10))
 
             # 3d slope between (x1,y1,z1), (x2,y2,z2)
-            Phi = (float(rdz / rdxy) * 100)
-            print("slope %", Phi)
+            Phi = (float(rdz / (rdxy+0.000001)) * 100)
+            #print("slope %", Phi)
 
             # wind velocity at midflame height (ft/min)
             U = 1 # wind 1
-
+            if(rx!=rlastX or ry != rlastY):
+                if(not(rx<=0 or ry<=0 or rx>5999 or ry>5999)):
+                    Fire(x-(rx-rlastX)*p,y,BURN,tick+p/dxy,p,(x+lastX)/2,(lastY+y)/2,A)
+                    Fire(x,y-(ry-rlastY)*p,BURN,tick+p/dxy,p,(x+lastX)/2,(y+lastY)/2,A)
             # m/s to ft/min 196.85
 
 
-            directionRad = np.arctan(dy/dx)
+            directionRad = np.arctan(dy/(dx+0.00001))
             if dx < 0:
                 directionRad += np.pi
 
