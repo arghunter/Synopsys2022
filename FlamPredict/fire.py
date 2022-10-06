@@ -1,9 +1,13 @@
 import threading
 import time
 import numpy as np
-
+from data import *
 from rothermelModel import *
 
+
+# The neightbors of a cells
+neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
+                (0, 1), (1, -1), (1, 0), (1, 1))
 class Fire:
     def __init__(self, x, y, BURN, tick, p, lastX, lastY, A):
         self.x = x
@@ -88,23 +92,22 @@ class Fire:
         f.write("("+str(x)+","+str(y)+") \n")
 
         f.close()
-        dx = self.speed * np.cos(self.direction)
-        dy = -self.speed * np.sin(self.direction)
-        tx = p * np.cos(self.direction)
-        ty = -p * np.sin(self.direction)
-
-        if (dx ** 2 + dy ** 2 > p ** 2):
-
-            x += tx
-            y += ty
-            if (x >= 0 and y >= 0 and x < 48000 and y < 48000):
-                print("x = " + str(x) + " y= " + str(y) +" sx= "+ str(self.x)+" sy="+str(self.y)+" d = "+str(self.direction))
-                Fire(x, y, BURN, tick + p / np.sqrt(dx ** 2 + dy ** 2), p, self.x, self.y, A)
-        else:
-            x += dx
-            y += dy
-            if (x >= 0 and y >= 0 and x < 48000 and y < 48000):
-                Fire(x, y, BURN, tick + 1, p, self.x, self.y, A)
+        rx = int(self.x / p)
+        ry = int(self.y / p)
+        #IMPORTANT: Solely prob model
+        for dx,dy in neighborhood:
+            if rx+dx>=0 and ry+dy>=0 and ry+dy<6000 and rx+dx<6000:
+                prob=0.35 #TODO: get prob here
+                if(np.random.random()<=prob):
+                    Fire(x+dx*p,y+dy*p,BURN,tick+1,p,self.x,self.y,A)
+        #IMPORTANT: prob + reothermal
+        # for dx,dy in neighborhood:
+        #     if rx+dx>=0 and ry+dy>=0 and ry+dy<6000 and rx+dx<6000:
+                
+        #         prob=0.35 #TODO: get prob here
+        #         if(np.random.random()<=prob):
+        #             Fire(x+dx*p,y+dy*p,BURN,tick+p*p/self.speed,p,self.x,self.y,A)
+        
 
 
 

@@ -28,7 +28,7 @@ if geoTIFFPath == "":
     #         C[y,x]=A[y,x]+10*np.random.random()
     print("C")
     b = np.zeros((square, square,
-                  3))  # each cell i 5mx5m with level 0 = speed level 1 = direction in radians with +x being 0 level 2= time of ignition
+                  4))  # each cell i 5mx5m with level 0 = speed level 1 = direction in radians with +x being 0 level 2= time of ignition level 3 = prob of ignition
     print("B")
     t = 0  # Time in seconds since ignition
     p = 8
