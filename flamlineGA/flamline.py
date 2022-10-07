@@ -14,6 +14,7 @@ import random
 
 from userInfo import *
 from rothermelModel import *
+from alexandridisModel import *
 from genome import *
 # gnme = Genome(10)
 # gnmeQ = gnme.bx.qsize()
@@ -141,6 +142,9 @@ def popForest(X):
                       thetaf = (math.atan((dy/dx))+180)
                     elif dy > 0 and dx < 0:
                       thetaf = (math.atan((dy/dx)) + 180)
+                      
+                    alexandridisModelProbability(thetaS, thetaf)
+                    print(spread_chance)
                   
                     if X[iy + dy, ix + dx] == FIRE and np.random.random() <= spread_chance:
                         X1[iy, ix] = FIRE
@@ -300,7 +304,8 @@ def firerules(X, FIRESX, FIRESY, A):
             elif dy > 0 and dx < 0:
               thetaf = (math.atan((dy/dx)) + 180)
               
-              
+            alexandridisModelProbability(thetaS, thetaf)
+            print(spread_chance)
                     
             if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+((A[y1+dy][x1+dx]-A[y1][x1])/(1200.0)):
                
