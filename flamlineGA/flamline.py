@@ -248,12 +248,6 @@ def firerules(X, FIRESX, FIRESY, A):
                 thetaS = math.atan((dH/rdxy))
 
 
-                # wind velocity at midflame height (m/min)
-                U = 0
-
-                # wind direction (deg)
-                thetaw = 45
-
                 # fire spread direction
                 if dy > 0 and dx > 0:
                     thetaf = math.atan((dy/dx))
@@ -265,10 +259,10 @@ def firerules(X, FIRESX, FIRESY, A):
                     thetaf = (math.atan((dy/dx)) + 180)
 
                 # wind direction relative to fire spread direction - thetawf
-                thetawf = thetaw - thetaf
+                # thetawf = thetaw - thetaf
 
 
-                rothermelRate(Phi, U)
+                # rothermelRate(Phi, U)
 
                 # print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
                 X[int(y1) + dy, int(x1) + dx] = FIRE
