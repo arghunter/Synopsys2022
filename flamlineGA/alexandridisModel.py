@@ -28,12 +28,12 @@ U = 0
 thetaw = 45
 
 
-def alexandridisModelProbability(thetaS, thetaf):
+def alexandridisModelProbability(dthetaS, thetaf):
     # wind direction relative to fire spread direction - thetawf
     thetawf = thetaw - thetaf
 
     # slope influenced probability
-    ps = math.exp(a * thetaS)
+    ps = math.exp(a * dthetaS)
 
     # wind influenced probability parameter
     fsubt = math.exp(U * c2 * ((math.cos(thetawf)) - 1))
