@@ -21,8 +21,14 @@ c2 = 0.131
 # altitude factor
 a = 0.078
 
+# wind velocity at midflame height (m/min)
+U = 0
 
-def alexandridisModelProbability(U, thetaS, thetawf):
+# wind direction (deg)
+thetaw = 45
+
+
+def alexandridisModelProbability(thetaS):
     # slope influenced probability
     ps = math.exp(a*thetaS)
 
