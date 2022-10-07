@@ -99,6 +99,49 @@ def popForest(X):
                 # the 2nd coordinate in neighborhood (-1, 0), dx is -1 and dy is 0.
 
                 for dx, dy in neighborhood:
+                  # slope from current cell to spread to cell
+
+                    # altitude of spread to cell
+                    z2 = (A[y1+dy][x1+dx])
+                    # altitude of current cell
+                    z1 = (A[y1][x1])
+                    # delta = z diff
+                    dz = float((A[y1+dy][x1+dx])-(A[y1][x1]))
+                    rdz = float(round(dz, 10))
+
+                    x2 = (x1+dx) #x2
+                    x1 = (x1) #x1
+                    dx = (x2-x1)
+                    sdx = ((dx)**2)
+                    y2 = (y1+dy) #y2
+                    y1 = (y1) #y1
+                    dy = (y2-y1)
+                    sdy = ((dy)**2)
+
+                    # 2d distance = dxy
+                    dxy = math.sqrt((sdx+sdy))
+                    rdxy = float(round(dxy, 10))
+
+                    dH = float((A[y1][x1]) - (A[y1+dy][x1+dx]))
+
+                    # 3d slope between (x1,y1,z1), (x2,y2,z2)
+                    Phi = (float(rdz/rdxy)*100)
+                    print("slope %", Phi)
+
+
+                    thetaS = math.atan((dH/rdxy))
+
+
+                    # fire spread direction
+                    if dy > 0 and dx > 0:
+                      thetaf = math.atan((dy/dx))
+                    elif dy < 0 and dx > 0:
+                      thetaf = (math.atan((dy / dx))+360)
+                    elif dy < 0 and dx < 0:
+                      thetaf = (math.atan((dy/dx))+180)
+                    elif dy > 0 and dx < 0:
+                      thetaf = (math.atan((dy/dx)) + 180)
+                  
                     if X[iy + dy, ix + dx] == FIRE and np.random.random() <= spread_chance:
                         X1[iy, ix] = FIRE
                         break
@@ -212,54 +255,56 @@ def firerules(X, FIRESX, FIRESY, A):
         X[y1][x1] = EMPTY
 
         for dx, dy in neighborhood:
+          
+
+            # slope from current cell to spread to cell
+
+            # altitude of spread to cell
+            z2 = (A[y1+dy][x1+dx])
+            # altitude of current cell
+            z1 = (A[y1][x1])
+            # delta = z diff
+            dz = float((A[y1+dy][x1+dx])-(A[y1][x1]))
+            rdz = float(round(dz, 10))
+
+            x2 = (x1+dx) #x2
+            x1 = (x1) #x1
+            dx = (x2-x1)
+            sdx = ((dx)**2)
+            y2 = (y1+dy) #y2
+            y1 = (y1) #y1
+            dy = (y2-y1)
+            sdy = ((dy)**2)
+
+            # 2d distance = dxy
+            dxy = math.sqrt((sdx+sdy))
+            rdxy = float(round(dxy, 10))
+
+            dH = float((A[y1][x1]) - (A[y1+dy][x1+dx]))
+
+            # 3d slope between (x1,y1,z1), (x2,y2,z2)
+            Phi = (float(rdz/rdxy)*100)
+            print("slope %", Phi)
 
 
+            thetaS = math.atan((dH/rdxy))
+
+
+            # fire spread direction
+            if dy > 0 and dx > 0:
+              thetaf = math.atan((dy/dx))
+            elif dy < 0 and dx > 0:
+              thetaf = (math.atan((dy / dx))+360)
+            elif dy < 0 and dx < 0:
+              thetaf = (math.atan((dy/dx))+180)
+            elif dy > 0 and dx < 0:
+              thetaf = (math.atan((dy/dx)) + 180)
+              
+              
+                    
             if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+((A[y1+dy][x1+dx]-A[y1][x1])/(1200.0)):
-                # slope from current cell to spread to cell
-
-                # altitude of spread to cell
-                z2 = (A[y1+dy][x1+dx])
-                # altitude of current cell
-                z1 = (A[y1][x1])
-                # delta = z diff
-                dz = float((A[y1+dy][x1+dx])-(A[y1][x1]))
-                rdz = float(round(dz, 10))
-
-                x2 = (x1+dx) #x2
-                x1 = (x1) #x1
-                dx = (x2-x1)
-                sdx = ((dx)**2)
-                y2 = (y1+dy) #y2
-                y1 = (y1) #y1
-                dy = (y2-y1)
-                sdy = ((dy)**2)
-
-                # 2d distance = dxy
-                dxy = math.sqrt((sdx+sdy))
-                rdxy = float(round(dxy, 10))
-
-                dH = float((A[y1][x1]) - (A[y1+dy][x1+dx]))
-
-                # 3d slope between (x1,y1,z1), (x2,y2,z2)
-                Phi = (float(rdz/rdxy)*100)
-                print("slope %", Phi)
-
-
-                thetaS = math.atan((dH/rdxy))
-
-
-                # fire spread direction
-                if dy > 0 and dx > 0:
-                    thetaf = math.atan((dy/dx))
-                elif dy < 0 and dx > 0:
-                    thetaf = (math.atan((dy / dx))+360)
-                elif dy < 0 and dx < 0:
-                    thetaf = (math.atan((dy/dx))+180)
-                elif dy > 0 and dx < 0:
-                    thetaf = (math.atan((dy/dx)) + 180)
-
-
-
+               
+                
                 # rothermelRate(Phi, U)
 
                 # print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
