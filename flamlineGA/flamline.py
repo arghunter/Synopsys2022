@@ -258,8 +258,6 @@ def firerules(X, FIRESX, FIRESY, A):
                 elif dy > 0 and dx < 0:
                     thetaf = (math.atan((dy/dx)) + 180)
 
-                # wind direction relative to fire spread direction - thetawf
-                # thetawf = thetaw - thetaf
 
 
                 # rothermelRate(Phi, U)
