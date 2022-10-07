@@ -9,13 +9,13 @@ from queue import Queue
 import threading
 import random
 
-
 # import files and variables
 
 from userInfo import *
 from rothermelModel import *
 from alexandridisModel import *
 from genome import *
+
 # gnme = Genome(10)
 # gnmeQ = gnme.bx.qsize()
 # for i in range(gnmeQ):
@@ -51,7 +51,6 @@ bounds = [0, 1, 2, 3, 4, 5, 6]
 # is mapped to the color with the same index.
 norm = colors.BoundaryNorm(bounds, cmap.N)
 
-
 # lists location
 tickElapsed = []
 currentBurntList = []
@@ -59,7 +58,6 @@ totalBurntList = []
 threadDone = 0
 
 
-jfksdjfsdh=0
 def loopFire(X, FIRESX, FIRESY, A):
     while True:
         firerules(X, FIRESX, FIRESY, A)
@@ -99,56 +97,11 @@ def popForest(X):
                 # indices that make up the coordinates in neighborhood. E.g., for
                 # the 2nd coordinate in neighborhood (-1, 0), dx is -1 and dy is 0.
 
-                for dx, dy in neighborhood:
-                  # slope from current cell to spread to cell
+                # for dx, dy in neighborhood:
+                #      if X[iy + dy, ix + dx] == FIRE and np.random.random() <= spread_chance:
+                #          X1[iy, ix] = FIRE
+                #          break
 
-                    # altitude of spread to cell
-                    z2 = (A[y1+dy][x1+dx])
-                    # altitude of current cell
-                    z1 = (A[y1][x1])
-                    # delta = z diff
-                    dz = float((A[y1+dy][x1+dx])-(A[y1][x1]))
-                    rdz = float(round(dz, 10))
-
-                    x2 = (x1+dx) #x2
-                    x1 = (x1) #x1
-                    dx = (x2-x1)
-                    sdx = ((dx)**2)
-                    y2 = (y1+dy) #y2
-                    y1 = (y1) #y1
-                    dy = (y2-y1)
-                    sdy = ((dy)**2)
-
-                    # 2d distance = dxy
-                    dxy = math.sqrt((sdx+sdy))
-                    rdxy = float(round(dxy, 10))
-
-                    dH = float((A[y1][x1]) - (A[y1+dy][x1+dx]))
-
-                    # 3d slope between (x1,y1,z1), (x2,y2,z2)
-                    Phi = (float(rdz/rdxy)*100)
-                    print("slope %", Phi)
-
-
-                    thetaS = math.atan((dH/rdxy))
-
-
-                    # fire spread direction
-                    if dy > 0 and dx > 0:
-                      thetaf = math.atan((dy/dx))
-                    elif dy < 0 and dx > 0:
-                      thetaf = (math.atan((dy / dx))+360)
-                    elif dy < 0 and dx < 0:
-                      thetaf = (math.atan((dy/dx))+180)
-                    elif dy > 0 and dx < 0:
-                      thetaf = (math.atan((dy/dx)) + 180)
-                      
-                    alexandridisModelProbability(thetaS, thetaf)
-                    print(spread_chance)
-                  
-                    if X[iy + dy, ix + dx] == FIRE and np.random.random() <= spread_chance:
-                        X1[iy, ix] = FIRE
-                        break
                 # THIS CORRESPONDS TO RULE 3 OF THE MODEL.
                 # If no neighbors are burning, roll the dice (np.random.random());
                 # if the output float is <= f (the probability of a lightning
@@ -170,22 +123,22 @@ def popAltSeg(A, ix, iy):
     # print("Altitude"+str(ix)+" "+str(iy))
     # print("("+str(ix)+","+str(iy)+")")
 
-    A[iy][ix] = A[iy][ix]*240*np.random.random()+80*A[iy][ix]
+    A[iy][ix] = A[iy][ix] * 240 * np.random.random() + 80 * A[iy][ix]
     # d = np.random.random()*200
 
-    for tx in range(ix-80, ix+80):
+    for tx in range(ix - 80, ix + 80):
         # print(tx-ix)
-        for ty in range(iy-80, iy + 80):
+        for ty in range(iy - 80, iy + 80):
 
-            if((tx-ix)**2 + (ty-iy)**2 <= (80)**2 and A[ty][tx] != 1):
+            if ((tx - ix) ** 2 + (ty - iy) ** 2 <= (80) ** 2 and A[ty][tx] != 1):
 
-                if(A[iy][ix] < 0):
+                if (A[iy][ix] < 0):
                     t = A[iy][ix] + \
-                        (abs(tx-ix) + abs(ty-tx))/2
+                        (abs(tx - ix) + abs(ty - tx)) / 2
                     A[ty][tx] -= abs(t)
                 else:
                     t = A[iy][ix] - \
-                        (abs(tx-ix) + abs(ty-tx))/2
+                        (abs(tx - ix) + abs(ty - tx)) / 2
                     A[ty][tx] += abs(t)
 
                     # if(t >= 0):
@@ -196,11 +149,11 @@ def popAltSeg(A, ix, iy):
                     # print("("+str(ty)+","+str(tx)+")")
                     # print(str(iy)+" "+str(ix) + " " + str(ty) +
                     #       " "+str(tx)+" "+str(A[ty][tx]))
-    A[rlandSideLength][rlandSideLength] = A[rlandSideLength][rlandSideLength]-1
+    A[rlandSideLength][rlandSideLength] = A[rlandSideLength][rlandSideLength] - 1
 
 
 def popAltitude(A):
-    np.random.seed(0)  # Dont touch this
+    np.random.seed(5)  # Dont touch this
     tc = 0
     for i in range(0, landSideLength):
         tc += 1
@@ -259,57 +212,59 @@ def firerules(X, FIRESX, FIRESY, A):
         X[y1][x1] = EMPTY
 
         for dx, dy in neighborhood:
-          
 
             # slope from current cell to spread to cell
 
             # altitude of spread to cell
-            z2 = (A[y1+dy][x1+dx])
+            z2 = (A[y1 + dy][x1 + dx])
             # altitude of current cell
             z1 = (A[y1][x1])
             # delta = z diff
-            dz = float((A[y1+dy][x1+dx])-(A[y1][x1]))
+            dz = float((A[y1 + dy][x1 + dx]) - (A[y1][x1]))
             rdz = float(round(dz, 10))
 
-            x2 = (x1+dx) #x2
-            x1 = (x1) #x1
-            dx = (x2-x1)
-            sdx = ((dx)**2)
-            y2 = (y1+dy) #y2
-            y1 = (y1) #y1
-            dy = (y2-y1)
-            sdy = ((dy)**2)
+            x2 = (x1 + dx)  # x2
+            x1 = (x1)  # x1
+            dx = (x2 - x1)
+            sdx = ((dx) ** 2)
+            y2 = (y1 + dy)  # y2
+            y1 = (y1)  # y1
+            dy = (y2 - y1)
+            sdy = ((dy) ** 2)
 
             # 2d distance = dxy
-            dxy = math.sqrt((sdx+sdy))
+            dxy = math.sqrt((sdx + sdy))
             rdxy = float(round(dxy, 10))
 
-            dH = float((A[y1][x1]) - (A[y1+dy][x1+dx]))
+            dH = float((A[y1][x1]) - (A[y1 + dy][x1 + dx]))
 
             # 3d slope between (x1,y1,z1), (x2,y2,z2)
-            Phi = (float(rdz/rdxy)*100)
+            Phi = (float(rdz / rdxy) * 100)
             print("slope %", Phi)
 
-
-            thetaS = math.atan((dH/rdxy))
-
+            thetaS = math.atan((dH / rdxy))
 
             # fire spread direction
             if dy > 0 and dx > 0:
-              thetaf = math.atan((dy/dx))
+                thetaf = math.atan((dy / dx))
             elif dy < 0 and dx > 0:
-              thetaf = (math.atan((dy / dx))+360)
+                thetaf = (math.atan((dy / dx)) + 360)
             elif dy < 0 and dx < 0:
-              thetaf = (math.atan((dy/dx))+180)
+                thetaf = (math.atan((dy / dx)) + 180)
             elif dy > 0 and dx < 0:
-              thetaf = (math.atan((dy/dx)) + 180)
-              
-            alexandridisModelProbability(thetaS, thetaf)
+                thetaf = (math.atan((dy / dx)) + 180)
+
+            pburn = alexandridisModelProbability(thetaS, thetaf)
+            spread_chance = pburn
             print(spread_chance)
-                    
-            if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance+((A[y1+dy][x1+dx]-A[y1][x1])/(1200.0)):
-               
-                
+
+            # if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
+            #     int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance + (
+            #         (A[y1 + dy][x1 + dx] - A[y1][x1]) / (1200.0)):
+
+            # if 0 <= int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
+            #     int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance:
+            if X[int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance:
                 # rothermelRate(Phi, U)
 
                 # print(spread_chance+(A[y1+dy][x1+dx]-A[y1][x1])/(2000))
@@ -318,9 +273,6 @@ def firerules(X, FIRESX, FIRESY, A):
                 FIRESY.put(int(y1) + dy)
 
     return X
-
-
-
 
 
 # Forest size (number of cells in x and y directions).
@@ -337,7 +289,6 @@ FIRESX.put(int(nx / 2))
 X = np.zeros((ny, nx))
 A = np.zeros((ny, nx))  # the altitude of the ground
 
-
 # X[1:ny-1, 1:nx-1] grabs the subset of X from indices 1-99 EXCLUDING 99. Since 0 is
 # the index, this excludes 2 rows and 2 columns (the border).
 # np.random.randint(0, 2, size=(ny-2, nx-2)) randomly assigns all non-border cells
@@ -349,7 +300,7 @@ X[1: (ny - 1), 1: (nx - 1)] = np.random.randint(0, 2, size=(ny - 2, nx - 2))
 # by forest_fraction. Note that random.random normally returns floats between
 # 0 and 1, but this was initialized with integers in the previous line of code.
 X[1: (ny - 1), 1: (nx -
-  1)] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
+                   1)] = np.random.random(size=(ny - 2, nx - 2)) < forest_fraction / 300 + 0.00001
 X[int(ny / 2) + 1][int(nx / 2) + 1] = TREE
 X[int(ny / 2) - 1][int(nx / 2) - 1] = TREE
 X[int(ny / 2) - 1][int(nx / 2) + 1] = TREE
@@ -358,7 +309,8 @@ X[int(ny / 2)][int(nx / 2)] = FIRE
 X = popForest(X)
 # line bounds
 # define A values
-# popAltitude(A)
+popAltitude(A)
+
 
 # np.random.seed()
 # list ranges after A values are defined
@@ -370,10 +322,8 @@ t1 = threading.Thread(target=loopFire, args=(X, FIRESX, FIRESY, A))
 
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
-
 # Creates 1x1 grid subplot.
 ax = fig.add_subplot(111)
-
 
 # Turns off the x and y axis.
 # ax.set_axis_off()
@@ -432,7 +382,6 @@ interval = iTR
 # called at each frame; interval is the delay between frames (in ms).
 anim = animation.FuncAnimation(fig, animate, interval=interval)
 
-
 # figure 2 for contour
 # plt.figure(2)
 # draw contour
@@ -445,7 +394,6 @@ plt.figure(1)
 
 plt.contour(xAltList, yAltList, A)
 plt.colorbar()
-
 
 # Display the animated figure
 plt.show()
