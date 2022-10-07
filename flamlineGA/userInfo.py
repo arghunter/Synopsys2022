@@ -19,7 +19,7 @@ lineDrawSpeed = int(10*scaleVal)
 userDelay = int(20*scaleVal)
 bufferSpace = int(20*scaleVal)
 
-forest_fraction = 0.95
+forest_fraction = 0.85
 altitude_vari = 0.5
 p, f = 0.85, 0.01
 # spread_chance = 0.4
@@ -59,4 +59,3 @@ upTau = math.ceil(Tau)
 
 # Tau = sidelength value because square = tick
 sideLength = ((upTau + iUD + iBS))
-
