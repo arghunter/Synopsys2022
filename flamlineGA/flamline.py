@@ -236,13 +236,13 @@ def firerules(X, FIRESX, FIRESY, A):
             dxy = math.sqrt((sdx + sdy))
             rdxy = float(round(dxy, 10))
 
-            dH = float((A[y1][x1]) - (A[y1 + dy][x1 + dx]))
+            dH = float((A[y1 + dy][x1 + dx]) - (A[y1][x1]))
 
-            # 3d slope between (x1,y1,z1), (x2,y2,z2)
-            Phi = (float(rdz / rdxy) * 100)
-            print("slope %", Phi)
-
+            # slope angle degrees
             thetaS = math.atan((dH / rdxy))
+            dthetaS = math.degrees(thetaS)
+
+            print("slope angle - deg", dthetaS)
 
             # fire spread direction
             if dy > 0 and dx > 0:
@@ -254,7 +254,7 @@ def firerules(X, FIRESX, FIRESY, A):
             elif dy > 0 and dx < 0:
                 thetaf = (math.atan((dy / dx)) + 180)
 
-            pburn = alexandridisModelProbability(thetaS, thetaf)
+            pburn = alexandridisModelProbability(dthetaS, thetaf)
             spread_chance = pburn
             print(spread_chance)
 
