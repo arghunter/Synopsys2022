@@ -155,25 +155,28 @@ def popAltSeg(A, ix, iy):
 def popAltitude(A):
     np.random.seed(5)  # Dont touch this
     tc = 0
-    for i in range(0, landSideLength):
-        tc += 1
-        tx = int(np.random.random() * (nx - 160)) + 80
-        ty = int(np.random.random() * (ny - 160)) + 80
-        t = (threading.Thread(target=popAltSeg, args=(
-            A, tx, ty)))
-        statusAltPop = float(((int(tc)) / landSideLength))
-        percentAltPop = math.ceil((statusAltPop * 100))
-        print("Altitude Generated: ", tc, "Out Of", landSideLength,
-              "----------", int(percentAltPop), "%")
-        t.start()
+    for i in range(nx):
+        for j in range(ny):
+            A[i][j]=i+j;
+    # for i in range(0, landSideLength):
+    #     tc += 1
+    #     tx = int(np.random.random() * (nx - 160)) + 80
+    #     ty = int(np.random.random() * (ny - 160)) + 80
+    #     t = (threading.Thread(target=popAltSeg, args=(
+    #         A, tx, ty)))
+    #     statusAltPop = float(((int(tc)) / landSideLength))
+    #     percentAltPop = math.ceil((statusAltPop * 100))
+    #     print("Altitude Generated: ", tc, "Out Of", landSideLength,
+    #           "----------", int(percentAltPop), "%")
+    #     t.start()
 
     # for ix in range(1, nx - 1):
     #     # print(A[ix])
 
-    while A[rlandSideLength][rlandSideLength] != -landSideLength:
-        time.sleep(1)
-        print(
-            A[rlandSideLength][rlandSideLength])
+    # while A[rlandSideLength][rlandSideLength] != -landSideLength:
+    #     time.sleep(1)
+    #     print(
+    #         A[rlandSideLength][rlandSideLength])
 
     # for ix in range(1, nx - 1):
     #     print(A[ix])
