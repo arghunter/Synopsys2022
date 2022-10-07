@@ -14,15 +14,15 @@ rlandSideLength = int(landSideLength - 1)
 squareSize = int(nx * (20/1024))
 scaleVal = int(squareSize/20)
 
-fireSpreadSpeed = int(4*scaleVal)
-lineDrawSpeed = int(40*scaleVal)
+fireSpreadSpeed = int(1*scaleVal)
+lineDrawSpeed = int(10*scaleVal)
 userDelay = int(20*scaleVal)
 bufferSpace = int(20*scaleVal)
 
 forest_fraction = 0.95
 altitude_vari = 0.5
 p, f = 0.85, 0.01
-spread_chance = 0.4
+# spread_chance = 0.4
 centerx = nx/2
 centery = ny/2
 vertexNum = 10
@@ -31,6 +31,9 @@ maxGenerations = 2
 intmaxGenerations = int(maxGenerations)
 maxPopSize = 2
 intmaxPopSize = int(maxPopSize)
+
+# land types, 1 - forest, 2 - agriculture, 3 - rivers, 4 - roads
+landType = 1
 
 ##################################################################
 

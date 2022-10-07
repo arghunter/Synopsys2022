@@ -33,4 +33,3 @@ if geoTIFFPath == "":
     t = 0  # Time in seconds since ignition
     p = 8
 
-
