@@ -32,8 +32,11 @@ intmaxGenerations = int(maxGenerations)
 maxPopSize = 2
 intmaxPopSize = int(maxPopSize)
 
-# land types, 1 - forest, 2 - agriculture, 3 - rivers, 4 - roads
+# land types, 1 - forest, 2 - shrubs, 3 - agriculture, 4 - no vegetation #TODO, generate based on square
 landType = 1
+
+# den types, 1 - dense, 2 - normal, 3 - sparse, 4 - no vegetation
+denType = 1
 
 ##################################################################
 

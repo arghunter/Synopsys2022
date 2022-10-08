@@ -2,6 +2,8 @@ import time
 from tkinter.tix import Tree
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib.mlab as mlab
 import math
 from matplotlib import animation
 from matplotlib import colors
@@ -157,7 +159,10 @@ def popAltitude(A):
     tc = 0
     for i in range(nx):
         for j in range(ny):
-            A[i][j]=i+j;
+            # should be in meters
+            A[i][j]=(0.01*(((i-centerx)**2)+((j-centery)**2)))
+            print("generating altitude ...")
+
     # for i in range(0, landSideLength):
     #     tc += 1
     #     tx = int(np.random.random() * (nx - 160)) + 80
@@ -228,15 +233,19 @@ def firerules(X, FIRESX, FIRESY, A):
 
             x2 = (x1 + dx)  # x2
             x1 = (x1)  # x1
+
+            # dx in number of squares
             dx = (x2 - x1)
             sdx = ((dx) ** 2)
             y2 = (y1 + dy)  # y2
             y1 = (y1)  # y1
+
+            # dy in number of squares
             dy = (y2 - y1)
             sdy = ((dy) ** 2)
 
-            # 2d distance = dxy
-            dxy = math.sqrt((sdx + sdy))
+            # 2d distance = dxy, * squareSize so in meters
+            dxy = (squareSize * math.sqrt((sdx + sdy)))
             rdxy = float(round(dxy, 10))
 
             dH = float((A[y1 + dy][x1 + dx]) - (A[y1][x1]))
@@ -259,7 +268,7 @@ def firerules(X, FIRESX, FIRESY, A):
 
             pburn = alexandridisModelProbability(dthetaS, thetaf)
             spread_chance = pburn
-            print(spread_chance)
+            print("spread-chance", spread_chance)
 
             # if int(y1) + dy >= 0 and int(y1) + dy < ny and int(x1) + dx >= 0 and int(x1) + dx < nx and X[
             #     int(y1) + dy, int(x1) + dx] == TREE and np.random.random() <= spread_chance + (
@@ -385,18 +394,25 @@ interval = iTR
 # called at each frame; interval is the delay between frames (in ms).
 anim = animation.FuncAnimation(fig, animate, interval=interval)
 
-# figure 2 for contour
-# plt.figure(2)
-# draw contour
 
-# only figure 1 for now
+# figure
 plt.figure(1)
-# figure 2 for contour
-# plt.figure(2)
-# draw contour
 
-plt.contour(xAltList, yAltList, A)
+# contour line levels
+# contourLevels = np.arrange(500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000)
+contourLevelFrequency = 50
+
+# draw contour
+fig1contour = plt.contour(xAltList, yAltList, A, contourLevelFrequency)
+
+# labels
+plt.clabel(fig1contour, inline=1, fontsize=10)
+
+# scale bar
 plt.colorbar()
+
+#figure title
+plt.title('Wildfire Propagation Simulation using Alexandridis Model')
 
 # Display the animated figure
 plt.show()
