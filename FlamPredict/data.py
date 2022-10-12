@@ -6,6 +6,7 @@ class Data:
     # global f, a, w, c, b, t, p  # F Foliage,A Altitude, W Wind speed+direction,C canopy height, B burn dpeed+direction
     def __init__ (self,geoTIFFPath):
     # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
+        #fuel
         fuel = open(geoTIFFPath+"/fuel.asc", "r")
         fuelstring=fuel.readline()
         self.ncols=int(fuelstring[13:len(fuelstring)])
@@ -19,7 +20,23 @@ class Data:
         fuelstring=fuel.readline()
         nodata=fuelstring[14:len(fuelstring)]
         self.fuel=np.loadtxt(fuel)
+        fuel.close()
         print(self.fuel)
+        #elevation
+        elevation = open(geoTIFFPath+"/elevation.asc", "r")
+        elevationstring=elevation.readline()
+        self.ncols=int(elevationstring[13:len(elevationstring)])
+        elevationstring=elevation.readline()
+        self.nrows=(int(elevationstring[13:len(elevationstring)]))
+        
+        elevationstring=elevation.readline()
+        elevationstring=elevation.readline()
+        elevationstring=elevation.readline()
+        self.p= float(elevationstring[13:len(elevationstring)])
+        elevationstring=elevation.readline()
+        nodata=elevationstring[14:len(elevationstring)]
+        self.elevation=np.loadtxt(elevation)
+        print(self.elevation)
         
 
 # square = 6000
