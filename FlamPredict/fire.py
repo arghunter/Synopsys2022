@@ -98,13 +98,7 @@ class Fire:
                 prob = 0.35  # TODO: get prob here
                 if (np.random.random() <= prob):
                     Fire(x + dx * p, y + dy * p, BURN, tick + 1, p, self.x, self.y, A)
-        # IMPORTANT: prob + reothermal
-        # for dx,dy in neighborhood:
-        #     if rx+dx>=0 and ry+dy>=0 and ry+dy<6000 and rx+dx<6000:
 
-                 prob=0.35 #TODO: get prob here
-        #         if(np.random.random()<=prob):
-        #             Fire(x+dx*p,y+dy*p,BURN,tick+p*p/self.speed,p,self.x,self.y,A)
 
 
 

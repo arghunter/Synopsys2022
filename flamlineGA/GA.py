@@ -76,7 +76,7 @@ for i in range(int(intmaxGenerations - 1)):
         popComplete.append(1)
 
         print("INDIVIDUAL: ", len(popComplete), "OUT OF", intmaxPopSize)
-        exec(open('flamline.py').read())
+        exec(open('flamlineGA/flamline.py').read())
         print("score", len(popComplete), ":", (globals()['score' + str((len(popComplete) - 1))]))
 
 
