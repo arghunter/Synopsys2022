@@ -10,15 +10,15 @@ neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
 
 
 class Fire:
-    def __init__(self, x, y, BURN, tick, p, lastX, lastY, A):
+    def __init__(self, x, y, data, tick, lastX, lastY):
         self.x = x
         self.y = y
         self.lastX = lastX;
         self.lastY = lastY;
-        rx = int(self.x / p)
-        ry = int(self.y / p)
-        rlastX = int(lastX / p)
-        rlastY = int(lastY / p)
+        rx = int(self.x / data.p)
+        ry = int(self.y / data.p)
+        rlastX = int(lastX / data.p)
+        rlastY = int(lastY / data.p)
         print("(" + str(rx) + "," + str(ry) + ")")
 
         # rothermel stuff here
@@ -26,12 +26,7 @@ class Fire:
         # slope from current cell to spread to cell
         # print(A)
         # altitude of spread to cell
-        z2 = (A[ry][rx])
-        # altitude of current cell
-        z1 = (A[rlastY][rlastX])
-        # delta = z diff
-        dz = float(z2 - z1)
-        rdz = float(round(dz, 10))
+      
         # if rx ry changes ingnite the nearest 3 squaesi
 
         x1 = (lastX)  # x1
@@ -46,7 +41,7 @@ class Fire:
         rdxy = float(round(dxy, 10))
 
         # 3d slope between (x1,y1,z1), (x2,y2,z2)
-        Phi = (float(rdz / (rdxy + 0.000001)) * 100)
+  
         # print("slope %", Phi)
 
         # wind velocity at midflame height (ft/min)
@@ -70,19 +65,18 @@ class Fire:
 
         self.direction = directionRad
         # print("("+str(x)+","+str(y)+") "+" ("+str(lastX)+","+str(lastY)+") " + str(directionRad)+"\n")# TODO change this  # Direction in radians
-        # self.coneAngle=0.08 #TODO change this # Angle of cone in direction  image the direction is the center of an arc and fire spreads in through the cone at that rate
-        # self.speed = rothermelRate(Phi, U)  # TODO change this # Speed in m/min
+
         self.speed = 5 #m/min
 
-        if (BURN[rx][ry][2] == 0):
-            BURN[ry][rx][0] = self.speed
-            BURN[ry][rx][1] = self.direction
-            BURN[ry][rx][2] = tick
+        if (data.BURN[rx][ry][1] == 0):
+            data.BURN[ry][rx][0] = self.speed
+            data.BURN[ry][rx][1] = self.direction
+            data.BURN[ry][rx][2] = tick
         # self.preCompute(x,y,p,tick,BURN,A)
-        t = threading.Thread(target=self.preCompute, args=(x, y, p, tick, BURN, A))
-        t.start()
+            t = threading.Thread(target=self.preCompute, args=(x, y, data, tick))
+            t.start()
 
-    def preCompute(self, x, y, p, tick, BURN, A):
+    def preCompute(self, x, y, data, tick):
         # print(str(tick) +" "+str(x)+" "+str(y)+" \n")
         # print(" (" + str(x) + "," + str(y) + ") \n")
         f = open("output.txt", "a")
@@ -90,14 +84,16 @@ class Fire:
         f.write("(" + str(x) + "," + str(y) + ") \n")
 
         f.close()
-        rx = int(self.x / p)
-        ry = int(self.y / p)
+        rx = int(self.x / data.p)
+        ry = int(self.y / data.p)
         # IMPORTANT: Solely prob model
         for dx, dy in neighborhood:
             if rx + dx >= 0 and ry + dy >= 0 and ry + dy < 6000 and rx + dx < 6000:
-                prob = 0.35  # TODO: get prob here
+                prob = 0.4
+                print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
+                # TODO: get prob here
                 if (np.random.random() <= prob):
-                    Fire(x + dx * p, y + dy * p, BURN, tick + 1, p, self.x, self.y, A)
+                    Fire(x + dx * data.p, y + dy * data.p,data,tick + 1, self.x, self.y)
 
 
 

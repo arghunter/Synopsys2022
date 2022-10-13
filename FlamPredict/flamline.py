@@ -3,8 +3,9 @@
 from data import *
 from fire import *
 
-print("AAAAAAAAAAAAAAAAAAAAAAA")
-print(a)
-fire=Fire(24001,24000,b,1,p,24000,24000,a)
+# print("AAAAAAAAAAAAAAAAAAAAAAA")
+# print(a)
+data=Data()
+fire=Fire(data.nrows/2*data.p,data.ncols/2*data.p,data,1,data.nrows/2*data.p+data.p,data.ncols/2*data.p+data.p)
 
 # print(B)
