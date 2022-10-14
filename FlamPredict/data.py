@@ -91,7 +91,7 @@ class Data:
         frame=int(tick/60)
         if frame>len(self.wndV):
             frame=len(self.wndV)-1
-        return self.wndA[frame][ry][rx]*np.pi/180
+        return self.wndA[frame][ry][rx]
         
         
 

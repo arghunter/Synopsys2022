@@ -3,6 +3,7 @@ import time
 import numpy as np
 from data import *
 from rothermelModel import *
+from alexandridisModel import *
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
@@ -19,7 +20,7 @@ class Fire:
         ry = int(self.y / data.p)
         rlastX = int(lastX / data.p)
         rlastY = int(lastY / data.p)
-        print("(" + str(rx) + "," + str(ry) + ")")
+        # print("(" + str(rx) + "," + str(ry) + ")")
 
         # rothermel stuff here
 
@@ -68,13 +69,15 @@ class Fire:
 
         self.speed = 5 #m/min
 
-        if (data.BURN[rx][ry][1] == 0):
+        if (data.BURN[ry][rx][1] == 0):
             data.BURN[ry][rx][0] = self.speed
-            data.BURN[ry][rx][1] = self.direction
-            data.BURN[ry][rx][2] = tick
+            data.BURN[ry][rx][2] = self.direction
+            data.BURN[ry][rx][1] = tick
+         
         # self.preCompute(x,y,p,tick,BURN,A)
             t = threading.Thread(target=self.preCompute, args=(x, y, data, tick))
             t.start()
+            
 
     def preCompute(self, x, y, data, tick):
         # print(str(tick) +" "+str(x)+" "+str(y)+" \n")
@@ -88,9 +91,28 @@ class Fire:
         ry = int(self.y / data.p)
         # IMPORTANT: Solely prob model
         for dx, dy in neighborhood:
-            if rx + dx >= 0 and ry + dy >= 0 and ry + dy < 6000 and rx + dx < 6000:
-                prob = 0.4
-                print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
+            if rx + dx >= 0 and ry + dy >= 0 and ry + dy < data.nrows and rx + dx < data.ncols:
+                
+                slope= np.arctan((data.elevation[ry+dy][rx+dx]-data.elevation[ry][rx])/np.sqrt((dx*data.p)**2+(dy*data.p)**2))
+                ang=0
+                if( dx==1 and dy==1):
+                    ang=45
+                elif    dx==1 and dy==-1:
+                    ang=315
+                elif dy==-1 and dx==-1:
+                    ang=225
+                elif dx==-1 and dy==1:
+                    ang=135
+                elif dx==1:
+                    ang=0
+                elif dy==1:
+                    ang = 90
+                elif dx==-1:
+                    ang=180
+                elif dy==-1:
+                    ang=270
+                prob=alexandridisModelProbability(slope,ang,data.get_windA(tick,x,y),data.get_windV(tick,x,y),data.p)
+                # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
                 if (np.random.random() <= prob):
                     Fire(x + dx * data.p, y + dy * data.p,data,tick + 1, self.x, self.y)
