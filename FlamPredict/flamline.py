@@ -14,5 +14,7 @@ while(threading.activeCount()>1):
     time.sleep(1)
     
 for i in range (data.ncols):
-    file.write(str(data.BURN[i]))
+    for j in range (data.nrows):
+        file.write( str(data.BURN[j][i][1])+" ")
+    file.write("\n")
 # print(B)
