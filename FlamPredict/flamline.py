@@ -9,7 +9,7 @@ import time
 data=Data()
 fire=Fire(data.nrows/2*data.p,data.ncols/2*data.p,data,1,data.nrows/2*data.p+data.p,data.ncols/2*data.p+data.p)
 file=open("output.txt",'w')
-while(threading.activeCount()>0):
+while(threading.activeCount()>1):
     print(threading.activeCount())
     time.sleep(1)
     
