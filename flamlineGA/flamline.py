@@ -258,13 +258,13 @@ def firerules(X, FIRESX, FIRESY, A):
 
             # fire spread direction
             if dy > 0 and dx > 0:
-                thetaf = math.atan((dy / dx))
+                thetaf = math.degrees(math.atan((dy / dx)))
             elif dy < 0 and dx > 0:
-                thetaf = (math.atan((dy / dx)) + 360)
+                thetaf = ((math.degrees(math.atan((dy / dx)))) + 360)
             elif dy < 0 and dx < 0:
-                thetaf = (math.atan((dy / dx)) + 180)
+                thetaf = ((math.degrees(math.atan((dy / dx)))) + 180)
             elif dy > 0 and dx < 0:
-                thetaf = (math.atan((dy / dx)) + 180)
+                thetaf = ((math.degrees(math.atan((dy / dx)))) + 180)
 
             pburn = alexandridisModelProbability(dthetaS, thetaf)
             spread_chance = pburn
