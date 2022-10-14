@@ -41,13 +41,16 @@ neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
 # Cell types for automata
 EMPTY, TREE, FIRE, BURNT, LINE = 0, 1, 2, 3, 4
 # Color corresponds to cell type
-colors_list = [(0.2, 0, 0), (0, 0.5, 0), (1, 0, 0),
-               (1, 0.65, 0), (1, 1, 1), (0, 0, 0)]
+colors_list = []
+bounds = []
+for i in range(656):
+    colors_list.append((i/656,656/i,i/656))
+    bounds.append(i)
 cmap = colors.ListedColormap(colors_list)
 
 # The bounds list must also be one larger than the number of different values in
 # the grid array.
-bounds = [0, 1, 2, 3, 4, 5, 6]
+
 
 # Maps the colors in colors_list to bins defined by bounds; data within a bin
 # is mapped to the color with the same index.
