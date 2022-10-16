@@ -5,7 +5,8 @@ import numpy as np
 class Data:
     # global f, a, w, c, b, t, p  # F Foliage,A Altitude, W Wind speed+direction,C canopy height, B burn dpeed+direction
     def __init__ (self):
-        geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
+        # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
+        geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
     # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
         #fuel
         fuel = open(geoTIFFPath+"/fuel.asc", "r")
@@ -40,8 +41,13 @@ class Data:
         print(self.elevation)
         self.BURN=np.zeros((self.nrows,self.ncols,3))#probability,time,direction
         atmdir=input("Enter wind directory: ")
+        # atmdir = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         atmname=input("Enter wind atm file name")
-        self.atmLen=int(input("Enter number of lines in atm file: "))-2
+        # atmname = "elevation_point_11-08-2018_0313_100m.atm" #TODO: commentout when done
+
+        atmfileLines = input("Enter number of lines in atm file: ")
+        # atmfileLines = "51" #TODO: commentout when done
+        self.atmLen=int(atmfileLines)-2
         atm= open(atmdir+"/"+atmname,"r")
         altFs=atm.readline()
         altFs=atm.readline()

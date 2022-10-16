@@ -6,7 +6,7 @@ import matplotlib.mlab as mlab
 import math
 from matplotlib import animation
 from matplotlib import colors
-file=open("output.txt",'r')
+file=open("routput.txt",'r')
 X=np.loadtxt(file)
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
@@ -17,9 +17,12 @@ ax = fig.add_subplot(111)
 # ax.set_axis_off()
 colors_list = [(0,0.4,0),(0,0,1)]
 bounds = [0.0,1.0]
-for i in range(2,656):
-    colors_list.append((1-(i-132)/(656)-0.2,0,0))
-    bounds.append(i)
+for i in range(2,200):
+   colors_list.append(((i)/(200),0,0))
+   bounds.append(i)
+for i in range(200,656):
+   colors_list.append((0,0.4,0))
+   bounds.append(i)
 print(bounds)
 cmap = colors.ListedColormap(colors_list)
 norm = colors.BoundaryNorm(bounds, cmap.N)
@@ -35,10 +38,10 @@ im = ax.imshow(X, cmap=cmap, norm=norm)  # , interpolation='nearest')
 
 # for things that are done every tick, do them here:
 def animate(i):
-    # animate figure
-    im.set_data(animate.X)
+   # animate figure
+   im.set_data(animate.X)
 
-    # track number of ticks elapsed
+   # track number of ticks elapsed
 
 
 
@@ -69,8 +72,9 @@ plt.figure(1)
 # contourLevels = np.arrange(500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000)
 contourLevelFrequency = 50
 
+
 # draw contour
-# fig1contour = plt.contour(xAltList, yAltList, A, contourLevelFrequency)
+# fig1contour = plt.contour(rx, ry, data.elevation[ry][rx], contourLevelFrequency)
 
 # labels
 # plt.clabel(fig1contour, inline=1, fontsize=10)
@@ -83,3 +87,4 @@ plt.title('Wildfire Propagation Simulation using Alexandridis Model')
 
 # Display the animated figure
 plt.show()
+
