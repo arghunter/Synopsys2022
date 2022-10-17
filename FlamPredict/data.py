@@ -6,8 +6,8 @@ class Data:
     # global f, a, w, c, b, t, p  # F Foliage,A Altitude, W Wind speed+direction,C canopy height, B burn dpeed+direction
     def __init__ (self):
         # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
-        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
-        geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
+        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
+        # geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         
 
@@ -47,7 +47,7 @@ class Data:
         atmdir=geoTIFFPath
         # atmdir = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         # atmname=input("Enter wind atm file name")
-        atmname = "elevation_point_07-29-2022_0148_100m.atm" #TODO: commentout when done
+        atmname = "elevation_point_11-08-2018_0313_100m.atm" #TODO: commentout when done
 
         # atmfileLines = input("Enter number of lines in atm file: ")
         atmfileLines = "51" #TODO: commentout when done
