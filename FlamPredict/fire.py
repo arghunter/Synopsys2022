@@ -95,7 +95,7 @@ class Fire:
                 
                 slope= np.arctan((data.elevation[ry+dy][rx+dx]-data.elevation[ry][rx])/np.sqrt((dx*data.p)**2+(dy*data.p)**2))
                 ang=0
-                if( dx==1 and dy==1):
+                if (dx==1 and dy==1):
                     ang=45
                 elif    dx==1 and dy==-1:
                     ang=315
@@ -111,7 +111,197 @@ class Fire:
                     ang=180
                 elif dy==-1:
                     ang=270
-                prob=alexandridisModelProbability(slope,ang,data.get_windA(tick,x,y),data.get_windV(tick,x,y),data.p)
+
+                if data.fuel[ry+dy][rx+dx] == 91:
+                    # NB1 - Urban/Developed
+                    # NO FIRE SPREAD
+                    pveg = -1.0
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 92:
+                    # NB2 - Snow/Ice
+                    # NO FIRE SPREAD
+                    pveg = -1.0
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 93:
+                    # NB3 - Agricultural
+                    # NO FIRE SPREAD
+                    pveg = -1.0
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 98:
+                    # NB8 - Open Water
+                    # NO FIRE SPREAD
+                    pveg = -1.0
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 99:
+                    # NB9 - Barren
+                    # NO FIRE SPREAD
+                    pveg = -1.0
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 101:
+                    # GR1
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 102:
+                    # GR2
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 103:
+                    # GR3
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 104:
+                    # GR4
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 105:
+                    # GR5
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 106:
+                    # GR6
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 107:
+                    # GR7
+                    pveg = 0.4
+                    pden = 0.3
+                elif data.fuel[ry+dy][rx+dx] == 108:
+                    # GR8
+                    pveg = 0.4
+                    pden = 0.3
+                elif data.fuel[ry+dy][rx+dx] == 109:
+                    # GR9
+                    pveg = 0.4
+                    pden = 0.4
+                elif data.fuel[ry+dy][rx+dx] == 121:
+                    # GS1
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 122:
+                    # GS2
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 123:
+                    # GS3
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 124:
+                    # GS4
+                    pveg = 0.4
+                    pden = 0.3
+                elif data.fuel[ry+dy][rx+dx] == 141:
+                    # SH1
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 142:
+                    # SH2
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 143:
+                    # SH3
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 144:
+                    # SH4
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 145:
+                    # SH5
+                    pveg = 0.4
+                    pden = 0.3
+                elif data.fuel[ry+dy][rx+dx] == 146:
+                    # SH6
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 147:
+                    # SH7
+                    pveg = 0.4
+                    pden = 0.4
+                elif data.fuel[ry+dy][rx+dx] == 148:
+                    # SH8
+                    pveg = 0.4
+                    pden = 0.3
+                elif data.fuel[ry+dy][rx+dx] == 149:
+                    # SH9
+                    pveg = 0.4
+                    pden = 0.4
+                elif data.fuel[ry+dy][rx+dx] == 161:
+                    # TU1
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 162:
+                    # TU2
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 163:
+                    # TU3
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 164:
+                    # TU4
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 165:
+                    # TU5
+                    pveg = 0.4
+                    pden = 0.4
+                elif data.fuel[ry+dy][rx+dx] == 181:
+                    # TL1
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 182:
+                    # TL2
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 183:
+                    # TL3
+                    pveg = 0.1
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 184:
+                    # TL4
+                    pveg = 0.2
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 185:
+                    # TL5
+                    pveg = 0.2
+                    pden = 0.3
+                elif data.fuel[ry+dy][rx+dx] == 186:
+                    # TL6
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 187:
+                    # TL7
+                    pveg = 0.2
+                    pden = 0.3
+                elif data.fuel[ry+dy][rx+dx] == 188:
+                    # TL8
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 189:
+                    # TL9
+                    pveg = 0.4
+                    pden = 0.4
+                elif data.fuel[ry+dy][rx+dx] == 201:
+                    # SB1
+                    pveg = 0.4
+                    pden = -0.4
+                elif data.fuel[ry+dy][rx+dx] == 202:
+                    # SB2
+                    pveg = 0.4
+                    pden = 0.0
+                elif data.fuel[ry+dy][rx+dx] == 203:
+                    # SB3
+                    pveg = 0.4
+                    pden = 0.4
+                elif data.fuel[ry+dy][rx+dx] == 204:
+                    # SB4
+                    pveg = 0.5
+                    pden = 0.4
+
+
+
+
+                prob=alexandridisModelProbability(slope,ang,data.get_windA(tick,x,y),data.get_windV(tick,x,y),data.p, pveg, pden)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
                 if (np.random.random() <= prob):

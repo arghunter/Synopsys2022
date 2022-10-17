@@ -5,8 +5,8 @@ import numpy as np
 class Data:
     # global f, a, w, c, b, t, p  # F Foliage,A Altitude, W Wind speed+direction,C canopy height, B burn dpeed+direction
     def __init__ (self):
-        # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
-        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
+        geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
+        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         
 

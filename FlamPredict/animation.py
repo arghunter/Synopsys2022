@@ -6,6 +6,9 @@ import matplotlib.mlab as mlab
 import math
 from matplotlib import animation
 from matplotlib import colors
+
+
+
 file=open("routput.txt",'r')
 X=np.loadtxt(file)
 fig = plt.figure(figsize=(25 / 3, 6.25))
@@ -17,10 +20,12 @@ ax = fig.add_subplot(111)
 # ax.set_axis_off()
 colors_list = [(0,0.4,0),(0,0,1)]
 bounds = [0.0,1.0]
-for i in range(2,200):
-   colors_list.append(((i)/(200),0,0))
+
+simulateTime = 100
+for i in range(2,simulateTime):
+   colors_list.append(((i)/(simulateTime),0,0))
    bounds.append(i)
-for i in range(200,656):
+for i in range(simulateTime,656):
    colors_list.append((0,0.4,0))
    bounds.append(i)
 print(bounds)
@@ -41,6 +46,8 @@ def animate(i):
    # animate figure
    im.set_data(animate.X)
 
+
+
    # track number of ticks elapsed
 
 
@@ -59,7 +66,8 @@ interval = 200
 # animation.FuncAnimation makes an animation by repeatedly calling a function func;
 # fig is the figure object used to resize, etc.; animate is the callable function
 # called at each frame; interval is the delay between frames (in ms).
-anim = animation.FuncAnimation(fig, animate, interval=interval)
+# anim = animation.FuncAnimation(fig, animate, interval=interval)
+anim = animation.FuncAnimation(fig, animate)
 
 
 
@@ -74,7 +82,7 @@ contourLevelFrequency = 50
 
 
 # draw contour
-# fig1contour = plt.contour(rx, ry, data.elevation[ry][rx], contourLevelFrequency)
+# fig1contour = plt.contour(xAltList, yAltList, A, contourLevelFrequency)
 
 # labels
 # plt.clabel(fig1contour, inline=1, fontsize=10)

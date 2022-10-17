@@ -14,7 +14,7 @@ ph = 0.58  # pre optimised
 #     pveg = -0.4
 # elif landType == 4:
 #     pveg = -1
-pveg=0.4
+# pveg=0.4
 # p veg dependent on land type - pre defined by alexandridis
 # den types, 1 - dense, 2 - normal, 3 - sparse, 4 - no vegetation
 # if denType == 1:
@@ -25,7 +25,7 @@ pveg=0.4
 #     pden = -0.3
 # elif denType == 4:
 #     pden = -1
-pden=0
+# pden=0
 # pre determined by optimization
 c1 = 0.045
 c2 = 0.131
@@ -40,7 +40,7 @@ a = 0.078
 
 
 
-def alexandridisModelProbability(dthetaS, thetaf,thetaw,mgw,p):
+def alexandridisModelProbability(dthetaS, thetaf, thetaw, mgw, p, pveg, pden):
     # wind direction relative to fire spread direction - thetawf
     thetawf = (thetaw - thetaf)
     rthetawf = math.radians(thetawf)
@@ -60,6 +60,7 @@ def alexandridisModelProbability(dthetaS, thetaf,thetaw,mgw,p):
 
     # burn probability
     pburn = (ph * (1 + pveg) * (1+pden) * pw * ps)
+    # print("burn p", pburn)
 
     return pburn
 
