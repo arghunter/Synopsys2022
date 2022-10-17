@@ -21,9 +21,9 @@ ax = fig.add_subplot(111)
 colors_list = [(0,0.4,0),(0,0,1)]
 bounds = [0.0,1.0]
 
-simulateTime = 300
+simulateTime = 2425
 for i in range(2,simulateTime):
-   colors_list.append(((i)/(simulateTime),0,0))
+   colors_list.append(((i)/(simulateTime)*0.8+0.2,0,0))
    bounds.append(i)
 for i in range(simulateTime,1999):
    colors_list.append((0,0.4,0))

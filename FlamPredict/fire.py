@@ -69,7 +69,7 @@ class Fire:
 
         self.speed = 5 #m/min
 
-        if (data.BURN[ry][rx][1] == 0 or tick<data.BURN[ry][rx][1]-8):
+        if (data.BURN[ry][rx][1] == 0 ):
             data.BURN[ry][rx][0] = self.speed
             data.BURN[ry][rx][2] = self.direction
             data.BURN[ry][rx][1] = tick
@@ -305,7 +305,7 @@ class Fire:
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
                 if (np.random.random() <= prob):
-                    Fire(x + dx * data.p, y + dy * data.p,data,tick + data.p**2/(rothermelRate(slope,data.get_windV(tick,x,y))*1.414), self.x, self.y)
+                    Fire(x + dx * data.p, y + dy * data.p,data,tick + data.p*1.414/(rothermelRate(slope,data.get_windV(tick,x,y))), self.x, self.y)
 
 
 
