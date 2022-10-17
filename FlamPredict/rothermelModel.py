@@ -103,6 +103,7 @@ windE = (0.715 * (math.exp((-3.59*(1/(10**4)))*sigma)))
 
 def rothermelRate(Phi, U):
     # tan Phi - make sure
+    
     phiS = (5.275*(1/(beta**0.3))*(((math.tan(Phi))**2)))
 
     # phiW wind

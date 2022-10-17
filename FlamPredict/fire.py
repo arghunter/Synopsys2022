@@ -46,7 +46,7 @@ class Fire:
         # print("slope %", Phi)
 
         # wind velocity at midflame height (ft/min)
-        U = 1  # wind 1
+          # wind 1
         # if(rx!=rlastX or ry != rlastY):
         #     if(not(rx<=0 or ry<=0 or rx>5999 or ry>5999)):
         #         Fire(x-(rx-rlastX)*p,y,BURN,tick+p/dxy,p,(x+lastX)/2,(lastY+y)/2,A)
@@ -69,7 +69,7 @@ class Fire:
 
         self.speed = 5 #m/min
 
-        if (data.BURN[ry][rx][1] == 0):
+        if (data.BURN[ry][rx][1] == 0 or tick<data.BURN[ry][rx][1]-8):
             data.BURN[ry][rx][0] = self.speed
             data.BURN[ry][rx][2] = self.direction
             data.BURN[ry][rx][1] = tick
@@ -82,11 +82,11 @@ class Fire:
     def preCompute(self, x, y, data, tick):
         # print(str(tick) +" "+str(x)+" "+str(y)+" \n")
         # print(" (" + str(x) + "," + str(y) + ") \n")
-        f = open("output.txt", "a")
+        # f = open("output.txt", "a")
         # f.write("("+str(x)+","+str(y)+") "+" ("+str(self.lastX)+","+str(self.lastY)+") " + str(self.direction)+"\n")
-        f.write("(" + str(x) + "," + str(y) + ") \n")
+        # f.write("(" + str(x) + "," + str(y) + ") \n")
 
-        f.close()
+        # f.close()
         rx = int(self.x / data.p)
         ry = int(self.y / data.p)
         # IMPORTANT: Solely prob model
@@ -305,7 +305,7 @@ class Fire:
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
                 if (np.random.random() <= prob):
-                    Fire(x + dx * data.p, y + dy * data.p,data,tick + 1, self.x, self.y)
+                    Fire(x + dx * data.p, y + dy * data.p,data,tick + data.p**2/(rothermelRate(slope,data.get_windV(tick,x,y))*1.414), self.x, self.y)
 
 
 
