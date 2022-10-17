@@ -5,8 +5,9 @@ import numpy as np
 class Data:
     # global f, a, w, c, b, t, p  # F Foliage,A Altitude, W Wind speed+direction,C canopy height, B burn dpeed+direction
     def __init__ (self):
-        geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
-        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
+        # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
+        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
+        # geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         
 
@@ -92,7 +93,7 @@ class Data:
         frame=int(tick/60)
         if frame>len(self.wndV):
             frame=len(self.wndV)-1
-        return self.wndV[frame][ry][rx]
+        return self.wndV[frame][ry][rx]*1000/(60*30)
            
     def get_windA(self,tick,x,y):
         rx=int(x/100)
