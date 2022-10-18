@@ -121,6 +121,8 @@ class Fire:
                     delta = 0  # fuel bed depth (ft)
                     beta = 0.0  # packing ratio (dimentionless)
                     Mx = 0.0  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 92:
                     # NB2 - Snow/Ice
                     # NO FIRE SPREAD
@@ -130,6 +132,8 @@ class Fire:
                     delta = 0  # fuel bed depth (ft)
                     beta = 0.0  # packing ratio (dimentionless)
                     Mx = 0.0  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 93:
                     # NB3 - Agricultural
                     # NO FIRE SPREAD
@@ -139,6 +143,8 @@ class Fire:
                     delta = 0  # fuel bed depth (ft)
                     beta = 0.0  # packing ratio (dimentionless)
                     Mx = 0.0  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 98:
                     # NB8 - Open Water
                     # NO FIRE SPREAD
@@ -148,6 +154,8 @@ class Fire:
                     delta = 0  # fuel bed depth (ft)
                     beta = 0.0  # packing ratio (dimentionless)
                     Mx = 0.0  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 99:
                     # NB9 - Barren
                     # NO FIRE SPREAD
@@ -157,6 +165,8 @@ class Fire:
                     delta = 0  # fuel bed depth (ft)
                     beta = 0.0 # packing ratio (dimentionless)
                     Mx = 0.0  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 101:
                     # GR1
                     pveg = 0.4
@@ -165,6 +175,8 @@ class Fire:
                     delta = 0.4  # fuel bed depth (ft)
                     beta = 0.00143  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.4  # oven dry fuel load (lb/ft^2)
+                    sigma = 2054  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 102:
                     # GR2
                     pveg = 0.4
@@ -173,6 +185,8 @@ class Fire:
                     delta = 1.0  # fuel bed depth (ft)
                     beta = 0.00158  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.1  # oven dry fuel load (lb/ft^2)
+                    sigma = 1820  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 103:
                     # GR3
                     pveg = 0.4
@@ -181,6 +195,8 @@ class Fire:
                     delta = 2.0  # fuel bed depth (ft)
                     beta = 0.00143  # packing ratio (dimentionless)
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.6  # oven dry fuel load (lb/ft^2)
+                    sigma = 1290  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 104:
                     # GR4
                     pveg = 0.4
@@ -189,6 +205,8 @@ class Fire:
                     delta = 2.0  # fuel bed depth (ft)
                     beta = 0.00154  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 2.15  # oven dry fuel load (lb/ft^2)
+                    sigma = 1826  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 105:
                     # GR5
                     pveg = 0.4
@@ -197,6 +215,8 @@ class Fire:
                     delta = 1.5  # fuel bed depth (ft)
                     beta = 0.00277  # packing ratio (dimentionless)
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
+                    w0 = 2.9  # oven dry fuel load (lb/ft^2)
+                    sigma = 1631  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 106:
                     # GR6
                     pveg = 0.4
@@ -205,6 +225,8 @@ class Fire:
                     delta = 1.5  # fuel bed depth (ft)
                     beta = 0.00335  # packing ratio (dimentionless)
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
+                    w0 = 3.5  # oven dry fuel load (lb/ft^2)
+                    sigma = 2006  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 107:
                     # GR7
                     pveg = 0.4
@@ -213,6 +235,8 @@ class Fire:
                     delta = 3.0  # fuel bed depth (ft)
                     beta = 0.00306  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 6.4  # oven dry fuel load (lb/ft^2)
+                    sigma = 1834  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 108:
                     # GR8
                     pveg = 0.4
@@ -221,6 +245,8 @@ class Fire:
                     delta = 4.0  # fuel bed depth (ft)
                     beta = 0.00316  # packing ratio (dimentionless)
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
+                    w0 = 7.8  # oven dry fuel load (lb/ft^2)
+                    sigma = 1302  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 109:
                     # GR9
                     pveg = 0.4
@@ -229,6 +255,8 @@ class Fire:
                     delta = 5.0  # fuel bed depth (ft)
                     beta = 0.00316  # packing ratio (dimentionless)
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
+                    w0 = 10.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 1612  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 121:
                     # GS1
                     pveg = 0.4
@@ -237,6 +265,8 @@ class Fire:
                     delta = 0.9  # fuel bed depth (ft)
                     beta = 0.00215  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.35  # oven dry fuel load (lb/ft^2)
+                    sigma = 1832  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 122:
                     # GS2
                     pveg = 0.4
@@ -245,6 +275,8 @@ class Fire:
                     delta = 1.5  # fuel bed depth (ft)
                     beta = 0.00249  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 2.1  # oven dry fuel load (lb/ft^2)
+                    sigma = 1827  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 123:
                     # GS3
                     pveg = 0.4
@@ -253,6 +285,8 @@ class Fire:
                     delta = 1.8  # fuel bed depth (ft)
                     beta = 0.00259  # packing ratio (dimentionless)
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
+                    w0 = 3.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 1614  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 124:
                     # GS4
                     pveg = 0.4
@@ -261,6 +295,8 @@ class Fire:
                     delta = 2.1  # fuel bed depth (ft)
                     beta = 0.00874  # packing ratio (dimentionless)
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
+                    w0 = 12.4  # oven dry fuel load (lb/ft^2)
+                    sigma = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 141:
                     # SH1
                     pveg = 0.4
@@ -269,6 +305,8 @@ class Fire:
                     delta = 1.0  # fuel bed depth (ft)
                     beta = 0.00280  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.7  # oven dry fuel load (lb/ft^2)
+                    sigma = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 142:
                     # SH2
                     pveg = 0.4
@@ -277,6 +315,8 @@ class Fire:
                     delta = 1.0  # fuel bed depth (ft)
                     beta = 0.01198  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 5.2  # oven dry fuel load (lb/ft^2)
+                    sigma = 1672  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 143:
                     # SH3
                     pveg = 0.4
@@ -285,6 +325,8 @@ class Fire:
                     delta = 2.4  # fuel bed depth (ft)
                     beta = 0.00577  # packing ratio (dimentionless)
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
+                    w0 = 6.65  # oven dry fuel load (lb/ft^2)
+                    sigma = 1371  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 144:
                     # SH4
                     pveg = 0.4
@@ -293,6 +335,8 @@ class Fire:
                     delta = 3.0  # fuel bed depth (ft)
                     beta = 0.00227  # packing ratio (dimentionless)
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
+                    w0 = 3.4  # oven dry fuel load (lb/ft^2)
+                    sigma = 1682  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 145:
                     # SH5
                     pveg = 0.4
@@ -301,6 +345,8 @@ class Fire:
                     delta = 6.0  # fuel bed depth (ft)
                     beta = 0.00206  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 6.5  # oven dry fuel load (lb/ft^2)
+                    sigma = 1252  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 146:
                     # SH6
                     pveg = 0.4
@@ -309,6 +355,8 @@ class Fire:
                     delta = 2.0  # fuel bed depth (ft)
                     beta = 0.00412  # packing ratio (dimentionless)
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
+                    w0 = 4.3  # oven dry fuel load (lb/ft^2)
+                    sigma = 1144  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 147:
                     # SH7
                     pveg = 0.4
@@ -317,6 +365,8 @@ class Fire:
                     delta = 6.0  # fuel bed depth (ft)
                     beta = 0.00344  # packing ratio (dimentionless)
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
+                    w0 = 6.9  # oven dry fuel load (lb/ft^2)
+                    sigma = 1233  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 148:
                     # SH8
                     pveg = 0.4
@@ -325,6 +375,8 @@ class Fire:
                     delta = 3.0  # fuel bed depth (ft)
                     beta = 0.00509  # packing ratio (dimentionless)
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
+                    w0 = 6.4  # oven dry fuel load (lb/ft^2)
+                    sigma = 1386  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 149:
                     # SH9
                     pveg = 0.4
@@ -333,6 +385,8 @@ class Fire:
                     delta = 4.4  # fuel bed depth (ft)
                     beta = 0.00505  # packing ratio (dimentionless)
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
+                    w0 = 13.05  # oven dry fuel load (lb/ft^2)
+                    sigma = 1378  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 161:
                     # TU1
                     pveg = 0.4
@@ -341,6 +395,8 @@ class Fire:
                     delta = 0.6  # fuel bed depth (ft)
                     beta = 0.00885  # packing ratio (dimentionless)
                     Mx = 0.2  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.3  # oven dry fuel load (lb/ft^2)
+                    sigma = 1606  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 162:
                     # TU2
                     pveg = 0.4
@@ -349,6 +405,8 @@ class Fire:
                     delta = 1.0  # fuel bed depth (ft)
                     beta = 0.00603  # packing ratio (dimentionless)
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.15  # oven dry fuel load (lb/ft^2)
+                    sigma = 1767  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 163:
                     # TU3
                     pveg = 0.4
@@ -357,6 +415,8 @@ class Fire:
                     delta = 1.3  # fuel bed depth (ft)
                     beta = 0.00359  # packing ratio (dimentionless)
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
+                    w0 = 2.85  # oven dry fuel load (lb/ft^2)
+                    sigma = 1611  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 164:
                     # TU4
                     pveg = 0.4
@@ -365,6 +425,8 @@ class Fire:
                     delta = 0.5  # fuel bed depth (ft)
                     beta = 0.01865  # packing ratio (dimentionless)
                     Mx = 0.12  # dead fuel moisture of extinction (fraction)
+                    w0 = 6.5  # oven dry fuel load (lb/ft^2)
+                    sigma = 2216  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 165:
                     # TU5
                     pveg = 0.4
@@ -373,6 +435,8 @@ class Fire:
                     delta = 1.0  # fuel bed depth (ft)
                     beta = 0.02009  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 7.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 1224  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 181:
                     # TL1
                     pveg = 0.4
@@ -381,6 +445,8 @@ class Fire:
                     delta = 0.2  # fuel bed depth (ft)
                     beta = 0.04878  # packing ratio (dimentionless)
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 1716  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 182:
                     # TL2
                     pveg = 0.4
@@ -389,6 +455,8 @@ class Fire:
                     delta = 0.2  # fuel bed depth (ft)
                     beta = 0.04232  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.4  # oven dry fuel load (lb/ft^2)
+                    sigma = 1806  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 183:
                     # TL3
                     pveg = 0.1
@@ -397,6 +465,8 @@ class Fire:
                     delta = 0.3  # fuel bed depth (ft)
                     beta = 0.02630  # packing ratio (dimentionless)
                     Mx = 0.2  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.5  # oven dry fuel load (lb/ft^2)
+                    sigma = 1532  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 184:
                     # TL4
                     pveg = 0.2
@@ -405,6 +475,8 @@ class Fire:
                     delta = 0.4  # fuel bed depth (ft)
                     beta = 0.02224  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.5  # oven dry fuel load (lb/ft^2)
+                    sigma = 1568  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 185:
                     # TL5
                     pveg = 0.2
@@ -413,6 +485,8 @@ class Fire:
                     delta = 0.6  # fuel bed depth (ft)
                     beta = 0.01925  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.15  # oven dry fuel load (lb/ft^2)
+                    sigma = 1713  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 186:
                     # TL6
                     pveg = 0.4
@@ -421,6 +495,8 @@ class Fire:
                     delta = 0.3  # fuel bed depth (ft)
                     beta = 0.02296  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 2.4  # oven dry fuel load (lb/ft^2)
+                    sigma = 1936  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 187:
                     # TL7
                     pveg = 0.2
@@ -429,6 +505,8 @@ class Fire:
                     delta = 0.4  # fuel bed depth (ft)
                     beta = 0.03515  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.3  # oven dry fuel load (lb/ft^2)
+                    sigma = 1229  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 188:
                     # TL8
                     pveg = 0.4
@@ -437,6 +515,8 @@ class Fire:
                     delta = 0.3  # fuel bed depth (ft)
                     beta = 0.03969  # packing ratio (dimentionless)
                     Mx = 0.35  # dead fuel moisture of extinction (fraction)
+                    w0 = 5.8  # oven dry fuel load (lb/ft^2)
+                    sigma = 1770  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 189:
                     # TL9
                     pveg = 0.4
@@ -445,6 +525,8 @@ class Fire:
                     delta = 0.6  # fuel bed depth (ft)
                     beta = 0.03372  # packing ratio (dimentionless)
                     Mx = 0.35  # dead fuel moisture of extinction (fraction)
+                    w0 = 6.65  # oven dry fuel load (lb/ft^2)
+                    sigma = 1733  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 201:
                     # SB1
                     pveg = 0.4
@@ -453,6 +535,8 @@ class Fire:
                     delta = 1.0  # fuel bed depth (ft)
                     beta = 0.02224  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 1.5  # oven dry fuel load (lb/ft^2)
+                    sigma = 1653  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 202:
                     # SB2
                     pveg = 0.4
@@ -461,6 +545,8 @@ class Fire:
                     delta = 1.0  # fuel bed depth (ft)
                     beta = 0.01829  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 4.5  # oven dry fuel load (lb/ft^2)
+                    sigma = 1884  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 203:
                     # SB3
                     pveg = 0.4
@@ -469,6 +555,8 @@ class Fire:
                     delta = 1.2  # fuel bed depth (ft)
                     beta = 0.01345  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 5.5  # oven dry fuel load (lb/ft^2)
+                    sigma = 1935  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 204:
                     # SB4
                     pveg = 0.5
@@ -477,6 +565,8 @@ class Fire:
                     delta = 2.7  # fuel bed depth (ft)
                     beta = 0.00744  # packing ratio (dimentionless)
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
+                    w0 = 5.25  # oven dry fuel load (lb/ft^2)
+                    sigma = 1907  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
 
                 prob = alexandridisModelProbability(slope, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y),
                                                     data.p, pveg, pden)
@@ -488,7 +578,7 @@ class Fire:
                     U = data.get_windV(tick, x, y)
 
                     Fire(x + dx * data.p, y + dy * data.p, data,
-                         tick + data.p * 1.414 / (rothermelRate(tanPhi, U, h, delta, beta, Mx)), self.x, self.y)
+                         tick + data.p * 1.414 / (rothermelRate(tanPhi, U, h, delta, beta, Mx, w0, sigma)), self.x, self.y)
 
 
 
