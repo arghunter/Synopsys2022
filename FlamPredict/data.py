@@ -6,10 +6,10 @@ class Data:
     # global f, a, w, c, b, t, p  # F Foliage,A Altitude, W Wind speed+direction,C canopy height, B burn dpeed+direction
     def __init__ (self):
         # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
-        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
+        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
         # geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
-        
+        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
 
         #fuel
         fuel = open(geoTIFFPath+"/fuel.asc", "r")
@@ -47,16 +47,17 @@ class Data:
         atmdir=geoTIFFPath
         # atmdir = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         # atmname=input("Enter wind atm file name")
-        atmname = "elevation_point_11-08-2018_0313_100m.atm" #TODO: commentout when done
+        atmname = "elevation_point_09-06-2022_1736_30m.atm" #TODO: commentout when done
 
         # atmfileLines = input("Enter number of lines in atm file: ")
-        atmfileLines = "51" #TODO: commentout when done
+        atmfileLines = "75" #TODO: commentout when done
         self.atmLen=int(atmfileLines)-2
         atm= open(atmdir+"/"+atmname,"r")
         altFs=atm.readline()
         altFs=atm.readline()
         self.wndV=[]
         self.wndA=[]
+        self.wp=30
         for i in range(0,self.atmLen):
             altFs=atm.readline()
         
@@ -88,23 +89,24 @@ class Data:
             
         
     def get_windV(self,tick,x,y):
-        rx=int(x/100)
-        ry=int(y/100)
+        rx=int(x/self.wp)
+        ry=int(y/self.wp)
         frame=int(tick/60)
         if frame>len(self.wndV):
             frame=len(self.wndV)-1
         return self.wndV[frame][ry][rx]*1000/(60*30)
            
     def get_windA(self,tick,x,y):
-        rx=int(x/100)
-        ry=int(y/100)
+        rx=int(x/self.wp)
+        ry=int(y/self.wp)
         frame=int(tick/60)
         if frame>len(self.wndV):
             frame=len(self.wndV)-1
         return self.wndA[frame][ry][rx]-90
         
         
-
+# data=Data()
+# print(data.fuel[10,5]);
 # square = 6000
 # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
 # data=Data(geoTIFFPath)

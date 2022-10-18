@@ -304,8 +304,10 @@ class Fire:
                 prob=alexandridisModelProbability(slope,ang,data.get_windA(tick,x,y),data.get_windV(tick,x,y),data.p, pveg, pden)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
-                if (0.6 <= prob):
-                    Fire(x + dx * data.p, y + dy * data.p,data,tick + data.p*1.414/(rothermelRate(slope,data.get_windV(tick,x,y))), self.x, self.y)
+                if (0.5 <= prob):
+                    Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
+
+                    # Fire(x + dx * data.p, y + dy * data.p,data,tick + data.p*1.414/(rothermelRate(slope,data.get_windV(tick,x,y))), self.x, self.y)
 
 
 
