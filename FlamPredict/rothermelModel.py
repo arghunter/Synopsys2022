@@ -25,7 +25,8 @@ Mf = 0.01  # assume - add in future
 # rm = (Mf / Mx)
 
 # Surface-area-to-volume ratio of tree (ft^2/ft^3) assume Pinus Ponderosa
-sigma = 1500  # assume - add real in future
+# sigma = 1500  # assume - add real in future
+# sigma = 0 # Surface-area-to-volume ratio of tree (ft^2/ft^3)
 
 # fuel bed depth (ft)
 # delta = 1.5 # fuel bed depth (ft)
@@ -40,7 +41,7 @@ ST = 0.0555
 SE = 0.010
 
 # oven dry fuel load (lb/ft^2)
-w0 = 0.023
+# w0 = 0.023 # oven dry fuel load (lb/ft^2)
 
 # # oven dry bulk density (lb/ft^3)
 # rhob = (w0 * delta)
@@ -98,7 +99,7 @@ w0 = 0.023
 
 ########################################################
 
-def rothermelRate(tanPhi, U, h, delta, beta, Mx):
+def rothermelRate(tanPhi, U, h, delta, beta, Mx, w0, sigma):
     # ratio of moistures (Mf/Mx) (max 1.0)
     rm = (Mf / Mx)
 
