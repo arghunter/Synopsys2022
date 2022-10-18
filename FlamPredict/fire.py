@@ -95,21 +95,21 @@ class Fire:
                 
                 slope= np.arctan((data.elevation[ry+dy][rx+dx]-data.elevation[ry][rx])/np.sqrt((dx*data.p)**2+(dy*data.p)**2))
                 ang=0
-                if (dx==1 and dy==1):
+                if (dx==1 and dy==-1):
                     ang=45
-                elif    dx==1 and dy==-1:
+                elif    dx==1 and dy==1:
                     ang=315
-                elif dy==-1 and dx==-1:
+                elif dy==-1 and dx==1:
                     ang=225
-                elif dx==-1 and dy==1:
+                elif dx==-1 and dy==-1:
                     ang=135
                 elif dx==1:
                     ang=0
-                elif dy==1:
+                elif dy==-1:
                     ang = 90
                 elif dx==-1:
                     ang=180
-                elif dy==-1:
+                elif dy==1:
                     ang=270
 
                 if data.fuel[ry+dy][rx+dx] == 91:
@@ -305,9 +305,9 @@ class Fire:
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
                 if (0.5 <= prob):
-                    Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
+                    # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
 
-                    # Fire(x + dx * data.p, y + dy * data.p,data,tick + data.p*1.414/(rothermelRate(slope,data.get_windV(tick,x,y))), self.x, self.y)
+                    Fire(x + dx * data.p, y + dy * data.p,data,tick + data.p*1.414/(rothermelRate(slope,data.get_windV(tick,x,y))), self.x, self.y)
 
 
 
