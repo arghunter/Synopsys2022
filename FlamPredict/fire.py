@@ -1,7 +1,6 @@
 import threading
 import time
 import numpy as np
-from numpy import random
 from data import *
 from rothermelModel import *
 from alexandridisModel import *
@@ -569,17 +568,16 @@ class Fire:
                     w0 = 5.25  # oven dry fuel load (lb/ft^2)
                     sigma = 1907  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
 
-                prob = alexandridisModelProbability(slope, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y),
-                                                    data.p, pveg, pden)
+                prob = alexandridisModelProbability(slope, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y), data.p, pveg, pden)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
-                if ((random.rand()) <= prob):
+                if (0.5 <= prob):
                     # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
                     tanPhi = slope
                     U = data.get_windV(tick, x, y)
+                    R = ((rothermelRate(tanPhi, U, h, delta, beta, Mx, w0, sigma))/30)
 
-                    Fire(x + dx * data.p, y + dy * data.p, data,
-                         tick + (data.p * (1.414 / ((rothermelRate(tanPhi, U, h, delta, beta, Mx, w0, sigma))/30))), self.x, self.y)
+                    Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
 
 
 
