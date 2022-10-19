@@ -1,6 +1,7 @@
 import threading
 import time
 import numpy as np
+from numpy import random
 from data import *
 from rothermelModel import *
 from alexandridisModel import *
@@ -572,13 +573,13 @@ class Fire:
                                                     data.p, pveg, pden)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
-                if (0.5 <= prob):
+                if ((random.rand()) <= prob):
                     # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
                     tanPhi = slope
                     U = data.get_windV(tick, x, y)
 
                     Fire(x + dx * data.p, y + dy * data.p, data,
-                         tick + data.p * 1.414 / (rothermelRate(tanPhi, U, h, delta, beta, Mx, w0, sigma)), self.x, self.y)
+                         tick + (data.p * (1.414 / ((rothermelRate(tanPhi, U, h, delta, beta, Mx, w0, sigma))/30))), self.x, self.y)
 
 
 
