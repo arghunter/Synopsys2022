@@ -94,7 +94,10 @@ class Data:
         frame=int(tick/60)
         if frame>len(self.wndV):
             frame=len(self.wndV)-1
-        return self.wndV[frame][ry][rx]*1000/(60*30)
+        if(rx>=0 and ry>=0 and ry<self.nrows and rx<self.ncols):
+            return self.wndV[frame][ry][rx]*1000/(60*60)
+        else:
+            return -1
            
     def get_windA(self,tick,x,y):
         rx=int(x/self.wp)
@@ -102,7 +105,10 @@ class Data:
         frame=int(tick/60)
         if frame>len(self.wndV):
             frame=len(self.wndV)-1
-        return self.wndA[frame][ry][rx]-90
+        if(rx>=0 and ry>=0 and ry<self.nrows and rx<self.ncols):
+            return self.wndA[frame][ry][rx]-90
+        else:
+            return -1
         
         
 # data=Data()
