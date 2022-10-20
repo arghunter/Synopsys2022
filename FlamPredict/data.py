@@ -2,7 +2,10 @@ import numpy as np
 
 
 # import pandas as pd
+
 class Data:
+    neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
+                (0, 1), (1, -1), (1, 0), (1, 1))
     # global f, a, w, c, b, t, p  # F Foliage,A Altitude, W Wind speed+direction,C canopy height, B burn dpeed+direction
     def __init__(self):
         # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
@@ -26,6 +29,18 @@ class Data:
         fuelstring = fuel.readline()
         nodata = fuelstring[14:len(fuelstring)]
         self.fuel = np.loadtxt(fuel)
+        for i in range(self.nrows):
+            for j in range(self.ncols):
+                if self.fuel[i][j]==98:
+                    # print(str(i)+" "+str(j))
+                    for dy,dx in Data.neighborhood:
+                        if(i+dy<self.nrows and j+dx<self.ncols and i+dy>=0 and j+dx>=0 and self.fuel[i+dy,j+dx]!=98):
+                            self.fuel[i+dy,j+dx] = 100
+        file=open("op.txt","w");                   
+        for i in range (self.ncols):
+            for j in range (self.nrows):
+                file.write( str(self.fuel[j][i])+" ")
+            file.write("\n")
         fuel.close()
         print(self.fuel)
         # elevation
@@ -107,7 +122,8 @@ class Data:
         
         if (rx >= 0 and ry >= 0 and ry < self.nrows and rx < self.ncols):
             # print(str(ry)+" "+str(rx)+"\n")
-            return 360-(self.wndA[frame][ry][rx] - 270)
+            # print (self.wndA[frame][ry][rx])
+            return -(self.wndA[frame][ry][rx] - 270)
         else:
             return -1
 

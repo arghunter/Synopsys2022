@@ -52,7 +52,7 @@ class Fire:
         #         Fire(x-(rx-rlastX)*p,y,BURN,tick+p/dxy,p,(x+lastX)/2,(lastY+y)/2,A)
         #         Fire(x,y-(ry-rlastY)*p,BURN,tick+p/dxy,p,(x+lastX)/2,(y+lastY)/2,A)
         # m/s to ft/min 196.85
-
+    #Make stuff around98 100
         directionRad = 0
         if (dx == 0):
             if (dy > 0):
@@ -159,6 +159,18 @@ class Fire:
                 elif data.fuel[ry + dy][rx + dx] == 99:
                     # NB9 - Barren
                     # NO FIRE SPREAD
+                    pveg = -1.0
+                    pden = 0.0
+                    h = 0  # low heat content (btu/lb)
+                    delta = 0  # fuel bed depth (ft)
+                    beta = 0.0 # packing ratio (dimentionless)
+                    Mx = 0.0  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                elif data.fuel[ry + dy][rx + dx] ==100:
+                    # NB10 - Next to nb Custom
+                    # NO FIRE SPREAD
+                    
                     pveg = -1.0
                     pden = 0.0
                     h = 0  # low heat content (btu/lb)
@@ -576,6 +588,7 @@ class Fire:
                     Mx = 0.0  # dead fuel moisture of extinction (fraction)
                     w0 = 0.0  # oven dry fuel load (lb/ft^2)
                     sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                
 
                 prob = alexandridisModelProbability(slope, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y), data.p, pveg, pden)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
