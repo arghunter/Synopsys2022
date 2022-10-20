@@ -11,7 +11,6 @@ from matplotlib import colors
 
 file=open("routput.txt",'r')
 X=np.loadtxt(file)
-X=np.rot90(X)
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
 # Creates 1x1 grid subplot.
@@ -22,7 +21,7 @@ ax = fig.add_subplot(111)
 colors_list = [(0,0.4,0),(0,0,1)]
 bounds = [0.0,1.0]
 
-simulateTime = 200000
+simulateTime = 20
 for i in range(2,simulateTime):
    colors_list.append(((i)/(simulateTime)*0.8+0.2,0,0))
    bounds.append(i)

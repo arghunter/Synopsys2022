@@ -567,6 +567,15 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 5.25  # oven dry fuel load (lb/ft^2)
                     sigma = 1907  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                else:
+                    pveg = -1.0
+                    pden = 0.0
+                    h = 0  # low heat content (btu/lb)
+                    delta = 0  # fuel bed depth (ft)
+                    beta = 0.0  # packing ratio (dimentionless)
+                    Mx = 0.0  # dead fuel moisture of extinction (fraction)
+                    w0 = 0.0  # oven dry fuel load (lb/ft^2)
+                    sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
 
                 prob = alexandridisModelProbability(slope, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y), data.p, pveg, pden)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
@@ -575,10 +584,13 @@ class Fire:
                     # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
                     tanPhi = slope
                     U = data.get_windV(tick, x, y)
-                    R = ((rothermelRate(tanPhi, U, h, delta, beta, Mx, w0, sigma))/30)
+                    R = ((rothermelRate(tanPhi, U, h, delta, beta, Mx, w0, sigma))/data.p)
 
-                    Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
-
+                    # print("R val", R)
+                    # data.p = side length
+                    # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
+                    # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
+                    Fire(x + dx * data.p, y + dy * data.p, data, tick+(1/R), self.x, self.y)
 
 
 
