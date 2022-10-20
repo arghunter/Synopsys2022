@@ -584,13 +584,20 @@ class Fire:
                     # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
                     tanPhi = slope
                     U = data.get_windV(tick, x, y)
-                    R = ((rothermelRate(tanPhi, U, h, delta, beta, Mx, w0, sigma))/data.p)
+                    rothThetawf = (data.get_windA(tick, x, y) - ang)
+                    rothrThetawf = math.radians(rothThetawf)
+                    realUmult = math.cos(rothrThetawf)
+                    realU = (U*realUmult)
+                    R = ((rothermelRate(tanPhi, realU, h, delta, beta, Mx, w0, sigma))/data.p)
+                    print("R val", R)
+                    tsR = (1/R)
+                    print("tsR", tsR)
 
                     # print("R val", R)
                     # data.p = side length
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
-                    Fire(x + dx * data.p, y + dy * data.p, data, tick+(1/R), self.x, self.y)
+                    Fire(x + dx * data.p, y + dy * data.p, data, (tick+tsR), self.x, self.y)
 
 
 
