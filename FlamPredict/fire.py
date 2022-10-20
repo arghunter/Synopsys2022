@@ -589,15 +589,15 @@ class Fire:
                     realUmult = math.cos(rothrThetawf)
                     realU = (U*realUmult)
                     R = ((rothermelRate(tanPhi, realU, h, delta, beta, Mx, w0, sigma))/data.p)
-                    print("R val", R)
+                    # print("R val", R)
                     tsR = (1/R)
-                    print("tsR", tsR)
+                    # print("tsR", tsR)
 
                     # print("R val", R)
                     # data.p = side length
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
-                    Fire(x + dx * data.p, y + dy * data.p, data, (tick+tsR), self.x, self.y)
+                    Fire(x + dx * data.p, y + dy * data.p, data, int(tick+tsR), self.x, self.y)
 
 
 

@@ -9,8 +9,8 @@ class Data:
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
         # geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
-        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
-        geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito"
+        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
+        # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito"
 
         # fuel
         fuel = open(geoTIFFPath + "/fuel.asc", "r")
@@ -48,7 +48,7 @@ class Data:
         atmdir = geoTIFFPath
         # atmdir = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         # atmname=input("Enter wind atm file name")
-        atmname = "elevation_point_09-06-2022_1736_30m.atm"  # TODO: commentout when done
+        atmname = "elevation_point_09-06-2022_1736_100m.atm"  # TODO: commentout when done
 
         # atmfileLines = input("Enter number of lines in atm file: ")
         atmfileLines = "75"  # TODO: commentout when done
@@ -58,7 +58,7 @@ class Data:
         altFs = atm.readline()
         self.wndV = []
         self.wndA = []
-        self.wp = 30
+        self.wp = 100
         for i in range(0, self.atmLen):
             altFs = atm.readline()
 
@@ -83,14 +83,15 @@ class Data:
             wndA = np.loadtxt(wndF)
             self.wndV.append(wndV)
             self.wndA.append(wndA)
-            print(wndV)
-            print(wndA)
+            print(wndV[0].size)
+            # print(self.wndV[0].size())
+            
 
     def get_windV(self, tick, x, y):
         rx = int(x / self.wp)
         ry = int(y / self.wp)
         frame = int(tick / 60)
-        if frame > len(self.wndV):
+        if frame >= len(self.wndV):
             frame = len(self.wndV) - 1
         if (rx >= 0 and ry >= 0 and ry < self.nrows and rx < self.ncols):
             return self.wndV[frame][ry][rx] * 1000 / (60 * 60)
@@ -101,10 +102,12 @@ class Data:
         rx = int(x / self.wp)
         ry = int(y / self.wp)
         frame = int(tick / 60)
-        if frame > len(self.wndV):
+        if frame >= len(self.wndV):
             frame = len(self.wndV) - 1
+        
         if (rx >= 0 and ry >= 0 and ry < self.nrows and rx < self.ncols):
-            return self.wndA[frame][ry][rx] - 90
+            # print(str(ry)+" "+str(rx)+"\n")
+            return 360-(self.wndA[frame][ry][rx] - 270)
         else:
             return -1
 
