@@ -77,6 +77,7 @@ class Fire:
             # self.preCompute(x,y,p,tick,BURN,A)
             t = threading.Thread(target=self.preCompute, args=(x, y, data, tick))
             t.start()
+            # self.preCompute(x,y,data,tick)
 
     def preCompute(self, x, y, data, tick):
         # print(str(tick) +" "+str(x)+" "+str(y)+" \n")

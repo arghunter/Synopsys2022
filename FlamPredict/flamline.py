@@ -8,7 +8,10 @@ import time
 # print(a)
 data=Data()
 # fire=Fire(data.ncols/2*data.p,data.nrows/2*data.p,data,1,data.ncols/2*data.p+data.p,data.nrows/2*data.p+data.p)
-fire=Fire(100,100,data,1,data.nrows/2*data.p+data.p,data.ncols/2*data.p+data.p)
+
+
+# fire=Fire(100,100,data,1,data.nrows/2*data.p+data.p,data.ncols/2*data.p+data.p)
+fire=Fire(180*data.p,180*data.p,data,1,data.ncols/2*data.p+data.p,data.nrows/2*data.p+data.p)
 
 file=open("routput.txt",'w')
 while(threading.activeCount()>1):
