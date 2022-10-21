@@ -22,7 +22,7 @@ ax = fig.add_subplot(111)
 colors_list = [(0,0.4,0),(0,0,1)]
 bounds = [0.0,1.0]
 
-simulateTime =10000
+simulateTime =8000
 for i in range(2,simulateTime,120):
    colors_list.append(((i)/(simulateTime),0,0))
    bounds.append(i)
