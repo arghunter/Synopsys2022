@@ -16,7 +16,7 @@ def alexandridisSpotting():
     # spotting distance
 
     # generated random rn from gaussian distribution
-    rsubn = random.normal(loc=rnMeanVal, scale=rnStdVal, size=None)
+    rsubn = float(random.normal(loc=rnMeanVal, scale=rnStdVal, size=None))
     # info: size = None gives one scalar value
     # info: loc = mean
     # info: scale = std
