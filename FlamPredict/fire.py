@@ -613,29 +613,6 @@ class Fire:
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
                     Fire(x + dx * data.p, y + dy * data.p, data, int(tick+tsR), self.x, self.y)
-                     
-                # SPOTTING
-                
-                # number of spotting cells
-                lambdaVal = 1 # lambda for poisson for Number of spotting items #TODO: find value
-                Nsubp = int(random.poisson(lam=lambdaVal, size=None)) # number of spotting cells from poisson dist
-                # size= None gives one scalar value
-
-                # print("number of spotting cells", Nsubp)
-
-                # spotting distance
-                rnMeanVal = 5 # mean val for rn from gaussian dist #TODO: find val
-                rnStdVal = 5 # std val for rn from gaussian dist #TODO: find val
-
-                # generated random rn from gaussian distribution
-                rsubn = random.normal(loc=rnMeanVal, scale=rnStdVal, size=None) # rsubn from gaussian dist for spotting distance
-                #size = None gives one scalar value
-                #loc = mean
-                #scale = std
-
-                # print("random rn", rsubn)
-
-                #not done yet
-
+                    
 
 
