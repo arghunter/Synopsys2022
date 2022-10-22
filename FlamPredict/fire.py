@@ -1,9 +1,11 @@
 import threading
 import time
 import numpy as np
+from numpy import random
 from data import *
 from rothermelModel import *
 from alexandridisModel import *
+from alexandridisSpotting import *
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
@@ -168,7 +170,7 @@ class Fire:
                     Mx = 0.0  # dead fuel moisture of extinction (fraction)
                     w0 = 0.0  # oven dry fuel load (lb/ft^2)
                     sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] ==100:
+                elif data.fuel[ry + dy][rx + dx] == 100:
                     # NB10 - Next to nb Custom
                     # NO FIRE SPREAD
                     
@@ -599,7 +601,7 @@ class Fire:
                     tanPhi = slope
                     U = data.get_windV(tick, x, y)
                     rothThetawf = (data.get_windA(tick, x, y) - ang)
-                    rothrThetawf = math.radians(rothThetawf)
+                    rothrThetawf = (np.pi - math.radians(rothThetawf))
                     realUmult = math.cos(rothrThetawf)
                     realU = (U*realUmult)
                     R = ((rothermelRate(tanPhi, realU, h, delta, beta, Mx, w0, sigma))/data.p)
@@ -614,4 +616,617 @@ class Fire:
                     Fire(x + dx * data.p, y + dy * data.p, data, int(tick+tsR), self.x, self.y)
 
 
+                ##################################################################
+                # spotting
+
+                lambdaVal = 1  # lambda for poisson for Number of spotting items #TODO: find value
+                Nsubp = int(random.poisson(lam=lambdaVal, size=None))  # number of spotting cells from poisson dist
+                # info: size= None gives one scalar value
+
+                rnMeanVal = 2  # mean val for rn from gaussian dist #TODO: find val
+                rnStdVal = 2  # std val for rn from gaussian dist #TODO: find val
+
+                # spotting
+
+                # random spot direction #TODO: improve later
+                spotAngOptionsX = [-4, -3, -2, -1, 0, 1, 2, 3, 4]  # in 9x9 grid, relative to center tile
+                spotAngOptionsY = [-4, -3, -2, -1, 0, 1, 2, 3, 4]  # in 9x9 grid, relative to center tile
+                spotAngOptionsY2 = [-4, -3, -2, -1, 1, 2, 3, 4]  # in 9x9 grid, relative to center tile, if 0 and 0 then pull Y from this
+                for i in range(Nsubp):
+                    spotAngX = random.choice(spotAngOptionsX)  # for generating random angle, spot in X
+                    spotAngY = random.choice(spotAngOptionsY)  # for generating random angle, spot in Y
+
+                    if spotAngX == 0 and spotAngY == 0:
+                        spotAngY = random.choice(spotAngOptionsY2)  # rerolling AngY so not on the same point
+                        # this process is statistically correct because Nsubp guarantees spotting of 2 cells, if on same cell, then Nsubp condition not met
+
+                    if spotAngX > 0 and spotAngY > 0:
+                        rangSpot = math.atan((spotAngY / spotAngX))
+                    elif spotAngX > 0 and spotAngY < 0:
+                        rangSpot = ((2 * math.pi) + math.atan((spotAngY / spotAngX)))
+                    elif spotAngX < 0 and spotAngY > 0:
+                        rangSpot = (math.pi + math.atan((spotAngY / spotAngX)))
+                    elif spotAngX < 0 and spotAngY < 0:
+                        rangSpot = (math.pi + math.atan((spotAngY / spotAngX)))
+                    elif spotAngX == 0 and spotAngY > 0:
+                        rangSpot = (math.pi / 2)
+                    elif spotAngX == 0 and spotAngY < 0:
+                        rangSpot = (((3 * math.pi) / 2))
+                    else:
+                        rangSpot = math.atan((spotAngY / spotAngX)) #TODO: fix rangspot not defined error
+
+                    # spotting distance
+
+                    # generated random rn from gaussian distribution
+                    rsubn = float(random.normal(loc=rnMeanVal, scale=rnStdVal, size=None))  # TODO: tune vals
+                    # info: size = None gives one scalar value
+                    # info: loc = mean
+                    # info: scale = std
+
+                    # relative wind angle
+                    thetawSpot = data.get_windA(tick, x, y)
+                    Uspot = data.get_windV(tick, x, y)
+                    thetawfSpot = (thetawSpot - rangSpot)
+                    rthetawfSpot = (math.pi - math.radians(thetawfSpot))
+
+                    # spotting distance (cells)
+                    spotDistance = (rsubn * math.exp((Uspot * (math.cos(rthetawfSpot) - 1))))
+                    spotDistX = (spotDistance * (math.cos(rangSpot)))
+                    spotDistY = (spotDistance * (math.sin(rangSpot)))
+
+                    # real x,y, spotting distance (cells), statistically correct because inherently random
+                    if Uspot > 0 and rthetawfSpot > 0:
+                        if spotDistX > 0:
+                            realspotDistX = int(math.ceil(spotDistX))
+                        elif spotDistX < 0:
+                            realspotDistX = int(math.floor(spotDistX))
+                        elif spotDistX == 0:
+                            realspotDistX = int(round(spotDistX))
+                        if spotDistY > 0:
+                            realspotDistY = int(math.ceil(spotDistY))
+                        elif spotDistY < 0:
+                            realspotDistY = int(math.floor(spotDistY))
+                        elif spotDistY == 0:
+                            realspotDistY = int(round(spotDistY))
+                    elif Uspot < 0 and rthetawfSpot > 0:
+                        if spotDistX > 0:
+                            realspotDistX = int(math.floor(spotDistX))
+                        elif spotDistX < 0:
+                            realspotDistX = int(math.ceil(spotDistX))
+                        elif spotDistX == 0:
+                            realspotDistX = int(round(spotDistX))
+                        if spotDistY > 0:
+                            realspotDistY = int(math.floor(spotDistY))
+                        elif spotDistY < 0:
+                            realspotDistY = int(math.ceil(spotDistY))
+                        elif spotDistY == 0:
+                            realspotDistY = int(round(spotDistY))
+                    elif Uspot > 0 and rthetawfSpot < 0:
+                        if spotDistX > 0:
+                            realspotDistX = int(math.floor(spotDistX))
+                        elif spotDistX < 0:
+                            realspotDistX = int(math.ceil(spotDistX))
+                        elif spotDistX == 0:
+                            realspotDistX = int(round(spotDistX))
+                        if spotDistY > 0:
+                            realspotDistY = int(math.floor(spotDistY))
+                        elif spotDistY < 0:
+                            realspotDistY = int(math.ceil(spotDistY))
+                        elif spotDistY == 0:
+                            realspotDistY = int(round(spotDistY))
+                    elif Uspot < 0 and rthetawfSpot < 0:
+                        if spotDistX > 0:
+                            realspotDistX = int(math.ceil(spotDistX))
+                        elif spotDistX < 0:
+                            realspotDistX = int(math.floor(spotDistX))
+                        elif spotDistX == 0:
+                            realspotDistX = int(round(spotDistX))
+                        if spotDistY > 0:
+                            realspotDistY = int(math.ceil(spotDistY))
+                        elif spotDistY < 0:
+                            realspotDistY = int(math.floor(spotDistY))
+                        elif spotDistY == 0:
+                            realspotDistY = int(round(spotDistY))
+                    else:
+                        realspotDistX = int(round(spotDistX))
+                        realspotDistY = int(round(spotDistY))
+
+
+                    # fuel values for spotted cell
+                    if data.fuel[ry + realspotDistY][rx + realspotDistX] == 91:
+                        # NB1 - Urban/Developed
+                        # NO FIRE SPREAD
+                        pvegSpot = -1.0
+                        pdenSpot = 0.0
+                        hSpot = 0  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.0  # packing ratio (dimentionless)
+                        MxSpot = 0.0  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 92:
+                        # NB2 - Snow/Ice
+                        # NO FIRE SPREAD
+                        pvegSpot = -1.0
+                        pdenSpot = 0.0
+                        hSpot = 0  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.0  # packing ratio (dimentionless)
+                        MxSpot = 0.0  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 93:
+                        # NB3 - Agricultural
+                        # NO FIRE SPREAD
+                        pvegSpot = -1.0
+                        pdenSpot = 0.0
+                        hSpot = 0  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.0  # packing ratio (dimentionless)
+                        MxSpot = 0.0  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 98:
+                        # NB8 - Open Water
+                        # NO FIRE SPREAD
+                        pvegSpot = -1.0
+                        pdenSpot = 0.0
+                        hSpot = 0  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.0  # packing ratio (dimentionless)
+                        MxSpot = 0.0  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 99:
+                        # NB9 - Barren
+                        # NO FIRE SPREAD
+                        pvegSpot = -1.0
+                        pdenSpot = 0.0
+                        hSpot = 0  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.0  # packing ratio (dimentionless)
+                        MxSpot = 0.0  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 100:
+                        # NB10 - Next to nb Custom
+                        # NO FIRE SPREAD
+
+                        pvegSpot = -1.0
+                        pdenSpot = 0.0
+                        hSpot = 0  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.0  # packing ratio (dimentionless)
+                        MxSpot = 0.0  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 101:
+                        # GR1
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.4  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00143  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.4  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 2054  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 102:
+                        # GR2
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00158  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.1  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1820  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 103:
+                        # GR3
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 2.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00143  # packing ratio (dimentionless)
+                        MxSpot = 0.3  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.6  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1290  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 104:
+                        # GR4
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 2.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00154  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 2.15  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1826  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 105:
+                        # GR5
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.5  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00277  # packing ratio (dimentionless)
+                        MxSpot = 0.4  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 2.9  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1631  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 106:
+                        # GR6
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 9000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.5  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00335  # packing ratio (dimentionless)
+                        MxSpot = 0.4  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 3.5  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 2006  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 107:
+                        # GR7
+                        pvegSpot = 0.4
+                        pdenSpot = 0.3
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 3.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00306  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 6.4  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1834  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 108:
+                        # GR8
+                        pvegSpot = 0.4
+                        pdenSpot = 0.3
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 4.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00316  # packing ratio (dimentionless)
+                        MxSpot = 0.3  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 7.8  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1302  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 109:
+                        # GR9
+                        pvegSpot = 0.4
+                        pdenSpot = 0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 5.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00316  # packing ratio (dimentionless)
+                        MxSpot = 0.4  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 10.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1612  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 121:
+                        # GS1
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.9  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00215  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.35  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1832  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 122:
+                        # GS2
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.5  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00249  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 2.1  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1827  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 123:
+                        # GS3
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.8  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00259  # packing ratio (dimentionless)
+                        MxSpot = 0.4  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 3.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1614  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 124:
+                        # GS4
+                        pvegSpot = 0.4
+                        pdenSpot = 0.3
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 2.1  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00874  # packing ratio (dimentionless)
+                        MxSpot = 0.4  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 12.4  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 141:
+                        # ShSpot1
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00280  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.7  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 142:
+                        # ShSpot2
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.01198  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 5.2  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1672  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 143:
+                        # ShSpot3
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 2.4  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00577  # packing ratio (dimentionless)
+                        MxSpot = 0.4  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 6.65  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1371  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 144:
+                        # ShSpot4
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 3.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00227  # packing ratio (dimentionless)
+                        MxSpot = 0.3  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 3.4  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1682  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 145:
+                        # ShSpot5
+                        pvegSpot = 0.4
+                        pdenSpot = 0.3
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 6.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00206  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 6.5  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1252  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 146:
+                        # ShSpot6
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 2.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00412  # packing ratio (dimentionless)
+                        MxSpot = 0.3  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 4.3  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1144  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 147:
+                        # ShSpot7
+                        pvegSpot = 0.4
+                        pdenSpot = 0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 6.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00344  # packing ratio (dimentionless)
+                        MxSpot = 0.15  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 6.9  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1233  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 148:
+                        # ShSpot8
+                        pvegSpot = 0.4
+                        pdenSpot = 0.3
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 3.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00509  # packing ratio (dimentionless)
+                        MxSpot = 0.4  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 6.4  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1386  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 149:
+                        # ShSpot9
+                        pvegSpot = 0.4
+                        pdenSpot = 0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 4.4  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00505  # packing ratio (dimentionless)
+                        MxSpot = 0.4  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 13.05  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1378  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 161:
+                        # TU1
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.6  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00885  # packing ratio (dimentionless)
+                        MxSpot = 0.2  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.3  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1606  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 162:
+                        # TU2
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00603  # packing ratio (dimentionless)
+                        MxSpot = 0.3  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.15  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1767  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 163:
+                        # TU3
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.3  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00359  # packing ratio (dimentionless)
+                        MxSpot = 0.3  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 2.85  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1611  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 164:
+                        # TU4
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.5  # fuel bed depthSpot (ft)
+                        betaSpot = 0.01865  # packing ratio (dimentionless)
+                        MxSpot = 0.12  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 6.5  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 2216  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 165:
+                        # TU5
+                        pvegSpot = 0.4
+                        pdenSpot = 0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.02009  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 7.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1224  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 181:
+                        # TL1
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.2  # fuel bed depthSpot (ft)
+                        betaSpot = 0.04878  # packing ratio (dimentionless)
+                        MxSpot = 0.3  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1716  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 182:
+                        # TL2
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.2  # fuel bed depthSpot (ft)
+                        betaSpot = 0.04232  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.4  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1806  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 183:
+                        # TL3
+                        pvegSpot = 0.1
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.3  # fuel bed depthSpot (ft)
+                        betaSpot = 0.02630  # packing ratio (dimentionless)
+                        MxSpot = 0.2  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.5  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1532  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 184:
+                        # TL4
+                        pvegSpot = 0.2
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.4  # fuel bed depthSpot (ft)
+                        betaSpot = 0.02224  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.5  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1568  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 185:
+                        # TL5
+                        pvegSpot = 0.2
+                        pdenSpot = 0.3
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.6  # fuel bed depthSpot (ft)
+                        betaSpot = 0.01925  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.15  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1713  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 186:
+                        # TL6
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.3  # fuel bed depthSpot (ft)
+                        betaSpot = 0.02296  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 2.4  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1936  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 187:
+                        # TL7
+                        pvegSpot = 0.2
+                        pdenSpot = 0.3
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.4  # fuel bed depthSpot (ft)
+                        betaSpot = 0.03515  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.3  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1229  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 188:
+                        # TL8
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.3  # fuel bed depthSpot (ft)
+                        betaSpot = 0.03969  # packing ratio (dimentionless)
+                        MxSpot = 0.35  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 5.8  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1770  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 189:
+                        # TL9
+                        pvegSpot = 0.4
+                        pdenSpot = 0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0.6  # fuel bed depthSpot (ft)
+                        betaSpot = 0.03372  # packing ratio (dimentionless)
+                        MxSpot = 0.35  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 6.65  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1733  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 201:
+                        # SB1
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.02224  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 1.5  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1653  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 202:
+                        # SB2
+                        pvegSpot = 0.4
+                        pdenSpot = 0.0
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.01829  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 4.5  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1884  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 203:
+                        # SB3
+                        pvegSpot = 0.4
+                        pdenSpot = 0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 1.2  # fuel bed depthSpot (ft)
+                        betaSpot = 0.01345  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 5.5  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1935  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 204:
+                        # SB4
+                        pvegSpot = 0.5
+                        pdenSpot = 0.4
+                        hSpot = 8000  # low hSpoteat content (btu/lb)
+                        deltaSpot = 2.7  # fuel bed depthSpot (ft)
+                        betaSpot = 0.00744  # packing ratio (dimentionless)
+                        MxSpot = 0.25  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 5.25  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 1907  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+                    else:
+                        pvegSpot = -1.0
+                        pdenSpot = 0.0
+                        hSpot = 0  # low hSpoteat content (btu/lb)
+                        deltaSpot = 0  # fuel bed depthSpot (ft)
+                        betaSpot = 0.0  # packing ratio (dimentionless)
+                        MxSpot = 0.0  # dead fuel moisture of extinction (fraction)
+                        w0Spot = 0.0  # oven dry fuel load (lb/ft^2)
+                        sigmaSpot = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
+
+                    # probability that spotted cell will burn, found using Alexandridis model using pveg and pden
+                    # disregard slope and wind in calculating burn prob of spotted cell b/c spot from top
+                    phSpot = 0.58  # pre optimised
+                    Pc = (phSpot * (1 + pvegSpot) * (1 + pdenSpot))
+
+                    if (0.5 <= Pc):
+                        Rspot = ((rothermelRate(0, 0, hSpot, deltaSpot, betaSpot, MxSpot, w0Spot, sigmaSpot)) / data.p)
+                        # print("R val", R)
+                        tsRSpot = (1 / Rspot)
+                        # print("tsR", tsR)
+
+                        # print("R val", R)
+                        # data.p = side length
+                        # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
+                        # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
+                        Fire(x + realspotDistX * data.p, y + realspotDistY * data.p, data, int(tick + tsRSpot), self.x, self.y)
+
+
+                    
 
