@@ -5,7 +5,7 @@ from numpy import random
 from data import *
 from rothermelModel import *
 from alexandridisModel import *
-from alexandridisSpotting import *
+# from alexandridisSpotting import *
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
@@ -615,123 +615,123 @@ class Fire:
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
                     Fire(x + dx * data.p, y + dy * data.p, data, int(tick+tsR), self.x, self.y)
 
+            
+            ##################################################################
+            # spotting
 
-                ##################################################################
-                # spotting
+            lambdaVal = 1  # lambda for poisson for Number of spotting items #TODO: find value
+            Nsubp = int(random.poisson(lam=lambdaVal, size=None))  # number of spotting cells from poisson dist
+            # info: size= None gives one scalar value
 
-                lambdaVal = 1  # lambda for poisson for Number of spotting items #TODO: find value
-                Nsubp = int(random.poisson(lam=lambdaVal, size=None))  # number of spotting cells from poisson dist
-                # info: size= None gives one scalar value
+            rnMeanVal = 2  # mean val for rn from gaussian dist #TODO: find val
+            rnStdVal = 2  # std val for rn from gaussian dist #TODO: find val
 
-                rnMeanVal = 2  # mean val for rn from gaussian dist #TODO: find val
-                rnStdVal = 2  # std val for rn from gaussian dist #TODO: find val
+            # spotting
 
-                # spotting
+            # random spot direction #TODO: improve later
+            spotAngOptionsX = [-4, -3, -2, -1, 0, 1, 2, 3, 4]  # in 9x9 grid, relative to center tile
+            spotAngOptionsY = [-4, -3, -2, -1, 0, 1, 2, 3, 4]  # in 9x9 grid, relative to center tile
+            spotAngOptionsY2 = [-4, -3, -2, -1, 1, 2, 3, 4]  # in 9x9 grid, relative to center tile, if 0 and 0 then pull Y from this
+            for i in range(Nsubp):
+                spotAngX = random.choice(spotAngOptionsX)  # for generating random angle, spot in X
+                spotAngY = random.choice(spotAngOptionsY)  # for generating random angle, spot in Y
 
-                # random spot direction #TODO: improve later
-                spotAngOptionsX = [-4, -3, -2, -1, 0, 1, 2, 3, 4]  # in 9x9 grid, relative to center tile
-                spotAngOptionsY = [-4, -3, -2, -1, 0, 1, 2, 3, 4]  # in 9x9 grid, relative to center tile
-                spotAngOptionsY2 = [-4, -3, -2, -1, 1, 2, 3, 4]  # in 9x9 grid, relative to center tile, if 0 and 0 then pull Y from this
-                for i in range(Nsubp):
-                    spotAngX = random.choice(spotAngOptionsX)  # for generating random angle, spot in X
-                    spotAngY = random.choice(spotAngOptionsY)  # for generating random angle, spot in Y
+                if spotAngX == 0 and spotAngY == 0:
+                    spotAngY = random.choice(spotAngOptionsY2)  # rerolling AngY so not on the same point
+                    # this process is statistically correct because Nsubp guarantees spotting of 2 cells, if on same cell, then Nsubp condition not met
 
-                    if spotAngX == 0 and spotAngY == 0:
-                        spotAngY = random.choice(spotAngOptionsY2)  # rerolling AngY so not on the same point
-                        # this process is statistically correct because Nsubp guarantees spotting of 2 cells, if on same cell, then Nsubp condition not met
+                if spotAngX > 0 and spotAngY > 0:
+                    rangSpot = math.atan((spotAngY / spotAngX))
+                elif spotAngX > 0 and spotAngY < 0:
+                    rangSpot = ((2 * math.pi) + math.atan((spotAngY / spotAngX)))
+                elif spotAngX < 0 and spotAngY > 0:
+                    rangSpot = (math.pi + math.atan((spotAngY / spotAngX)))
+                elif spotAngX < 0 and spotAngY < 0:
+                    rangSpot = (math.pi + math.atan((spotAngY / spotAngX)))
+                elif spotAngX == 0 and spotAngY > 0:
+                    rangSpot = (math.pi / 2)
+                elif spotAngX == 0 and spotAngY < 0:
+                    rangSpot = (((3 * math.pi) / 2))
+                else:
+                    rangSpot = math.atan((spotAngY / spotAngX)) #TODO: fix rangspot not defined error
 
-                    if spotAngX > 0 and spotAngY > 0:
-                        rangSpot = math.atan((spotAngY / spotAngX))
-                    elif spotAngX > 0 and spotAngY < 0:
-                        rangSpot = ((2 * math.pi) + math.atan((spotAngY / spotAngX)))
-                    elif spotAngX < 0 and spotAngY > 0:
-                        rangSpot = (math.pi + math.atan((spotAngY / spotAngX)))
-                    elif spotAngX < 0 and spotAngY < 0:
-                        rangSpot = (math.pi + math.atan((spotAngY / spotAngX)))
-                    elif spotAngX == 0 and spotAngY > 0:
-                        rangSpot = (math.pi / 2)
-                    elif spotAngX == 0 and spotAngY < 0:
-                        rangSpot = (((3 * math.pi) / 2))
-                    else:
-                        rangSpot = math.atan((spotAngY / spotAngX)) #TODO: fix rangspot not defined error
+                # spotting distance
 
-                    # spotting distance
+                # generated random rn from gaussian distribution
+                rsubn = float(random.normal(loc=rnMeanVal, scale=rnStdVal, size=None))  # TODO: tune vals
+                # info: size = None gives one scalar value
+                # info: loc = mean
+                # info: scale = std
 
-                    # generated random rn from gaussian distribution
-                    rsubn = float(random.normal(loc=rnMeanVal, scale=rnStdVal, size=None))  # TODO: tune vals
-                    # info: size = None gives one scalar value
-                    # info: loc = mean
-                    # info: scale = std
+                # relative wind angle
+                thetawSpot = data.get_windA(tick, x, y)
+                Uspot = data.get_windV(tick, x, y)
+                thetawfSpot = (thetawSpot - rangSpot)
+                rthetawfSpot = (math.pi - math.radians(thetawfSpot))
 
-                    # relative wind angle
-                    thetawSpot = data.get_windA(tick, x, y)
-                    Uspot = data.get_windV(tick, x, y)
-                    thetawfSpot = (thetawSpot - rangSpot)
-                    rthetawfSpot = (math.pi - math.radians(thetawfSpot))
+                # spotting distance (cells)
+                spotDistance = (rsubn * math.exp((Uspot * (math.cos(rthetawfSpot) - 1))))
+                spotDistX = (spotDistance * (math.cos(rangSpot)))
+                spotDistY = (spotDistance * (math.sin(rangSpot)))
 
-                    # spotting distance (cells)
-                    spotDistance = (rsubn * math.exp((Uspot * (math.cos(rthetawfSpot) - 1))))
-                    spotDistX = (spotDistance * (math.cos(rangSpot)))
-                    spotDistY = (spotDistance * (math.sin(rangSpot)))
-
-                    # real x,y, spotting distance (cells), statistically correct because inherently random
-                    if Uspot > 0 and rthetawfSpot > 0:
-                        if spotDistX > 0:
-                            realspotDistX = int(math.ceil(spotDistX))
-                        elif spotDistX < 0:
-                            realspotDistX = int(math.floor(spotDistX))
-                        elif spotDistX == 0:
-                            realspotDistX = int(round(spotDistX))
-                        if spotDistY > 0:
-                            realspotDistY = int(math.ceil(spotDistY))
-                        elif spotDistY < 0:
-                            realspotDistY = int(math.floor(spotDistY))
-                        elif spotDistY == 0:
-                            realspotDistY = int(round(spotDistY))
-                    elif Uspot < 0 and rthetawfSpot > 0:
-                        if spotDistX > 0:
-                            realspotDistX = int(math.floor(spotDistX))
-                        elif spotDistX < 0:
-                            realspotDistX = int(math.ceil(spotDistX))
-                        elif spotDistX == 0:
-                            realspotDistX = int(round(spotDistX))
-                        if spotDistY > 0:
-                            realspotDistY = int(math.floor(spotDistY))
-                        elif spotDistY < 0:
-                            realspotDistY = int(math.ceil(spotDistY))
-                        elif spotDistY == 0:
-                            realspotDistY = int(round(spotDistY))
-                    elif Uspot > 0 and rthetawfSpot < 0:
-                        if spotDistX > 0:
-                            realspotDistX = int(math.floor(spotDistX))
-                        elif spotDistX < 0:
-                            realspotDistX = int(math.ceil(spotDistX))
-                        elif spotDistX == 0:
-                            realspotDistX = int(round(spotDistX))
-                        if spotDistY > 0:
-                            realspotDistY = int(math.floor(spotDistY))
-                        elif spotDistY < 0:
-                            realspotDistY = int(math.ceil(spotDistY))
-                        elif spotDistY == 0:
-                            realspotDistY = int(round(spotDistY))
-                    elif Uspot < 0 and rthetawfSpot < 0:
-                        if spotDistX > 0:
-                            realspotDistX = int(math.ceil(spotDistX))
-                        elif spotDistX < 0:
-                            realspotDistX = int(math.floor(spotDistX))
-                        elif spotDistX == 0:
-                            realspotDistX = int(round(spotDistX))
-                        if spotDistY > 0:
-                            realspotDistY = int(math.ceil(spotDistY))
-                        elif spotDistY < 0:
-                            realspotDistY = int(math.floor(spotDistY))
-                        elif spotDistY == 0:
-                            realspotDistY = int(round(spotDistY))
-                    else:
+                # real x,y, spotting distance (cells), statistically correct because inherently random
+                if Uspot > 0 and rthetawfSpot > 0:
+                    if spotDistX > 0:
+                        realspotDistX = int(math.ceil(spotDistX))
+                    elif spotDistX < 0:
+                        realspotDistX = int(math.floor(spotDistX))
+                    elif spotDistX == 0:
                         realspotDistX = int(round(spotDistX))
+                    if spotDistY > 0:
+                        realspotDistY = int(math.ceil(spotDistY))
+                    elif spotDistY < 0:
+                        realspotDistY = int(math.floor(spotDistY))
+                    elif spotDistY == 0:
                         realspotDistY = int(round(spotDistY))
+                elif Uspot < 0 and rthetawfSpot > 0:
+                    if spotDistX > 0:
+                        realspotDistX = int(math.floor(spotDistX))
+                    elif spotDistX < 0:
+                        realspotDistX = int(math.ceil(spotDistX))
+                    elif spotDistX == 0:
+                        realspotDistX = int(round(spotDistX))
+                    if spotDistY > 0:
+                        realspotDistY = int(math.floor(spotDistY))
+                    elif spotDistY < 0:
+                        realspotDistY = int(math.ceil(spotDistY))
+                    elif spotDistY == 0:
+                        realspotDistY = int(round(spotDistY))
+                elif Uspot > 0 and rthetawfSpot < 0:
+                    if spotDistX > 0:
+                        realspotDistX = int(math.floor(spotDistX))
+                    elif spotDistX < 0:
+                        realspotDistX = int(math.ceil(spotDistX))
+                    elif spotDistX == 0:
+                        realspotDistX = int(round(spotDistX))
+                    if spotDistY > 0:
+                        realspotDistY = int(math.floor(spotDistY))
+                    elif spotDistY < 0:
+                        realspotDistY = int(math.ceil(spotDistY))
+                    elif spotDistY == 0:
+                        realspotDistY = int(round(spotDistY))
+                elif Uspot < 0 and rthetawfSpot < 0:
+                    if spotDistX > 0:
+                        realspotDistX = int(math.ceil(spotDistX))
+                    elif spotDistX < 0:
+                        realspotDistX = int(math.floor(spotDistX))
+                    elif spotDistX == 0:
+                        realspotDistX = int(round(spotDistX))
+                    if spotDistY > 0:
+                        realspotDistY = int(math.ceil(spotDistY))
+                    elif spotDistY < 0:
+                        realspotDistY = int(math.floor(spotDistY))
+                    elif spotDistY == 0:
+                        realspotDistY = int(round(spotDistY))
+                else:
+                    realspotDistX = int(round(spotDistX))
+                    realspotDistY = int(round(spotDistY))
 
-
+                if rx + realspotDistX >= realspotDistY and ry + realspotDistY >= 0 and ry + realspotDistY < data.nrows and rx + realspotDistX < data.ncols:
                     # fuel values for spotted cell
                     if data.fuel[ry + realspotDistY][rx + realspotDistX] == 91:
                         # NB1 - Urban/Developed
@@ -1228,5 +1228,5 @@ class Fire:
                         Fire(x + realspotDistX * data.p, y + realspotDistY * data.p, data, int(tick + tsRSpot), self.x, self.y)
 
 
-                    
+                        
 
