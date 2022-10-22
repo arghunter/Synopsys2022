@@ -5,7 +5,6 @@ from numpy import random
 from data import *
 from rothermelModel import *
 from alexandridisModel import *
-from alexandridisSpotting import *
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
