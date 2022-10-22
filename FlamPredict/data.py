@@ -12,8 +12,9 @@ class Data:
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
         # geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
-        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
+        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito"
+        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Creek\\creek"
 
         # fuel
         fuel = open(geoTIFFPath + "/fuel.asc", "r")
@@ -63,7 +64,7 @@ class Data:
         atmdir = geoTIFFPath
         # atmdir = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         # atmname=input("Enter wind atm file name")
-        atmname = "elevation_point_09-06-2022_1736_100m.atm"  # TODO: commentout when done
+        atmname = "elevation_point_09-04-2020_0556_100m_non_neutral_stability.atm"  # TODO: commentout when done
 
         # atmfileLines = input("Enter number of lines in atm file: ")
         atmfileLines = "75"  # TODO: commentout when done
