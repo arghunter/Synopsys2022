@@ -12,8 +12,9 @@ class Data:
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
         # geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
-        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
-        # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito"
+        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
+        # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito" # mac
+        geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito1/mosquito" # winpc
 
         # fuel
         fuel = open(geoTIFFPath + "/fuel.asc", "r")

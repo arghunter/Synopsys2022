@@ -43,9 +43,9 @@ a = 0.078
 def alexandridisModelProbability(dthetaS, thetaf, thetaw, mgw, p, pveg, pden):
     # wind direction relative to fire spread direction - thetawf
     thetawf = (thetaw - thetaf)
-    rthetawf = math.radians(thetawf)
+    rthetawf = (math.pi - math.radians(thetawf))
     # print("relative wind direction", thetawf)
-    U=mgw/p*60
+    U = (mgw/p)*60
     # slope influenced probability
     ps = math.exp((a * dthetaS))
     # print("ps", ps)
