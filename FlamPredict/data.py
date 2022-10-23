@@ -69,7 +69,7 @@ class Data:
         atmname = "elevation_point_09-04-2020_0556_100m_non_neutral_stability.atm"  # TODO: commentout when done
 
         # atmfileLines = input("Enter number of lines in atm file: ")
-        atmfileLines = "75"  # TODO: commentout when done
+        atmfileLines = "342"  # TODO: commentout when done
         self.atmLen = int(atmfileLines) - 2
         atm = open(atmdir + "/" + atmname, "r")
         altFs = atm.readline()
