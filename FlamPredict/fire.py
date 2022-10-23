@@ -5,6 +5,7 @@ from numpy import random
 from data import *
 from rothermelModel import *
 from alexandridisModel import *
+from rothermelModelSpot import *
 
 # The neightbors of a cells
 neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
@@ -592,17 +593,17 @@ class Fire:
                     sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 
 
-                prob = alexandridisModelProbability(slope, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y), data.p, pveg, pden)
+                prob = alexandridisModelProbability(slope, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y), pveg, pden)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
                 if (0.5 <= prob):
                     # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
                     tanPhi = slope
-                    U = data.get_windV(tick, x, y)
+                    Uroth= ((data.get_windV(tick, x, y)*3.28084)*60)
                     rothThetawf = (data.get_windA(tick, x, y) - ang)
                     rothrThetawf = (np.pi - math.radians(rothThetawf))
                     realUmult = math.cos(rothrThetawf)
-                    realU = (U*realUmult)
+                    realU = (Uroth*realUmult)
                     R = ((rothermelRate(tanPhi, realU, h, delta, beta, Mx, w0, sigma))/data.p)
                     # print("R val", R)
                     tsR = (1/R)
@@ -664,7 +665,7 @@ class Fire:
 
                     # relative wind angle
                     thetawSpot = data.get_windA(tick, x, y)
-                    Uspot = data.get_windV(tick, x, y)
+                    Uspot = (data.get_windV(tick, x, y))
                     thetawfSpot = (thetawSpot - rangSpot)
                     rthetawfSpot = (math.pi - math.radians(thetawfSpot))
 
@@ -1215,7 +1216,8 @@ class Fire:
                     Pc = (phSpot * (1 + pvegSpot) * (1 + pdenSpot))
 
                     if (0.5 <= Pc):
-                        Rspot = ((rothermelRate(0, 0, hSpot, deltaSpot, betaSpot, MxSpot, w0Spot, sigmaSpot)) / data.p)
+                        Rspot = ((rothermelRateSpot(0, 0, hSpot, deltaSpot, betaSpot, MxSpot, w0Spot, sigmaSpot))/data.p)
+                        # unit conversion
                         # print("R val", R)
                         tsRSpot = (1 / Rspot)
                         # print("tsR", tsR)
