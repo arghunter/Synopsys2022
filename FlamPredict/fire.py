@@ -663,11 +663,11 @@ class Fire:
                 # info: loc = mean
                 # info: scale = std
 
-                    # relative wind angle
-                    thetawSpot = data.get_windA(tick, x, y)
-                    Uspot = (data.get_windV(tick, x, y))
-                    thetawfSpot = (thetawSpot - rangSpot)
-                    rthetawfSpot = (math.pi - math.radians(thetawfSpot))
+                # relative wind angle
+                thetawSpot = data.get_windA(tick, x, y)
+                Uspot = (data.get_windV(tick, x, y))
+                thetawfSpot = (thetawSpot - rangSpot)
+                rthetawfSpot = (math.pi - math.radians(thetawfSpot))
 
                 # spotting distance (cells)
                 spotDistance = (rsubn * math.exp((Uspot * (math.cos(rthetawfSpot) - 1))))
