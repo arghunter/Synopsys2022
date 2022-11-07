@@ -21,8 +21,11 @@ ax = fig.add_subplot(111)
 # ax.set_axis_off()
 colors_list = [(0,0.4,0),(0,0,1)]
 bounds = [0.0,1.0]
-
-simulateTime =1440
+count=0
+for i,j in range(X.shape()):
+   if(X[i][j]!=0):
+      count+=1
+simulateTime =1440*1000
 for i in range(2,simulateTime,120):
    colors_list.append(((i)/(simulateTime),0,0))
    bounds.append(i)
