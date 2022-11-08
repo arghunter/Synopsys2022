@@ -44,6 +44,32 @@ for i in range(flatXlen):
       burntSq += 1
 
 print("burnt sq #", burntSq)
+sqMburnt = burntSq*900
+AcreBurnt = (sqMburnt/4047)
+print("acres burnt at time", simulateTime, "is", AcreBurnt, "acres")
+
+# stats commpare for 24 hour interval from 9/6 to 9/7
+# 9/6 is 1440*2 ticks; 9/7 is 1440*3 ticks
+burntSq96 = 0
+for i in range(flatXlen):
+   if (flatX[i] != 0) and (flatX[i] <= (1440*2)):
+      burntSq96 += 1
+
+burntSq97 = 0
+for i in range(flatXlen):
+   if (flatX[i] != 0) and (flatX[i] <= (1440*3)):
+      burntSq97 += 1
+
+burntSqDiff = (burntSq97-burntSq96)
+sqMburntdiff = burntSqDiff*900
+AcreBurntdiff = (sqMburntdiff/4047)
+print("acre burnt diff", AcreBurntdiff)
+
+actualAcreburnt = 5512
+
+percentError = abs(((AcreBurntdiff-actualAcreburnt)/actualAcreburnt))*100
+print("% error from 9/6-9/7:", percentError)
+
 
 # The matplotlib function imshow() creates an image from a 2D numpy array with 1
 # square for each array element. X is the data of the image; cmap is a colormap;
