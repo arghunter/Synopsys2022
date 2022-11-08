@@ -10,7 +10,8 @@ from matplotlib import colors
 
 
 file=open("routput.txt",'r')
-X=np.loadtxt(file)
+X = np.loadtxt(file)
+
 
 fig = plt.figure(figsize=(25 / 3, 6.25))
 
@@ -22,7 +23,9 @@ ax = fig.add_subplot(111)
 colors_list = [(0,0.4,0),(0,0,1)]
 bounds = [0.0,1.0]
 
-simulateTime =1440
+simulateTime = 1440*1
+
+
 for i in range(2,simulateTime,120):
    colors_list.append(((i)/(simulateTime),0,0))
    bounds.append(i)
@@ -32,6 +35,21 @@ for i in range(simulateTime,200000):
 print(bounds)
 cmap = colors.ListedColormap(colors_list)
 norm = colors.BoundaryNorm(bounds, cmap.N)
+
+
+
+# burnt squares count
+flatX = X.flatten()
+flatXlen = len(flatX)
+# print("flat X len", flatXlen)
+burntSq = 0
+for i in range(flatXlen):
+   if (flatX[i] != 0) and (flatX[i] <= simulateTime):
+      burntSq += 1
+
+print("burnt sq #", burntSq)
+
+
 # The matplotlib function imshow() creates an image from a 2D numpy array with 1
 # square for each array element. X is the data of the image; cmap is a colormap;
 # norm maps the data to colormap colors.
