@@ -32,6 +32,19 @@ for i in range(simulateTime,200000):
 print(bounds)
 cmap = colors.ListedColormap(colors_list)
 norm = colors.BoundaryNorm(bounds, cmap.N)
+
+
+# burnt squares count
+flatX = X.flatten()
+flatXlen = len(flatX)
+# print("flat X len", flatXlen)
+burntSq = 0
+for i in range(flatXlen):
+   if (flatX[i] != 0) and (flatX[i] <= simulateTime):
+      burntSq += 1
+
+print("burnt sq #", burntSq)
+
 # The matplotlib function imshow() creates an image from a 2D numpy array with 1
 # square for each array element. X is the data of the image; cmap is a colormap;
 # norm maps the data to colormap colors.
