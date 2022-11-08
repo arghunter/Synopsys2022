@@ -67,6 +67,7 @@ print("acre burnt diff", AcreBurntdiff)
 
 actualAcreburnt = 5512
 
+
 percentError = abs(((AcreBurntdiff-actualAcreburnt)/actualAcreburnt))*100
 print("% error from 9/6-9/7:", percentError)
 
