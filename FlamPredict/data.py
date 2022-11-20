@@ -1,5 +1,6 @@
 import numpy as np
 
+from queue import Queue
 
 # import pandas as pd
 
@@ -12,12 +13,14 @@ class Data:
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
         # geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
-        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
+        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito"
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Creek\\creek"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito" # mac
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito1/mosquito" # winpc
-        geoTIFFPath = "/Users/Samuel Yuan/Downloads/creek (1)/creek" #win pc
+        # geoTIFFPath = "/Users/Samuel Yuan/Downloads/creek (1)/creek" #win pc
+        self.spotQ=Queue(maxsize = 0)
+        
 
         # fuel
         fuel = open(geoTIFFPath + "/fuel.asc", "r")
@@ -25,7 +28,7 @@ class Data:
         self.ncols = int(fuelstring[13:len(fuelstring)])
         fuelstring = fuel.readline()
         self.nrows = (int(fuelstring[13:len(fuelstring)]))
-
+        
         fuelstring = fuel.readline()
         fuelstring = fuel.readline()
         fuelstring = fuel.readline()
@@ -62,15 +65,16 @@ class Data:
         nodata = elevationstring[14:len(elevationstring)]
         self.elevation = np.loadtxt(elevation)
         print(self.elevation)
-        self.BURN = np.zeros((self.nrows, self.ncols, 3))  # probability,time,direction
+        self.BURN = np.zeros((self.nrows, self.ncols, 3)) # probability,time,direction
+        self.COLORS = np.zeros((self.nrows, self.ncols))
         # atmdir=input("Enter wind directory: ")
         atmdir = geoTIFFPath
         # atmdir = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         # atmname=input("Enter wind atm file name")
-        atmname = "elevation_point_09-04-2020_0556_100m_non_neutral_stability.atm"  # TODO: commentout when done
+        atmname = "elevation_point_09-06-2022_1736_100m.atm"  # TODO: commentout when done
 
         # atmfileLines = input("Enter number of lines in atm file: ")
-        atmfileLines = "342"  # TODO: commentout when done
+        atmfileLines = "75"  # TODO: commentout when done
         self.atmLen = int(atmfileLines) - 2
         atm = open(atmdir + "/" + atmname, "r")
         altFs = atm.readline()

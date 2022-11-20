@@ -19,101 +19,75 @@ import threading
 # genome init
 from genome import *
 
-popCount = 800
-genCount=800
-elite=80
+def solve(data,buffer,safetyTime):
+    rects=[]
+    cdist=(180*data.p)**2 # The squared distance for 2 spots to be unique clusters
+    qs=data.spotQ.qsize()
+    # rect=[2000000000,2000000000,-1,-1]
+    for y in range(data.COLORS.shape[0]):
+        for x in range(data.COLORS.shape[1]):
+        # print(data.spotQ.qsize())
+            # data.BURN[int(y/data.p)][int(x/data.p)]=1000
+            if( data.COLORS[int(y)][int(x)]==0):
+                
+                
+                rect=floodFill(data,int(x),int(y),len(rects)+100,buffer+safetyTime)
+                # print(rect)
+                
+                if(rect[0]!=rect[2] and rect[1]!=rect[3]  ):
+                    # pass
+                    rects.append(rect)
+                    data.BURN[rect[1]][rect[0]][1]=1
+                    data.BURN[rect[3]][rect[0]][1]=1
+                    data.BURN[rect[3]][rect[2]][1]=1
+                    data.BURN[rect[1]][rect[2]][1]=1
+    for rect in rects:
+        for j in range(rect[1],rect[3]):
+            data.COLORS[j][rect[0]]=1
+            data.COLORS[j][rect[2]]=1
+               
+        
+    print(rects)    
+
+def floodFill(data,rx,ry,color,simtime):
+    q=Queue(0)
+    q.put((rx,ry))
+    x1=rx
+    x2=rx
+    y1=ry
+    y2=ry
+    while(not q.empty()):
+        p=q.get()
+        rx=p[0]
+        ry=p[1]
+        
+        if not(not(rx  >= 0 and ry  >= 0 and ry< data.nrows and rx  < data.ncols) or data.COLORS[ry][rx]!=0 or data.BURN[ry,rx,1]==0 or data.BURN[ry][rx][1]>simtime):
+             
+            if(rx<x1):
+                x1=rx
+            elif(rx>x2):
+                x2=rx
+            if(ry<y1):
+                y1=ry
+            elif(ry>y2):
+                y2=ry
+            
+            print(str(data.COLORS[ry][rx])+" "+ str(ry)+" "+str(rx)+" "+str(x1)+" "+str(y1)+" "+str(x2)+" "+str(y2))
+            data.COLORS[ry][rx]=color
+            q.put((rx+1,ry))
+            q.put((rx-1,ry))
+            q.put((rx,ry+1))
+            q.put((rx,ry+1))
+            q.put((rx+1,ry+1))
+            q.put((rx+1,ry-1))
+            q.put((rx-1,ry-1))
+            q.put((rx-1,ry+1))
+    print(str((x1,y1,x2,y2)))        
+    return (x1,y1,x2,y2)
+
+      
+
 # sol = Genome(4)
 
 
-def getSol(X, A):
-    print("Solvin")
-    population = np.empty(popCount, Genome)
-    scores = np.zeros(popCount)
-    count=np.zeros(1)
-    # min = 21347000000
-    # mini = 0
-    # min2 = 21347000000
-    # minii = 0
-    # print("Here")
-    for i in range(popCount):
-        # print("HHere")
-        population[i] = Genome(12)
-        print(i)
-        t= (threading.Thread(target=test_genome, args=(population[i],X,A,i,scores,count,population,population)))
-        
-        t.start()
-    while count[0]!=-popCount:
-        time.sleep(1)
-        print(count[0])
 
-    ind= np.argsort(scores)
-    scores=scores[ind]
-    population=population[ind]
-    for i in range(genCount):
-        print(i/genCount)
-        randCount=int(np.random.random()*240)
-        parents=np.empty(elite+randCount,Genome)
-        for i in range(elite):
-            parents[i]=population[i]
-        for i in range(elite,elite+randCount):
-            parents[i]=population[np.random.randint(popCount)]
-        replaced=0
-        for i in range(elite):
-            p1=np.random.randint(0,elite)
-            p2=np.random.randint(0,elite)
-            split=np.random.randint(12)
-            population[replaced]=Genome(12,parents[p1],parents[p2],split)
-            replaced+=1
-            if(replaced<popCount):
-                population[replaced]=Genome(12,parents[p2],parents[p1],split)
-        while replaced<popCount:
-            p1=np.random.randint(0,elite+randCount)
-            p2=np.random.randint(0,elite+randCount)
-            split=np.random.randint(12)
-            population[replaced]=Genome(12,parents[p1],parents[p2],split)
-            replaced+=1
-            if(replaced<popCount):
-                population[replaced]=Genome(12,parents[p2],parents[p1],split)
-        count[0]=0
-        for i in range(popCount):
-            t= (threading.Thread(target=test_genome, args=(population[i],X,A,i,scores,count,population,parents)))
-            t.start()
-        while count[0]!=-popCount:
-            time.sleep(1)
-            print(count[0])
-            print("Computing")
-        ind= np.argsort(scores)
-        scores=scores[ind]
-        population=population[ind]
-        print(scores)
-        
-        
-            
-        
-    print(scores)
-    # sol = population[mini]
-    # return population[mini]
-    return population[0]
-    # for i in range(popCount):
-    #     print(population[i].nV)
-
-def test_genome(gnme,X,A,i,scores,count,population,parents):
-    # print("Testing: "+str(i))
-    passed=False
-    while not passed:
-        try:
-            scorer = Scorer(gnme, X, A)
-            scores[i] = scorer.score()
-            passed=True   
-        except:
-            print("Failed to score")
-            population[i]=Genome(12,parents[np.random.randint(elite)],parents[np.random.randint(elite)],np,random.randint(12))
-            genome=population[i]
-    
-    count[0]-=1;
-    
-    
-# population in generation
-# if len(populationBig) <= intpopulationSize:
-#     populationBig.append(1)
-#     print("POPULATION: ", len(populationBig), "OUT OF", intpopulationSize)

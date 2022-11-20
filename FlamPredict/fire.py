@@ -731,7 +731,7 @@ class Fire:
                     realspotDistX = int(round(spotDistX))
                     realspotDistY = int(round(spotDistY))
                 if rx + realspotDistX >= 0 and ry + realspotDistY >= 0 and ry + realspotDistY < data.nrows and rx + realspotDistX < data.ncols:
-
+                    data.spotQ.put((x+(realspotDistX)*data.p,y+(realspotDistY)*data.p))
 
                     # fuel values for spotted cell
                     if data.fuel[ry + realspotDistY][rx + realspotDistX] == 91:
