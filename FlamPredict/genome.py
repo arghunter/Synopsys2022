@@ -195,6 +195,11 @@ class FireLine:
         return size
                 
   
+    def execute(self,data):
+        qs=self.bx.qsize();
+        while(qs>0):
+            qs-=1
+            data.BURN[self.by.get()][self.bx.get()]=1;
         
     def getScore(self,data,buffer,time,speedms,X):
         qs=self.bx.qsize()
@@ -250,22 +255,26 @@ class Genome:
     def __init__(self,rects):
         rectrects=[]
         for rect in rects:
-            rectrects.appends(Rectangle(rect[0],rect[1],rect[2],rect[3]))
+            rectrects.append(Rectangle(rect[0],rect[1],rect[2],rect[3]))
         intsec=[]
         for i in range (len(rects)):
-            intsec.append({})
+            intsec.append(set())
             for j in range(i+1,len(rects)):
                 if(rectrects[i].intersects(rectrects[j])):
                     intsec[i].add(j)
-        vx=[]
+        
+        self.lines=self.cycleintsec(rectrects,intsec)
+        
        
-    def cycleintsec(rectrects,intsec,vx):
-         for i in len(intsec):
+    def cycleintsec(self,rectrects,intsec):
+        lines=[]
+        for i in range(len(intsec)):
             tripped=True
             while(tripped):
                 for val in intsec[i]:
                     if(val != -1):
-                        x=intsec[i].update(intsec[val])
+                        print(intsec[i])
+                        x=intsec[i].copy().update(intsec[val])
                         if (x==intsec[i]):
                             tripped=False
                         else:
@@ -273,21 +282,24 @@ class Genome:
                             intsec[i].add(-1)
                             break
                         #take the sets shove the unique un touched ones that contain -1 into vx and add verts
-            
-                    
-            
-            
-            
-        
-            
-            
-            
-            
-            
-        
-                    
-        self.lines=[] #list of fire lines
-        
+        for set in intsec:
+            if -1 in set:
+                points=[]
+                for val in set:
+                    if val!=-1:
+                        points.append((rectrects[i].x1,rectrects[i].y1))
+                        points.append((rectrects[i].x2,rectrects[i].y1))
+                        points.append((rectrects[i].x2,rectrects[i].y2))
+                        points.append((rectrects[i].x1,rectrects[i].y2))
+                # may need to reorder point to preveres polygonislaismsn
+                lines.append(FireLine(points,len(points)))
+        return lines
+    def execute(self,data):
+        for line in self.lines:
+            line.execute(data)     
+                
+                        
+   
     
     
     def floodFill(self,data,X,simtime):

@@ -45,6 +45,8 @@ def solve(data,buffer,safetyTime):
         for j in range(rect[1],rect[3]):
             data.COLORS[j][rect[0]]=1
             data.COLORS[j][rect[2]]=1
+    sol=Genome(rects)
+    sol.execute(data)
                
         
     print(rects)    
