@@ -22,7 +22,7 @@ ax = fig.add_subplot(111)
 colors_list = [(0,0.4,0),(0,0,1)]
 bounds = [0.0,1.0]
 
-simulateTime =4080
+simulateTime = 1440*3
 for i in range(2,simulateTime,120):
    colors_list.append(((i)/(simulateTime),0,0))
    bounds.append(i)
@@ -70,6 +70,10 @@ actualAcreburnt = 5512
 
 percentError = abs(((AcreBurntdiff-actualAcreburnt)/actualAcreburnt))*100
 print("% error from 9/6-9/7:", percentError)
+
+originalError = 52.49563994616236
+improvementError = originalError-percentError
+print("improvement:", improvementError)
 
 
 # The matplotlib function imshow() creates an image from a 2D numpy array with 1

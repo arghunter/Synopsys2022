@@ -173,7 +173,6 @@ class Fire:
                 elif data.fuel[ry + dy][rx + dx] == 100:
                     # NB10 - Next to nb Custom
                     # NO FIRE SPREAD
-                    
                     pveg = -1.0
                     pden = 0.0
                     h = 0  # low heat content (btu/lb)
@@ -184,7 +183,7 @@ class Fire:
                     sigma = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 101:
                     # GR1
-                    pveg = 0.4
+                    pveg = 0.1
                     pden = -0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 0.4  # fuel bed depth (ft)
@@ -194,8 +193,8 @@ class Fire:
                     sigma = 2054  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 102:
                     # GR2
-                    pveg = 0.4
-                    pden = -0.4
+                    pveg = 0.1
+                    pden = -0.35
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.0  # fuel bed depth (ft)
                     beta = 0.00158  # packing ratio (dimentionless)
@@ -204,8 +203,8 @@ class Fire:
                     sigma = 1820  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 103:
                     # GR3
-                    pveg = 0.4
-                    pden = -0.4
+                    pveg = 0.1
+                    pden = -0.35
                     h = 8000  # low heat content (btu/lb)
                     delta = 2.0  # fuel bed depth (ft)
                     beta = 0.00143  # packing ratio (dimentionless)
@@ -214,7 +213,7 @@ class Fire:
                     sigma = 1290  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 104:
                     # GR4
-                    pveg = 0.4
+                    pveg = 0.1
                     pden = 0.0
                     h = 8000  # low heat content (btu/lb)
                     delta = 2.0  # fuel bed depth (ft)
@@ -224,8 +223,8 @@ class Fire:
                     sigma = 1826  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 105:
                     # GR5
-                    pveg = 0.4
-                    pden = -0.4
+                    pveg = 0.1
+                    pden = -0.35
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.5  # fuel bed depth (ft)
                     beta = 0.00277  # packing ratio (dimentionless)
@@ -234,7 +233,7 @@ class Fire:
                     sigma = 1631  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 106:
                     # GR6
-                    pveg = 0.4
+                    pveg = 0.1
                     pden = 0.0
                     h = 9000  # low heat content (btu/lb)
                     delta = 1.5  # fuel bed depth (ft)
@@ -244,8 +243,8 @@ class Fire:
                     sigma = 2006  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 107:
                     # GR7
-                    pveg = 0.4
-                    pden = 0.3
+                    pveg = 0.1
+                    pden = 0.35
                     h = 8000  # low heat content (btu/lb)
                     delta = 3.0  # fuel bed depth (ft)
                     beta = 0.00306  # packing ratio (dimentionless)
@@ -254,8 +253,8 @@ class Fire:
                     sigma = 1834  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 108:
                     # GR8
-                    pveg = 0.4
-                    pden = 0.3
+                    pveg = 0.1
+                    pden = 0.40
                     h = 8000  # low heat content (btu/lb)
                     delta = 4.0  # fuel bed depth (ft)
                     beta = 0.00316  # packing ratio (dimentionless)
@@ -264,8 +263,8 @@ class Fire:
                     sigma = 1302  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 109:
                     # GR9
-                    pveg = 0.4
-                    pden = 0.4
+                    pveg = 0.1
+                    pden = 0.5
                     h = 8000  # low heat content (btu/lb)
                     delta = 5.0  # fuel bed depth (ft)
                     beta = 0.00316  # packing ratio (dimentionless)
@@ -274,7 +273,7 @@ class Fire:
                     sigma = 1612  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 121:
                     # GS1
-                    pveg = 0.4
+                    pveg = 0.1
                     pden = -0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 0.9  # fuel bed depth (ft)
@@ -284,7 +283,7 @@ class Fire:
                     sigma = 1832  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 122:
                     # GS2
-                    pveg = 0.4
+                    pveg = 0.1
                     pden = 0.0
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.5  # fuel bed depth (ft)
@@ -294,7 +293,7 @@ class Fire:
                     sigma = 1827  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 123:
                     # GS3
-                    pveg = 0.4
+                    pveg = 0.1
                     pden = 0.0
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.8  # fuel bed depth (ft)
@@ -304,8 +303,8 @@ class Fire:
                     sigma = 1614  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 124:
                     # GS4
-                    pveg = 0.4
-                    pden = 0.3
+                    pveg = 0.1
+                    pden = 0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 2.1  # fuel bed depth (ft)
                     beta = 0.00874  # packing ratio (dimentionless)
@@ -314,7 +313,7 @@ class Fire:
                     sigma = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 141:
                     # SH1
-                    pveg = 0.4
+                    pveg = 0.3
                     pden = -0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.0  # fuel bed depth (ft)
@@ -324,7 +323,7 @@ class Fire:
                     sigma = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 142:
                     # SH2
-                    pveg = 0.4
+                    pveg = 0.3
                     pden = 0.0
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.0  # fuel bed depth (ft)
@@ -334,7 +333,7 @@ class Fire:
                     sigma = 1672  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 143:
                     # SH3
-                    pveg = 0.4
+                    pveg = 0.3
                     pden = 0.0
                     h = 8000  # low heat content (btu/lb)
                     delta = 2.4  # fuel bed depth (ft)
@@ -344,7 +343,7 @@ class Fire:
                     sigma = 1371  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 144:
                     # SH4
-                    pveg = 0.4
+                    pveg = 0.3
                     pden = -0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 3.0  # fuel bed depth (ft)
@@ -354,8 +353,8 @@ class Fire:
                     sigma = 1682  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 145:
                     # SH5
-                    pveg = 0.4
-                    pden = 0.3
+                    pveg = 0.3
+                    pden = 0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 6.0  # fuel bed depth (ft)
                     beta = 0.00206  # packing ratio (dimentionless)
@@ -364,7 +363,7 @@ class Fire:
                     sigma = 1252  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 146:
                     # SH6
-                    pveg = 0.4
+                    pveg = 0.3
                     pden = -0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 2.0  # fuel bed depth (ft)
@@ -374,8 +373,8 @@ class Fire:
                     sigma = 1144  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 147:
                     # SH7
-                    pveg = 0.4
-                    pden = 0.4
+                    pveg = 0.3
+                    pden = 0.5
                     h = 8000  # low heat content (btu/lb)
                     delta = 6.0  # fuel bed depth (ft)
                     beta = 0.00344  # packing ratio (dimentionless)
@@ -384,8 +383,8 @@ class Fire:
                     sigma = 1233  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 148:
                     # SH8
-                    pveg = 0.4
-                    pden = 0.3
+                    pveg = 0.3
+                    pden = 0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 3.0  # fuel bed depth (ft)
                     beta = 0.00509  # packing ratio (dimentionless)
@@ -394,8 +393,8 @@ class Fire:
                     sigma = 1386  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 149:
                     # SH9
-                    pveg = 0.4
-                    pden = 0.4
+                    pveg = 0.3
+                    pden = 0.5
                     h = 8000  # low heat content (btu/lb)
                     delta = 4.4  # fuel bed depth (ft)
                     beta = 0.00505  # packing ratio (dimentionless)
@@ -435,7 +434,7 @@ class Fire:
                 elif data.fuel[ry + dy][rx + dx] == 164:
                     # TU4
                     pveg = 0.4
-                    pden = -0.4
+                    pden = 0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 0.5  # fuel bed depth (ft)
                     beta = 0.01865  # packing ratio (dimentionless)
@@ -445,7 +444,7 @@ class Fire:
                 elif data.fuel[ry + dy][rx + dx] == 165:
                     # TU5
                     pveg = 0.4
-                    pden = 0.4
+                    pden = 0.5
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.0  # fuel bed depth (ft)
                     beta = 0.02009  # packing ratio (dimentionless)
@@ -474,7 +473,7 @@ class Fire:
                     sigma = 1806  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 183:
                     # TL3
-                    pveg = 0.1
+                    pveg = 0.4
                     pden = 0.0
                     h = 8000  # low heat content (btu/lb)
                     delta = 0.3  # fuel bed depth (ft)
@@ -484,8 +483,8 @@ class Fire:
                     sigma = 1532  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 184:
                     # TL4
-                    pveg = 0.2
-                    pden = 0.0
+                    pveg = 0.4
+                    pden = -0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 0.4  # fuel bed depth (ft)
                     beta = 0.02224  # packing ratio (dimentionless)
@@ -494,8 +493,8 @@ class Fire:
                     sigma = 1568  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 185:
                     # TL5
-                    pveg = 0.2
-                    pden = 0.3
+                    pveg = 0.4
+                    pden = 0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 0.6  # fuel bed depth (ft)
                     beta = 0.01925  # packing ratio (dimentionless)
@@ -514,8 +513,8 @@ class Fire:
                     sigma = 1936  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 187:
                     # TL7
-                    pveg = 0.2
-                    pden = 0.3
+                    pveg = 0.4
+                    pden = -0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 0.4  # fuel bed depth (ft)
                     beta = 0.03515  # packing ratio (dimentionless)
@@ -525,7 +524,7 @@ class Fire:
                 elif data.fuel[ry + dy][rx + dx] == 188:
                     # TL8
                     pveg = 0.4
-                    pden = 0.0
+                    pden = 0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 0.3  # fuel bed depth (ft)
                     beta = 0.03969  # packing ratio (dimentionless)
@@ -535,7 +534,7 @@ class Fire:
                 elif data.fuel[ry + dy][rx + dx] == 189:
                     # TL9
                     pveg = 0.4
-                    pden = 0.4
+                    pden = 0.5
                     h = 8000  # low heat content (btu/lb)
                     delta = 0.6  # fuel bed depth (ft)
                     beta = 0.03372  # packing ratio (dimentionless)
@@ -544,7 +543,7 @@ class Fire:
                     sigma = 1733  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 201:
                     # SB1
-                    pveg = 0.4
+                    pveg = 0.35
                     pden = -0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.0  # fuel bed depth (ft)
@@ -554,7 +553,7 @@ class Fire:
                     sigma = 1653  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 202:
                     # SB2
-                    pveg = 0.4
+                    pveg = 0.35
                     pden = 0.0
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.0  # fuel bed depth (ft)
@@ -564,7 +563,7 @@ class Fire:
                     sigma = 1884  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 203:
                     # SB3
-                    pveg = 0.4
+                    pveg = 0.35
                     pden = 0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 1.2  # fuel bed depth (ft)
@@ -574,7 +573,7 @@ class Fire:
                     sigma = 1935  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 204:
                     # SB4
-                    pveg = 0.5
+                    pveg = 0.4
                     pden = 0.4
                     h = 8000  # low heat content (btu/lb)
                     delta = 2.7  # fuel bed depth (ft)
@@ -792,7 +791,6 @@ class Fire:
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 100:
                         # NB10 - Next to nb Custom
                         # NO FIRE SPREAD
-
                         pvegSpot = -1.0
                         pdenSpot = 0.0
                         hSpot = 0  # low hSpoteat content (btu/lb)
@@ -803,7 +801,7 @@ class Fire:
                         sigmaSpot = 0  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 101:
                         # GR1
-                        pvegSpot = 0.4
+                        pvegSpot = 0.1
                         pdenSpot = -0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 0.4  # fuel bed depthSpot (ft)
@@ -813,8 +811,8 @@ class Fire:
                         sigmaSpot = 2054  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 102:
                         # GR2
-                        pvegSpot = 0.4
-                        pdenSpot = -0.4
+                        pvegSpot = 0.1
+                        pdenSpot = -0.35
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.0  # fuel bed depthSpot (ft)
                         betaSpot = 0.00158  # packing ratio (dimentionless)
@@ -823,8 +821,8 @@ class Fire:
                         sigmaSpot = 1820  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 103:
                         # GR3
-                        pvegSpot = 0.4
-                        pdenSpot = -0.4
+                        pvegSpot = 0.1
+                        pdenSpot = -0.35
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 2.0  # fuel bed depthSpot (ft)
                         betaSpot = 0.00143  # packing ratio (dimentionless)
@@ -833,7 +831,7 @@ class Fire:
                         sigmaSpot = 1290  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 104:
                         # GR4
-                        pvegSpot = 0.4
+                        pvegSpot = 0.1
                         pdenSpot = 0.0
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 2.0  # fuel bed depthSpot (ft)
@@ -843,8 +841,8 @@ class Fire:
                         sigmaSpot = 1826  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 105:
                         # GR5
-                        pvegSpot = 0.4
-                        pdenSpot = -0.4
+                        pvegSpot = 0.1
+                        pdenSpot = -0.35
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.5  # fuel bed depthSpot (ft)
                         betaSpot = 0.00277  # packing ratio (dimentionless)
@@ -853,7 +851,7 @@ class Fire:
                         sigmaSpot = 1631  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 106:
                         # GR6
-                        pvegSpot = 0.4
+                        pvegSpot = 0.1
                         pdenSpot = 0.0
                         hSpot = 9000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.5  # fuel bed depthSpot (ft)
@@ -863,8 +861,8 @@ class Fire:
                         sigmaSpot = 2006  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 107:
                         # GR7
-                        pvegSpot = 0.4
-                        pdenSpot = 0.3
+                        pvegSpot = 0.1
+                        pdenSpot = 0.35
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 3.0  # fuel bed depthSpot (ft)
                         betaSpot = 0.00306  # packing ratio (dimentionless)
@@ -873,8 +871,8 @@ class Fire:
                         sigmaSpot = 1834  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 108:
                         # GR8
-                        pvegSpot = 0.4
-                        pdenSpot = 0.3
+                        pvegSpot = 0.1
+                        pdenSpot = 0.40
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 4.0  # fuel bed depthSpot (ft)
                         betaSpot = 0.00316  # packing ratio (dimentionless)
@@ -883,8 +881,8 @@ class Fire:
                         sigmaSpot = 1302  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 109:
                         # GR9
-                        pvegSpot = 0.4
-                        pdenSpot = 0.4
+                        pvegSpot = 0.1
+                        pdenSpot = 0.5
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 5.0  # fuel bed depthSpot (ft)
                         betaSpot = 0.00316  # packing ratio (dimentionless)
@@ -893,7 +891,7 @@ class Fire:
                         sigmaSpot = 1612  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 121:
                         # GS1
-                        pvegSpot = 0.4
+                        pvegSpot = 0.1
                         pdenSpot = -0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 0.9  # fuel bed depthSpot (ft)
@@ -903,7 +901,7 @@ class Fire:
                         sigmaSpot = 1832  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 122:
                         # GS2
-                        pvegSpot = 0.4
+                        pvegSpot = 0.1
                         pdenSpot = 0.0
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.5  # fuel bed depthSpot (ft)
@@ -913,7 +911,7 @@ class Fire:
                         sigmaSpot = 1827  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 123:
                         # GS3
-                        pvegSpot = 0.4
+                        pvegSpot = 0.1
                         pdenSpot = 0.0
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.8  # fuel bed depthSpot (ft)
@@ -923,8 +921,8 @@ class Fire:
                         sigmaSpot = 1614  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 124:
                         # GS4
-                        pvegSpot = 0.4
-                        pdenSpot = 0.3
+                        pvegSpot = 0.1
+                        pdenSpot = 0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 2.1  # fuel bed depthSpot (ft)
                         betaSpot = 0.00874  # packing ratio (dimentionless)
@@ -933,7 +931,7 @@ class Fire:
                         sigmaSpot = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 141:
                         # ShSpot1
-                        pvegSpot = 0.4
+                        pvegSpot = 0.3
                         pdenSpot = -0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.0  # fuel bed depthSpot (ft)
@@ -943,7 +941,7 @@ class Fire:
                         sigmaSpot = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 142:
                         # ShSpot2
-                        pvegSpot = 0.4
+                        pvegSpot = 0.3
                         pdenSpot = 0.0
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.0  # fuel bed depthSpot (ft)
@@ -953,7 +951,7 @@ class Fire:
                         sigmaSpot = 1672  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 143:
                         # ShSpot3
-                        pvegSpot = 0.4
+                        pvegSpot = 0.3
                         pdenSpot = 0.0
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 2.4  # fuel bed depthSpot (ft)
@@ -963,7 +961,7 @@ class Fire:
                         sigmaSpot = 1371  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 144:
                         # ShSpot4
-                        pvegSpot = 0.4
+                        pvegSpot = 0.3
                         pdenSpot = -0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 3.0  # fuel bed depthSpot (ft)
@@ -973,8 +971,8 @@ class Fire:
                         sigmaSpot = 1682  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 145:
                         # ShSpot5
-                        pvegSpot = 0.4
-                        pdenSpot = 0.3
+                        pvegSpot = 0.3
+                        pdenSpot = 0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 6.0  # fuel bed depthSpot (ft)
                         betaSpot = 0.00206  # packing ratio (dimentionless)
@@ -983,7 +981,7 @@ class Fire:
                         sigmaSpot = 1252  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 146:
                         # ShSpot6
-                        pvegSpot = 0.4
+                        pvegSpot = 0.3
                         pdenSpot = -0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 2.0  # fuel bed depthSpot (ft)
@@ -993,8 +991,8 @@ class Fire:
                         sigmaSpot = 1144  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 147:
                         # ShSpot7
-                        pvegSpot = 0.4
-                        pdenSpot = 0.4
+                        pvegSpot = 0.3
+                        pdenSpot = 0.5
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 6.0  # fuel bed depthSpot (ft)
                         betaSpot = 0.00344  # packing ratio (dimentionless)
@@ -1003,8 +1001,8 @@ class Fire:
                         sigmaSpot = 1233  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 148:
                         # ShSpot8
-                        pvegSpot = 0.4
-                        pdenSpot = 0.3
+                        pvegSpot = 0.3
+                        pdenSpot = 0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 3.0  # fuel bed depthSpot (ft)
                         betaSpot = 0.00509  # packing ratio (dimentionless)
@@ -1013,8 +1011,8 @@ class Fire:
                         sigmaSpot = 1386  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 149:
                         # ShSpot9
-                        pvegSpot = 0.4
-                        pdenSpot = 0.4
+                        pvegSpot = 0.3
+                        pdenSpot = 0.5
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 4.4  # fuel bed depthSpot (ft)
                         betaSpot = 0.00505  # packing ratio (dimentionless)
@@ -1054,7 +1052,7 @@ class Fire:
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 164:
                         # TU4
                         pvegSpot = 0.4
-                        pdenSpot = -0.4
+                        pdenSpot = 0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 0.5  # fuel bed depthSpot (ft)
                         betaSpot = 0.01865  # packing ratio (dimentionless)
@@ -1064,7 +1062,7 @@ class Fire:
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 165:
                         # TU5
                         pvegSpot = 0.4
-                        pdenSpot = 0.4
+                        pdenSpot = 0.5
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.0  # fuel bed depthSpot (ft)
                         betaSpot = 0.02009  # packing ratio (dimentionless)
@@ -1093,7 +1091,7 @@ class Fire:
                         sigmaSpot = 1806  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 183:
                         # TL3
-                        pvegSpot = 0.1
+                        pvegSpot = 0.4
                         pdenSpot = 0.0
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 0.3  # fuel bed depthSpot (ft)
@@ -1103,8 +1101,8 @@ class Fire:
                         sigmaSpot = 1532  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 184:
                         # TL4
-                        pvegSpot = 0.2
-                        pdenSpot = 0.0
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 0.4  # fuel bed depthSpot (ft)
                         betaSpot = 0.02224  # packing ratio (dimentionless)
@@ -1113,8 +1111,8 @@ class Fire:
                         sigmaSpot = 1568  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 185:
                         # TL5
-                        pvegSpot = 0.2
-                        pdenSpot = 0.3
+                        pvegSpot = 0.4
+                        pdenSpot = 0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 0.6  # fuel bed depthSpot (ft)
                         betaSpot = 0.01925  # packing ratio (dimentionless)
@@ -1133,8 +1131,8 @@ class Fire:
                         sigmaSpot = 1936  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 187:
                         # TL7
-                        pvegSpot = 0.2
-                        pdenSpot = 0.3
+                        pvegSpot = 0.4
+                        pdenSpot = -0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 0.4  # fuel bed depthSpot (ft)
                         betaSpot = 0.03515  # packing ratio (dimentionless)
@@ -1144,7 +1142,7 @@ class Fire:
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 188:
                         # TL8
                         pvegSpot = 0.4
-                        pdenSpot = 0.0
+                        pdenSpot = 0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 0.3  # fuel bed depthSpot (ft)
                         betaSpot = 0.03969  # packing ratio (dimentionless)
@@ -1154,7 +1152,7 @@ class Fire:
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 189:
                         # TL9
                         pvegSpot = 0.4
-                        pdenSpot = 0.4
+                        pdenSpot = 0.5
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 0.6  # fuel bed depthSpot (ft)
                         betaSpot = 0.03372  # packing ratio (dimentionless)
@@ -1163,7 +1161,7 @@ class Fire:
                         sigmaSpot = 1733  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 201:
                         # SB1
-                        pvegSpot = 0.4
+                        pvegSpot = 0.35
                         pdenSpot = -0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.0  # fuel bed depthSpot (ft)
@@ -1173,7 +1171,7 @@ class Fire:
                         sigmaSpot = 1653  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 202:
                         # SB2
-                        pvegSpot = 0.4
+                        pvegSpot = 0.35
                         pdenSpot = 0.0
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.0  # fuel bed depthSpot (ft)
@@ -1183,7 +1181,7 @@ class Fire:
                         sigmaSpot = 1884  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 203:
                         # SB3
-                        pvegSpot = 0.4
+                        pvegSpot = 0.35
                         pdenSpot = 0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 1.2  # fuel bed depthSpot (ft)
@@ -1193,7 +1191,7 @@ class Fire:
                         sigmaSpot = 1935  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                     elif data.fuel[ry + realspotDistY][rx + realspotDistX] == 204:
                         # SB4
-                        pvegSpot = 0.5
+                        pvegSpot = 0.4
                         pdenSpot = 0.4
                         hSpot = 8000  # low hSpoteat content (btu/lb)
                         deltaSpot = 2.7  # fuel bed depthSpot (ft)
