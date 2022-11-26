@@ -596,23 +596,23 @@ class Fire:
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
                 if (0.5 <= prob):
-                    # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
-                    tanPhi = slope
-                    Uroth= ((data.get_windV(tick, x, y)*3.28084)*60)
-                    rothThetawf = (data.get_windA(tick, x, y) - ang)
-                    rothrThetawf = (np.pi - math.radians(rothThetawf))
-                    realUmult = math.cos(rothrThetawf)
-                    realU = (Uroth*realUmult)
-                    R = ((rothermelRate(tanPhi, realU, h, delta, beta, Mx, w0, sigma))/data.p)
-                    # print("R val", R)
-                    tsR = (1/R)
+                    # # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
+                    # tanPhi = slope
+                    # Uroth= ((data.get_windV(tick, x, y)*3.28084)*60)
+                    # rothThetawf = (data.get_windA(tick, x, y) - ang)
+                    # rothrThetawf = (np.pi - math.radians(rothThetawf))
+                    # realUmult = math.cos(rothrThetawf)
+                    # realU = (Uroth*realUmult)
+                    # R = ((rothermelRate(tanPhi, realU, h, delta, beta, Mx, w0, sigma))/data.p)
+                    # # print("R val", R)
+                    # tsR = (1/R)
                     # print("tsR", tsR)
 
                     # print("R val", R)
                     # data.p = side length
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
-                    Fire(x + dx * data.p, y + dy * data.p, data, int(tick+tsR), self.x, self.y)
+                    Fire(x + dx * data.p, y + dy * data.p, data, int(tick+1), self.x, self.y)
 
 
                 ##################################################################
@@ -1215,17 +1215,17 @@ class Fire:
                     Pc = (phSpot * (1 + pvegSpot) * (1 + pdenSpot))
 
                     if (0.5 <= Pc):
-                        Rspot = ((rothermelRateSpot(0, 0, hSpot, deltaSpot, betaSpot, MxSpot, w0Spot, sigmaSpot))/data.p)
-                        # unit conversion
-                        # print("R val", R)
-                        tsRSpot = (1 / Rspot)
+    #                     Rspot = ((rothermelRateSpot(0, 0, hSpot, deltaSpot, betaSpot, MxSpot, w0Spot, sigmaSpot))/data.p)
+    #                     # unit conversion
+    #                     # print("R val", R)
+    #    1                 tsRSpot = (1 / Rspot)
                         # print("tsR", tsR)
 
                         # print("R val", R)
                         # data.p = side length
                         # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
                         # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
-                        Fire(x + realspotDistX * data.p, y + realspotDistY * data.p, data, int(tick + tsRSpot), self.x, self.y)
+                        Fire(x + realspotDistX * data.p, y + realspotDistY * data.p, data, int(tick + 1), self.x, self.y)
 
 
                     

@@ -15,6 +15,7 @@ class FireLine:
         self.nV = nV;
         self.v=v
         self.avgX=0;
+        self.avgY=0;
         for i in v:
             self.avgX+=i[0]
             self.avgY+=i[1]
@@ -196,10 +197,14 @@ class FireLine:
                 
   
     def execute(self,data):
+        print("Execuring")
         qs=self.bx.qsize();
         while(qs>0):
             qs-=1
-            data.BURN[self.by.get()][self.bx.get()]=1;
+            ry=self.by.get()
+            rx=self.bx.get()
+            print("Executing"+ str(rx)+" "+str(ry))
+            data.BURN[ry][rx][1]=1;
         
     def getScore(self,data,buffer,time,speedms,X):
         qs=self.bx.qsize()
@@ -223,21 +228,21 @@ class FireLine:
                         score+=scoreW
                         X[ly-3+i][lx-3+j]=2
         
-        while(not self.bx.empty()):
-            rx=self.bx.get();
-            ry=self.by.get();
-            dy=ry-ly;
-            dx=rx-lx;
-            d=np.sqrt(dy**2+dx**2)
-            time+=d/speedms
-            ly=ry
-            lx=rx
-            for i in range(6):
-                for j in range(6):
-                    if(ly-3+i>=0 and ly-3+i<data.nrows and lx-3+j>=0 and lx-3+j<data.ncols  ):
-                        if(data.BURN[ly-3+i][lx-3+j]<time+buffer and not (X[ly-3+i][lx-3+j]==2)):
-                            score+=scoreW
-                            X[ly-3+i][lx-3+j]=2
+        # while(not self.bx.empty()):
+        #     rx=self.bx.get();
+        #     ry=self.by.get();
+        #     dy=ry-ly;
+        #     dx=rx-lx;
+        #     d=np.sqrt(dy**2+dx**2)
+        #     time+=d/speedms
+        #     ly=ry
+        #     lx=rx
+        #     for i in range(6):
+        #         for j in range(6):
+        #             if(ly-3+i>=0 and ly-3+i<data.nrows and lx-3+j>=0 and lx-3+j<data.ncols  ):
+        #                 if(data.BURN[ly-3+i][lx-3+j]<time+buffer and not (X[ly-3+i][lx-3+j]==2)):
+        #                     score+=scoreW
+        #                     X[ly-3+i][lx-3+j]=2
         return score
     
     
@@ -257,24 +262,36 @@ class Genome:
         for rect in rects:
             rectrects.append(Rectangle(rect[0],rect[1],rect[2],rect[3]))
         intsec=[]
+        print(str(rectrects))
         for i in range (len(rects)):
             intsec.append(set())
             for j in range(i+1,len(rects)):
+                print(str(rectrects[i].intersects(rectrects[j]))+" "+str(i)+" "+str(j)+" "+str(rectrects[i].x1)+" "+str(rectrects[i].y1)+" "+str(rectrects[i].x2)+" "+str(rectrects[i].y2)+" "+str(rectrects[j].x1)+" "+str(rectrects[j].y1)+" "+str(rectrects[j].x2)+" "+str(rectrects[j].y2))
+
                 if(rectrects[i].intersects(rectrects[j])):
                     intsec[i].add(j)
         
-        self.lines=self.cycleintsec(rectrects,intsec)
+        self.lines=[]
+        self.cycleintsec(rectrects,intsec)
         
        
     def cycleintsec(self,rectrects,intsec):
-        lines=[]
+        
         for i in range(len(intsec)):
             tripped=True
-            while(tripped):
+            scanned=True;
+            print(intsec)
+            while(tripped and scanned):
+                print(" Points")
+                scanned=False;
                 for val in intsec[i]:
-                    if(val != -1):
+                    
+                         
+                    if not -1 in intsec[i]:
+                        scanned=True;
                         print(intsec[i])
-                        x=intsec[i].copy().update(intsec[val])
+                        x=intsec[i].copy()
+                        x.update(intsec[val])
                         if (x==intsec[i]):
                             tripped=False
                         else:
@@ -282,6 +299,7 @@ class Genome:
                             intsec[i].add(-1)
                             break
                         #take the sets shove the unique un touched ones that contain -1 into vx and add verts
+        print(str(intsec)+" here")
         for set in intsec:
             if -1 in set:
                 points=[]
@@ -292,10 +310,13 @@ class Genome:
                         points.append((rectrects[i].x2,rectrects[i].y2))
                         points.append((rectrects[i].x1,rectrects[i].y2))
                 # may need to reorder point to preveres polygonislaismsn
-                lines.append(FireLine(points,len(points)))
-        return lines
+                print(str(points)+" Points")
+                self.lines.append(FireLine(points,len(points)))
+       
     def execute(self,data):
+        print("exuriutingngjdsh")
         for line in self.lines:
+            print("Here")
             line.execute(data)     
                 
                         

@@ -2,7 +2,7 @@
 # from userInfo import *
 import math
 
-ph = 0.58  # pre optimised
+ph = 0.1  # pre optimised
 
 # p veg dependent on land type - pre defined by alexandridis
 # land types, 1 - forest, 2 - shrubs, 3 - agriculture, 4 - no vegetation

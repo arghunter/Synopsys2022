@@ -19,7 +19,7 @@ while(threading.activeCount()>1):
     print(threading.activeCount())
     time.sleep(1)
 
-solve(data,4080,300)
+solve(data,100,20)
 for i in range (data.ncols):
     for j in range (data.nrows):
         file.write( str(data.BURN[j][i][1])+" ")
