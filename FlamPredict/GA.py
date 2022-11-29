@@ -20,41 +20,91 @@ import threading
 from genome import *
 
 def solve(data,buffer,safetyTime):
-    rects=[]
-    cdist=(180*data.p)**2 # The squared distance for 2 spots to be unique clusters
-    qs=data.spotQ.qsize()
+    popCount=200
+    genCount=200
+    elite=int(popCount*0.1)
+    bRes=20
+    pop=np.empty(popCount,Genome)
+    seti=set()
+    for i in range (data.ncols):
+        for j in range (data.nrows):
+            if(data.BURN[j][i][1]!=0 and data.COLORS[j][i]==0):
+                floodFill(data,i,j,4,safetyTime+buffer,seti)
+    lst=list(seti)
+    points=convexHull(lst)
+                
+        
+    
+    # for i in range(popCount):
+        
+    # points=[]
+    # for t in range(bRes):
+    #     px= np.random.randint(10,data.nrows-10);
+    #     py= np.random.randint(10,data.ncols-10);
+    #     points.append((px,py))
+    gnme=Genome(points)
+
+        
+     # The squared distance for 2 spots to be unique clusters
+   
     # rect=[2000000000,2000000000,-1,-1]
-    for y in range(data.COLORS.shape[0]):
-        for x in range(data.COLORS.shape[1]):
-        # print(data.spotQ.qsize())
-            # data.BURN[int(y/data.p)][int(x/data.p)]=1000
-            if( data.COLORS[int(y)][int(x)]==0):
-                
-                
-                rect=floodFill(data,int(x),int(y),len(rects)+100,buffer+safetyTime)
-                # print(rect)
-                
-                if(rect[0]!=rect[2] and rect[1]!=rect[3]  ):
-                    # pass
-                    rects.append(rect)
-                    data.BURN[rect[1]][rect[0]][1]=1
-                    data.BURN[rect[3]][rect[0]][1]=1
-                    data.BURN[rect[3]][rect[2]][1]=1
-                    data.BURN[rect[1]][rect[2]][1]=1
-    for rect in rects:
-        for j in range(rect[1],rect[3]):
-            data.COLORS[j][rect[0]]=1
-            data.COLORS[j][rect[2]]=1
-    for rect in rects:
-        print(""+str(rect[0])+" "+str(rect[1])+" "+str(rect[2])+" "+str(rect[3])+ "rects u idiot")
-    sol=Genome(rects)
+    
+    # sol=Genome(rects)
     print("qiwoyhe had ")
-    sol.execute(data)
+    gnme.execute(data)
                
         
-    print(rects)    
-
-def floodFill(data,rx,ry,color,simtime):
+    # print(rects)    
+bp=(0,0)
+def dir(bp,p1,p2):
+        det=(p1[1]-bp[1])*(p2[0]-p1[0])-(p1[0]-bp[0])*(p2[1]-p1[1])
+        if det==0:
+            return 0
+        elif det>0:
+            return 1;
+        else:
+            return 2;
+def eulerdist2(p1,p2):
+        return (p1[0]-p2[0])**2+(p1[1]-p2[1])**2
+def cmp(a,b):
+        # return a[0]<b[0];
+        dr=dir(bp,a,b)
+        if dr==0:
+            if(eulerdist2(bp,b)>=eulerdist2(bp,a)):
+                return -1;
+            else:
+                return 1;
+        else:
+            if dr==2:
+                return -1
+            else:
+                return 1
+def convexHull(points):
+        minv=points[0][1]
+        min=0
+        for i in range(1,len(points)):
+            if(points[i][1]<minv or points[i][1]==minv and points[i][0]<points[min][0]):
+                minv=points[i][1]
+                min=i
+        points[0],points[min]=points[min],points[0]
+        bp=points[0];
+        nl=1
+        points=sorted(points,key=cmp_to_key(cmp))
+        for i in range(1,len(points)):
+            while((i<len(points)-1)) and (dir(bp,points[i],points[1])==0):
+                i+=1
+            points[nl]=points[i]
+            nl+=1
+        if nl<3:
+            return
+        vert=[points[0],points[1],points[2]]
+        for i in range(3,nl):
+            while(len(vert)>1) and (dir(vert[-2],vert[-1],points[i])!=2):
+                vert.pop()
+            vert.append(points[i])
+        return vert
+       
+def floodFill(data,rx,ry,color,simtime,seti):
     q=Queue(0)
     q.put((rx,ry))
     x1=rx
@@ -67,7 +117,7 @@ def floodFill(data,rx,ry,color,simtime):
         ry=p[1]
         
         if not(not(rx  >= 0 and ry  >= 0 and ry< data.nrows and rx  < data.ncols) or data.COLORS[ry][rx]!=0 or data.BURN[ry,rx,1]==0 or data.BURN[ry][rx][1]>simtime):
-             
+            seti.add((ry,rx))
             if(rx<x1):
                 x1=rx
             elif(rx>x2):

@@ -1,6 +1,7 @@
 from queue import Queue
 import numpy as np
 import random
+from functools import cmp_to_key
 
 # import files and variables
 from data import *
@@ -181,7 +182,6 @@ class FireLine:
             ry=p[1]
             
             if not(not(rx  >= 0 and ry  >= 0 and ry< data.nrows and rx  < data.ncols) or data.X[ry][rx]!=0 ):
-                
                 size+=1
                 # print(str(data.COLORS[ry][rx])+" "+ str(ry)+" "+str(rx)+" "+str(x1)+" "+str(y1)+" "+str(x2)+" "+str(y2))
                 X[ry][rx]=1
@@ -203,8 +203,9 @@ class FireLine:
             qs-=1
             ry=self.by.get()
             rx=self.bx.get()
-            print("Executing"+ str(rx)+" "+str(ry))
-            data.BURN[ry][rx][1]=1;
+            # print("Executing"+ str(rx)+" "+str(ry))
+            if(ry<data.nrows and rx<data.ncols and ry>=0 and rx>=0 ):
+                data.BURN[ry][rx][1]=1;
         
     def getScore(self,data,buffer,time,speedms,X):
         qs=self.bx.qsize()
@@ -212,7 +213,8 @@ class FireLine:
         while(qs>0):
             rx=self.bx.get();
             ry=self.by.get();
-            X[ry][rx]=-1;
+            if(ry<data.nrows and rx<data.ncols and ry>=0 and rx>=0 ):
+                X[ry][rx]=-1;
             self.bx.put(rx)
             self.by.put(ry)
         score=self.floodFill(data,X,int(self.avgX),int(self.avgY))
@@ -228,21 +230,21 @@ class FireLine:
                         score+=scoreW
                         X[ly-3+i][lx-3+j]=2
         
-        # while(not self.bx.empty()):
-        #     rx=self.bx.get();
-        #     ry=self.by.get();
-        #     dy=ry-ly;
-        #     dx=rx-lx;
-        #     d=np.sqrt(dy**2+dx**2)
-        #     time+=d/speedms
-        #     ly=ry
-        #     lx=rx
-        #     for i in range(6):
-        #         for j in range(6):
-        #             if(ly-3+i>=0 and ly-3+i<data.nrows and lx-3+j>=0 and lx-3+j<data.ncols  ):
-        #                 if(data.BURN[ly-3+i][lx-3+j]<time+buffer and not (X[ly-3+i][lx-3+j]==2)):
-        #                     score+=scoreW
-        #                     X[ly-3+i][lx-3+j]=2
+        while(not self.bx.empty()):
+            rx=self.bx.get();
+            ry=self.by.get();
+            dy=ry-ly;
+            dx=rx-lx;
+            d=np.sqrt(dy**2+dx**2)
+            time+=d/speedms
+            ly=ry
+            lx=rx
+            for i in range(6):
+                for j in range(6):
+                    if(ly-3+i>=0 and ly-3+i<data.nrows and lx-3+j>=0 and lx-3+j<data.ncols  ):
+                        if(data.BURN[ly-3+i][lx-3+j]<time+buffer and not (X[ly-3+i][lx-3+j]==2)):
+                            score+=scoreW
+                            X[ly-3+i][lx-3+j]=2
         return score
     
     
@@ -255,74 +257,70 @@ class Rectangle:
     def intersects(self,other):
         return ((self.x1<=other.x1 and self.x2>=other.x1 or other.x1<=self.x1 and other.x2>=self.x1) and (self.y1<=other.y1 and self.y2>=other.y1 or other.y1<=self.y1 and other.y2>=self.y1))
         
-    
-class Genome:
-    def __init__(self,rects):
-        rectrects=[]
-        for rect in rects:
-            rectrects.append(Rectangle(rect[0],rect[1],rect[2],rect[3]))
-        intsec=[]
-        print(str(rectrects))
-        for i in range (len(rects)):
-            intsec.append(set())
-            for j in range(i+1,len(rects)):
-                print(str(rectrects[i].intersects(rectrects[j]))+" "+str(i)+" "+str(j)+" "+str(rectrects[i].x1)+" "+str(rectrects[i].y1)+" "+str(rectrects[i].x2)+" "+str(rectrects[i].y2)+" "+str(rectrects[j].x1)+" "+str(rectrects[j].y1)+" "+str(rectrects[j].x2)+" "+str(rectrects[j].y2))
+def dir(bp,p1,p2):
+        det=(p1[1]-bp[1])*(p2[0]-p1[0])-(p1[0]-bp[0])*(p2[1]-p1[1])
+        if det==0:
+            return 0
+        elif det>0:
+            return 1;
+        else:
+            return 2;
+def eulerdist2(p1,p2):
+        return (p1[0]-p2[0])**2+(p1[1]-p2[1])**2
 
-                if(rectrects[i].intersects(rectrects[j])):
-                    intsec[i].add(j)
-        
-        self.lines=[]
-        self.cycleintsec(rectrects,intsec)
-        
+class Genome:
+    def __init__(self,points):
+        self.bp=(0,0)
+        vert=self.convexHull(points)
+        print(vert)
+        self.lines=[FireLine(vert,len(vert))]       
+  
        
-    def cycleintsec(self,rectrects,intsec):
         
-        for i in range(len(intsec)):
-            tripped=True
-            scanned=True;
-            print(intsec)
-            while(tripped and scanned):
-                print(" Points")
-                scanned=False;
-                for val in intsec[i]:
-                    
-                         
-                    if not -1 in intsec[i]:
-                        scanned=True;
-                        print(intsec[i])
-                        x=intsec[i].copy()
-                        x.update(intsec[val])
-                        if (x==intsec[i]):
-                            tripped=False
-                        else:
-                            intsec[i]=x
-                            intsec[i].add(-1)
-                            break
-                        #take the sets shove the unique un touched ones that contain -1 into vx and add verts
-        print(str(intsec)+" here")
-        for set in intsec:
-            if -1 in set:
-                points=[]
-                for val in set:
-                    if val!=-1:
-                        points.append((rectrects[i].x1,rectrects[i].y1))
-                        points.append((rectrects[i].x2,rectrects[i].y1))
-                        points.append((rectrects[i].x2,rectrects[i].y2))
-                        points.append((rectrects[i].x1,rectrects[i].y2))
-                # may need to reorder point to preveres polygonislaismsn
-                print(str(points)+" Points")
-                self.lines.append(FireLine(points,len(points)))
+    def cmp(self,a,b):
+        # return a[0]<b[0];
+        dr=dir(self.bp,a,b)
+        if dr==0:
+            if(eulerdist2(self.bp,b)>=eulerdist2(self.bp,a)):
+                return -1;
+            else:
+                return 1;
+        else:
+            if dr==2:
+                return -1
+            else:
+                return 1
+    def convexHull(self,points):
+        minv=points[0][1]
+        min=0
+        for i in range(1,len(points)):
+            if(points[i][1]<minv or points[i][1]==minv and points[i][0]<points[min][0]):
+                minv=points[i][1]
+                min=i
+        points[0],points[min]=points[min],points[0]
+        self.bp=points[0];
+        nl=1
+        points=sorted(points,key=cmp_to_key(self.cmp))
+        for i in range(1,len(points)):
+            while((i<len(points)-1)) and (dir(self.bp,points[i],points[1])==0):
+                i+=1
+            points[nl]=points[i]
+            nl+=1
+        if nl<3:
+            return
+        vert=[points[0],points[1],points[2]]
+        for i in range(3,nl):
+            while(len(vert)>1) and (dir(vert[-2],vert[-1],points[i])!=2):
+                vert.pop()
+            vert.append(points[i])
+        return vert
        
     def execute(self,data):
         print("exuriutingngjdsh")
         for line in self.lines:
             print("Here")
             line.execute(data)     
-                
-                        
-   
-    
-    
+
     def floodFill(self,data,X,simtime):
         
         q=Queue(0)
