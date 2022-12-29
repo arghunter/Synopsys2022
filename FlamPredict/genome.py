@@ -2,7 +2,7 @@ from queue import Queue
 import numpy as np
 import random
 from functools import cmp_to_key
-
+from scipy.spatial import ConvexHull, convex_hull_plot_2d
 # import files and variables
 from data import *
 
@@ -27,25 +27,25 @@ class FireLine:
         self.by = Queue(maxsize=0)
         if self.forwards:
             for i in range(nV):
-                self.by.put(int(self.v[i][0]))
-                self.bx.put(int(self.v[i][1]))
-                cx = int(self.v[i][1])
-                cy = int(self.v[i][0])
+                self.by.put(int(self.v[i][1]))
+                self.bx.put(int(self.v[i][0]))
+                cx = int(self.v[i][0])
+                cy = int(self.v[i][1])
                 t = i+1
                 if(not(i < nV-1)):
                     t = 0
                 # print(str(i)+" "+str(t))
-                if(cx == int(self.v[t][1])):
+                if(cx == int(self.v[t][0])):
                     slope = 0
                 else:
-                    slope = (cy-int(self.v[t][0]))/(cx-int(self.v[t][1]))
+                    slope = (cy-int(self.v[t][1]))/(cx-int(self.v[t][0]))
 
                 if(abs(slope) > 1):
                     lx = cx
-                    while(int(cy) != int(self.v[t][0])):
+                    while(int(cy) != int(self.v[t][1])):
                         d = - \
-                            int(abs(cy-int(self.v[t][0])) /
-                                (cy-int(self.v[t][0])))
+                            int(abs(cy-int(self.v[t][1])) /
+                                (cy-int(self.v[t][1])))
                         # print(str(cx)+" "+str(cy)+" "+str(lx))
 
                         cx += d/slope
@@ -60,19 +60,19 @@ class FireLine:
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
 
-                    while(int(cx) != int(self.v[t][1])):
-                        d = int((int(self.v[t][1])-cx) /
-                                abs((int(self.v[t][1])-cx)))
+                    while(int(cx) != int(self.v[t][0])):
+                        d = int((int(self.v[t][0])-cx) /
+                                abs((int(self.v[t][0])-cx)))
                         cx += d
                         
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
                 else:
                     ly = cy
-                    while(int(cx) != int(self.v[t][1])):
+                    while(int(cx) != int(self.v[t][0])):
                         d = - \
-                            int(abs(cx-int(self.v[t][1])) /
-                                (cx-int(self.v[t][1])))
+                            int(abs(cx-int(self.v[t][0])) /
+                                (cx-int(self.v[t][0])))
                         # print(str(cx)+" "+str(cy)+" "+str(ly))
                         cy += slope
 
@@ -89,9 +89,9 @@ class FireLine:
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
 
-                    while(int(cy) != int(self.v[t][0])):
-                        d = int((int(self.v[t][0])-cy) /
-                                abs((int(self.v[t][0])-cy)))
+                    while(int(cy) != int(self.v[t][1])):
+                        d = int((int(self.v[t][1])-cy) /
+                                abs((int(self.v[t][1])-cy)))
                         cy += d
                         # print(str(cx)+" "+str(cy)+" " +
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
@@ -99,25 +99,25 @@ class FireLine:
                         self.by.put(int(cy))
         else:
             for i in range(nV):
-                self.by.put(int(self.v[nV-1-i][0]))
-                self.bx.put(int(self.v[nV-1-i][1]))
-                cx = int(self.v[nV-1-i][1])
-                cy = int(self.v[nV-1-i][0])
+                self.by.put(int(self.v[nV-1-i][1]))
+                self.bx.put(int(self.v[nV-1-i][0]))
+                cx = int(self.v[nV-1-i][0])
+                cy = int(self.v[nV-1-i][1])
                 t = nV-2-i
                 if(t < 0):
                     t = nV-1
                 # print(str(i)+" "+str(t))
-                if(cx == int(self.v[t][1])):
+                if(cx == int(self.v[t][0])):
                     slope = 0
                 else:
-                    slope = (cy-int(self.v[t][0]))/(cx-int(self.v[t][1]))
+                    slope = (cy-int(self.v[t][1]))/(cx-int(self.v[t][0]))
 
                 if(abs(slope) > 1):
                     lx = cx
-                    while(int(cy) != int(self.v[t][0])):
+                    while(int(cy) != int(self.v[t][1])):
                         d = - \
-                            int(abs(cy-int(self.v[t][0])) /
-                                (cy-int(self.v[t][0])))
+                            int(abs(cy-int(self.v[t][1])) /
+                                (cy-int(self.v[t][1])))
                         # print(str(cx)+" "+str(cy)+" "+str(lx))
 
                         cx += d/slope
@@ -133,9 +133,9 @@ class FireLine:
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
 
-                    while(int(cx) != int(self.v[t][1])):
-                        d = int((int(self.v[t][1])-cx) /
-                                abs((int(self.v[t][1])-cx)))
+                    while(int(cx) != int(self.v[t][0])):
+                        d = int((int(self.v[t][0])-cx) /
+                                abs((int(self.v[t][0])-cx)))
                         cx += d
                         # print(str(cx)+" "+str(cy)+" " +
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
@@ -143,10 +143,10 @@ class FireLine:
                         self.by.put(int(cy))
                 else:
                     ly = cy
-                    while(int(cx) != int(self.v[t][1])):
+                    while(int(cx) != int(self.v[t][0])):
                         d = - \
-                            int(abs(cx-int(self.v[t][1])) /
-                                (cx-int(self.v[t][1])))
+                            int(abs(cx-int(self.v[t][0])) /
+                                (cx-int(self.v[t][0])))
                         # print(str(cx)+" "+str(cy)+" "+str(ly))
 
                         cy += slope
@@ -161,16 +161,16 @@ class FireLine:
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
 
-                    while(int(cy) != int(self.v[t][0])):
-                        d = int((int(self.v[t][0])-cy) /
-                                abs((int(self.v[t][0])-cy)))
+                    while(int(cy) != int(self.v[t][1])):
+                        d = int((int(self.v[t][1])-cy) /
+                                abs((int(self.v[t][1])-cy)))
                         cy += d
                         # print(str(cx)+" "+str(cy)+" " +
                         #       str(int(self.v[t][1]))+" "+str(int(self.v[t][0])))
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
                         
-    def floodFill(self,data,X,rx,ry,sms):
+    def floodFill(self,data,X,rx,ry,color):
         
         q=Queue(0)
         q.put((rx,ry))
@@ -181,10 +181,10 @@ class FireLine:
             rx=p[0]
             ry=p[1]
             
-            if not(not(rx  >= 0 and ry  >= 0 and ry< data.nrows and rx  < data.ncols) or data.X[ry][rx]!=0 ):
+            if (rx  >= 0 and ry  >= 0 and ry< data.nrows and rx  < data.ncols) or X[ry][rx]!=color or X[ry][rx]!=-color:
                 size+=1
                 # print(str(data.COLORS[ry][rx])+" "+ str(ry)+" "+str(rx)+" "+str(x1)+" "+str(y1)+" "+str(x2)+" "+str(y2))
-                X[ry][rx]=1
+                X[ry][rx]=color;
                 q.put((rx+1,ry))
                 q.put((rx-1,ry))
                 q.put((rx,ry+1))
@@ -207,18 +207,20 @@ class FireLine:
             if(ry<data.nrows and rx<data.ncols and ry>=0 and rx>=0 ):
                 data.BURN[ry][rx][1]=1;
         
-    def getScore(self,data,buffer,time,speedms,X):
+    def getScore(self,data,buffer,time,speedms,X,color):
         qs=self.bx.qsize()
         scoreW=1000;
-        while(qs>0):
-            rx=self.bx.get();
-            ry=self.by.get();
-            if(ry<data.nrows and rx<data.ncols and ry>=0 and rx>=0 ):
-                X[ry][rx]=-1;
-            self.bx.put(rx)
-            self.by.put(ry)
-        score=self.floodFill(data,X,int(self.avgX),int(self.avgY))
-        
+        # while(qs>0):
+        #     qs-=1
+        #     rx=self.bx.get();
+        #     ry=self.by.get();
+        #     if(ry<data.nrows and rx<data.ncols and ry>=0 and rx>=0 ):
+        #         X[ry][rx]=-1;
+        #     self.bx.put(rx)
+        #     self.by.put(ry)
+        # score=self.floodFill(data,X,int(self.avgX),int(self.avgY),color)
+        score=0;
+        # print(str(color)+" "+str(qs))
         
             
         lx=self.bx.get();
@@ -226,11 +228,14 @@ class FireLine:
         for i in range(6):
             for j in range(6):
                 if(ly-3+i>=0 and ly-3+i<data.nrows and lx-3+j>=0 and lx-3+j<data.ncols  ):
-                    if(data.BURN[ly-3+i][lx-3+j]<time+buffer and not (X[ly-3+i][lx-3+j]==2)):
+                    if(data.BURN[ly-3+i][lx-3+j][1]<time+buffer):
                         score+=scoreW
                         X[ly-3+i][lx-3+j]=2
-        
-        while(not self.bx.empty()):
+        qs= self.bx.qsize();
+        while(qs>0):
+            qs-=1
+            # print("qs"+str(qs))
+            # print(str(color)+" "+str(qs))
             rx=self.bx.get();
             ry=self.by.get();
             dy=ry-ly;
@@ -242,9 +247,11 @@ class FireLine:
             for i in range(6):
                 for j in range(6):
                     if(ly-3+i>=0 and ly-3+i<data.nrows and lx-3+j>=0 and lx-3+j<data.ncols  ):
-                        if(data.BURN[ly-3+i][lx-3+j]<time+buffer and not (X[ly-3+i][lx-3+j]==2)):
+                        if(data.BURN[ly-3+i][lx-3+j][1]<time+buffer):
                             score+=scoreW
                             X[ly-3+i][lx-3+j]=2
+            self.bx.put(rx)
+            self.by.put(ry)
         return score
     
     
@@ -271,8 +278,12 @@ def eulerdist2(p1,p2):
 class Genome:
     def __init__(self,points):
         self.bp=(0,0)
-        vert=self.convexHull(points)
+        # vert=self.convexHull(points)
+        vert=ConvexHull(points)
+        
+        vert=points
         print(vert)
+        self.v=points
         self.lines=[FireLine(vert,len(vert))]       
   
        
@@ -321,7 +332,7 @@ class Genome:
             print("Here")
             line.execute(data)     
 
-    def floodFill(self,data,X,simtime):
+    def floodFill(self,data,X,rx,ry,simtime):
         
         q=Queue(0)
         q.put((rx,ry))
@@ -332,9 +343,9 @@ class Genome:
             rx=p[0]
             ry=p[1]
             
-            if not(not(rx  >= 0 and ry  >= 0 and ry< data.nrows and rx  < data.ncols) or X[ry][rx]==0):
+            if not(not(rx  >= 0 and ry  >= 0 and ry< data.nrows and rx  < data.ncols) or X[ry][rx]!=0):
                 
-                if(data.BURN[ry][rx]>0 and data.BURN[ry][rx]<=simtime):
+                if(data.BURN[ry][rx][1]>0 and data.BURN[ry][rx][1]<=simtime):
                     score+=1000
                     
                 
@@ -348,17 +359,23 @@ class Genome:
                 q.put((rx+1,ry-1))
                 q.put((rx-1,ry-1))
                 q.put((rx-1,ry+1))
+        return score
                 
-                
-    def getFitness(self,data,buffer,time,speedms):
+    def getFitness(self,data,buffer,time,speedms,color,X):
         score=0;
-        X=np.zeros(data.COLORS.shape())
+        
             
         for l in self.lines:
-            score+=l.getScore(data,buffer,time,speedms)
-        for i in data.ncols:
-            for j in data.nrows:
-                score+=self.floodFill(data,X,i,j)
+            
+            # print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1")
+            score+=l.getScore(data,buffer,time,speedms,X,color)
+            
+            # print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2")
+            #fix flood fill here
+        for i in range(data.ncols):
+            for j in range(data.nrows):
+                score+=self.floodFill(data,X,i,j,time)
+        return score
 
         
         
