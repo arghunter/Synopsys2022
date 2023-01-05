@@ -3,6 +3,8 @@ import numpy as np
 import random
 from functools import cmp_to_key
 from scipy.spatial import ConvexHull, convex_hull_plot_2d
+# from scipy.spatial import Delaunay
+import alphashape
 # import files and variables
 from data import *
 
@@ -170,30 +172,8 @@ class FireLine:
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
                         
-    def floodFill(self,data,X,rx,ry,color):
-        
-        q=Queue(0)
-        q.put((rx,ry))
-        size=0
-        
-        while(not q.empty()):
-            p=q.get()
-            rx=p[0]
-            ry=p[1]
-            
-            if (rx  >= 0 and ry  >= 0 and ry< data.nrows and rx  < data.ncols) or X[ry][rx]!=color or X[ry][rx]!=-color:
-                size+=1
-                # print(str(data.COLORS[ry][rx])+" "+ str(ry)+" "+str(rx)+" "+str(x1)+" "+str(y1)+" "+str(x2)+" "+str(y2))
-                X[ry][rx]=color;
-                q.put((rx+1,ry))
-                q.put((rx-1,ry))
-                q.put((rx,ry+1))
-                q.put((rx,ry+1))
-                q.put((rx+1,ry+1))
-                q.put((rx+1,ry-1))
-                q.put((rx-1,ry-1))
-                q.put((rx-1,ry+1))
-        return size
+   
+     
                 
   
     def execute(self,data):
@@ -208,51 +188,55 @@ class FireLine:
                 data.BURN[ry][rx][1]=1;
         
     def getScore(self,data,buffer,time,speedms,X,color):
-        qs=self.bx.qsize()
-        scoreW=1000;
-        # while(qs>0):
-        #     qs-=1
-        #     rx=self.bx.get();
-        #     ry=self.by.get();
-        #     if(ry<data.nrows and rx<data.ncols and ry>=0 and rx>=0 ):
-        #         X[ry][rx]=-1;
-        #     self.bx.put(rx)
-        #     self.by.put(ry)
-        # score=self.floodFill(data,X,int(self.avgX),int(self.avgY),color)
+        X.fill(0)
         score=0;
-        # print(str(color)+" "+str(qs))
-        
-            
-        lx=self.bx.get();
-        ly=self.by.get();
-        for i in range(6):
-            for j in range(6):
-                if(ly-3+i>=0 and ly-3+i<data.nrows and lx-3+j>=0 and lx-3+j<data.ncols  ):
-                    if(data.BURN[ly-3+i][lx-3+j][1]<time+buffer):
-                        score+=scoreW
-                        X[ly-3+i][lx-3+j]=2
+        lx=-1
+        ly=-1
         qs= self.bx.qsize();
+        ftime=time
         while(qs>0):
             qs-=1
-            # print("qs"+str(qs))
-            # print(str(color)+" "+str(qs))
             rx=self.bx.get();
             ry=self.by.get();
-            dy=ry-ly;
-            dx=rx-lx;
-            d=np.sqrt(dy**2+dx**2)
-            time+=d/speedms
+            if(ly!=-1):
+                dy=ry-ly;
+                dx=rx-lx;
+                d=np.sqrt(dy**2+dx**2)
+                ftime+=(d/speedms*60)
             ly=ry
             lx=rx
-            for i in range(6):
-                for j in range(6):
-                    if(ly-3+i>=0 and ly-3+i<data.nrows and lx-3+j>=0 and lx-3+j<data.ncols  ):
-                        if(data.BURN[ly-3+i][lx-3+j][1]<time+buffer):
-                            score+=scoreW
-                            X[ly-3+i][lx-3+j]=2
+            if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
+                X[ry][rx]=1;
+                if(data.BURN[ry][rx][1]<ftime-buffer and data.BURN[ry][rx][1]>1):
+                    score+=1550#line too late
             self.bx.put(rx)
             self.by.put(ry)
+        
+        for i in range(data.ncols):
+            inp=False
+            for j in range(data.nrows):
+                if(X[j][i]==1):
+                    inp= not inp
+                if not inp:
+                    if(data.BURN[j][i][1]>1):
+                        if(data.BURN[j][i][1]<time):
+                            score+=500
+                        elif(data.BURN[j][i][1]<ftime):
+                            score+=500*(ftime-data.BURN[j][i][1])/(ftime-time)
+                else:
+                    data.COLORS[j][i]=1;
+                    if(data.BURN[j][i][1]>1):
+                        if(data.BURN[j][i][1]<time):
+                            score-=30
+                        elif(data.BURN[j][i][1]<ftime):
+                            score-=30*(ftime-data.BURN[j][i][1])/(ftime-time)
+                        else: 
+                            score+=14
+                    else:
+                        score+=7
         return score
+       
+        
     
     
 class Rectangle:
@@ -276,55 +260,67 @@ def eulerdist2(p1,p2):
         return (p1[0]-p2[0])**2+(p1[1]-p2[1])**2
 
 class Genome:
+    
     def __init__(self,points):
-        self.bp=(0,0)
+        self.origin=[0,0]
+        avgX=0
+        avgY=0
+        for point in points:
+            avgX+=point[0]
+            avgY+=point[1]
+        avgX/=len(points)
+        avgY/=len(points)
+        self.origin[0]=avgX;
+        self.origin[1]=avgY
+        vert=sorted(points,key=self.clockwiseangle_and_distance)
+        self.score=0
+        self.v=vert;
         # vert=self.convexHull(points)
-        vert=ConvexHull(points)
+        # try:
+        # print (points)
+        # # tri=Delaunay(points)
+        # # print(tri)
+        # aphshp=alphashape.alphashape(points,2.0)
+        # vert=aphshp
+        # # vert=vert.coords
+        # # vert=points
+        # # vert=vert[0]
+        # # for geom in vert:
+        # #     print(geom)
+        # print(vert)
+        # self.v=vert
+        # self.score=0
+        # except:
+        #     self.score=999999999
+        #     vert=points
+        #     self.v=vert
         
-        vert=points
-        print(vert)
-        self.v=points
         self.lines=[FireLine(vert,len(vert))]       
   
        
-        
-    def cmp(self,a,b):
-        # return a[0]<b[0];
-        dr=dir(self.bp,a,b)
-        if dr==0:
-            if(eulerdist2(self.bp,b)>=eulerdist2(self.bp,a)):
-                return -1;
-            else:
-                return 1;
-        else:
-            if dr==2:
-                return -1
-            else:
-                return 1
-    def convexHull(self,points):
-        minv=points[0][1]
-        min=0
-        for i in range(1,len(points)):
-            if(points[i][1]<minv or points[i][1]==minv and points[i][0]<points[min][0]):
-                minv=points[i][1]
-                min=i
-        points[0],points[min]=points[min],points[0]
-        self.bp=points[0];
-        nl=1
-        points=sorted(points,key=cmp_to_key(self.cmp))
-        for i in range(1,len(points)):
-            while((i<len(points)-1)) and (dir(self.bp,points[i],points[1])==0):
-                i+=1
-            points[nl]=points[i]
-            nl+=1
-        if nl<3:
-            return
-        vert=[points[0],points[1],points[2]]
-        for i in range(3,nl):
-            while(len(vert)>1) and (dir(vert[-2],vert[-1],points[i])!=2):
-                vert.pop()
-            vert.append(points[i])
-        return vert
+    
+    def clockwiseangle_and_distance(self,point):
+        refvec = [0, 1]
+
+    # Vector between point and the origin: v = p - o
+        vector = [point[0]-self.origin[0], point[1]-self.origin[1]]
+        # Length of vector: ||v||
+        lenvector = np.hypot(vector[0], vector[1])
+        # If length is zero there is no angle
+        if lenvector == 0:
+            return -np.pi, 0
+        # Normalize vector: v/||v||
+        normalized = [vector[0]/lenvector, vector[1]/lenvector]
+        dotprod  = normalized[0]*refvec[0] + normalized[1]*refvec[1]     # x1*x2 + y1*y2
+        diffprod = refvec[1]*normalized[0] - refvec[0]*normalized[1]     # x1*y2 - y1*x2
+        angle = np.arctan2(diffprod, dotprod)
+        # Negative angles represent counter-clockwise angles so we need to subtract them 
+        # from 2*pi (360 degrees)
+        if angle < 0:
+            return 2*np.pi+angle, lenvector
+        # I return first the angle because that's the primary sorting criterium
+        # but if two vectors have the same angle then the shorter distance should come first.
+        return angle, lenvector
        
     def execute(self,data):
         print("exuriutingngjdsh")
@@ -372,10 +368,10 @@ class Genome:
             
             # print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2")
             #fix flood fill here
-        for i in range(data.ncols):
-            for j in range(data.nrows):
-                score+=self.floodFill(data,X,i,j,time)
-        return score
+        # for i in range(data.ncols):
+        #     for j in range(data.nrows):
+        #         score+=self.floodFill(data,X,i,j,time)
+        return self.score+score
 
         
         
