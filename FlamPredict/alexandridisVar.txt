@@ -1,0 +1,21 @@
+p0 = 0.6 - original val
+0.58
+
+c1 = 0.045 - original val
+0.045
+
+c2 = 0.191 - original val
+0.131
+
+a = 2.5 - original val
+2.5
+
+b = 0.15 - original val
+0.15
+
+d = 0.88 - original val
+0.932
+
+# altitude factor
+# asubs = 0.088 - original val
+0.078

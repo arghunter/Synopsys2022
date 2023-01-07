@@ -2,25 +2,26 @@ import numpy as np
 
 from queue import Queue
 
+
 # import pandas as pd
 
 class Data:
     neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
-                (0, 1), (1, -1), (1, 0), (1, 1))
+                    (0, 1), (1, -1), (1, 0), (1, 1))
+
     # global f, a, w, c, b, t, p  # F Foliage,A Altitude, W Wind speed+direction,C canopy height, B burn dpeed+direction
     def __init__(self):
         # geoTIFFPath = input("Enter PATH to LANDFIRE data: ")
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
         # geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
-        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
+        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito"
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Creek\\creek"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito" # mac
-        # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito1/mosquito" # winpc
+        geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito1/mosquito" # winpc
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/creek (1)/creek" #win pc
-        self.spotQ=Queue(maxsize = 0)
-        
+        self.spotQ = Queue(maxsize=0)
 
         # fuel
         fuel = open(geoTIFFPath + "/fuel.asc", "r")
@@ -28,7 +29,7 @@ class Data:
         self.ncols = int(fuelstring[13:len(fuelstring)])
         fuelstring = fuel.readline()
         self.nrows = (int(fuelstring[13:len(fuelstring)]))
-        
+
         fuelstring = fuel.readline()
         fuelstring = fuel.readline()
         fuelstring = fuel.readline()
@@ -38,15 +39,16 @@ class Data:
         self.fuel = np.loadtxt(fuel)
         for i in range(self.nrows):
             for j in range(self.ncols):
-                if self.fuel[i][j]==98:
+                if self.fuel[i][j] == 98:
                     # print(str(i)+" "+str(j))
-                    for dy,dx in Data.neighborhood:
-                        if(i+dy<self.nrows and j+dx<self.ncols and i+dy>=0 and j+dx>=0 and self.fuel[i+dy,j+dx]!=98):
-                            self.fuel[i+dy,j+dx] = 100
-        file=open("op.txt","w");                   
-        for i in range (self.ncols):
-            for j in range (self.nrows):
-                file.write( str(self.fuel[j][i])+" ")
+                    for dy, dx in Data.neighborhood:
+                        if (i + dy < self.nrows and j + dx < self.ncols and i + dy >= 0 and j + dx >= 0 and self.fuel[
+                            i + dy, j + dx] != 98):
+                            self.fuel[i + dy, j + dx] = 100
+        file = open("op.txt", "w");
+        for i in range(self.ncols):
+            for j in range(self.nrows):
+                file.write(str(self.fuel[j][i]) + " ")
             file.write("\n")
         fuel.close()
         print(self.fuel)
@@ -65,7 +67,7 @@ class Data:
         nodata = elevationstring[14:len(elevationstring)]
         self.elevation = np.loadtxt(elevation)
         print(self.elevation)
-        self.BURN = np.zeros((self.nrows, self.ncols, 3)) # probability,time,direction
+        self.BURN = np.zeros((self.nrows, self.ncols, 3))  # probability,time,direction
         self.COLORS = np.zeros((self.nrows, self.ncols))
         # atmdir=input("Enter wind directory: ")
         atmdir = geoTIFFPath
@@ -108,7 +110,6 @@ class Data:
             self.wndA.append(wndA)
             print(wndV[0].size)
             # print(self.wndV[0].size())
-            
 
     def get_windV(self, tick, x, y):
         rx = int(x / self.wp)
@@ -127,7 +128,7 @@ class Data:
         frame = int(tick / 60)
         if frame >= len(self.wndV):
             frame = len(self.wndV) - 1
-        
+
         if (rx >= 0 and ry >= 0 and ry < self.nrows and rx < self.ncols):
             # print(str(ry)+" "+str(rx)+"\n")
             # print (self.wndA[frame][ry][rx])
