@@ -70,24 +70,24 @@ def alexandridisModelProbability(thetaf, thetaw, mgw, pveg, pden, h, rthetaS, Mx
     # print("wind influenced prob", pw)
 
     # moisture content: data link: https://www.wfas.net/index.php/national-fuel-moisture-database-moisture-drought-103
-    # Cm = 6
-    # MxP = Mx * 100
+    Cm = 6
+    MxP = Mx * 100
     #
-    # # threshold with extinction fuel moisture
-    # if MxP <= Cm:
-    #      pm = 0
-    # else:
-    #      # moisture probability
-    #      pm = a * math.exp(((-1) * b * Cm))
+    # threshold with extinction fuel moisture
+    if MxP <= Cm:
+          pm = 0
+    else:
+          # moisture probability
+          pm = a * math.exp(((-1) * b * Cm))
     #
-    # # height probability
-    # ph = (((h/3.281))**d)
+    # height probability
+    ph = (((h/3.281))**d)
 
     # burn probability
     # with moisture
     # pburn = (p0 * (1 + pveg) * (1+pden) * pw * ps * pm * ph)
     # w/o moisture
-    pburn = (p0 * (1 + pveg) * (1 + pden) * pw * ps)
+    pburn = (p0 * (1 + pveg) * (1 + pden) * pw * ps * ph * pm)
 
     # print("burn p", pburn)
 

@@ -93,9 +93,6 @@ class Fire:
         rx = int(self.x / data.p)
         ry = int(self.y / data.p)
 
-        mx = 0
-        my = 0
-        mp = 0
         # IMPORTANT: Solely prob model
         for dx, dy in neighborhood:
             if rx + dx >= 0 and ry + dy >= 0 and ry + dy < data.nrows and rx + dx < data.ncols:
@@ -161,7 +158,7 @@ class Fire:
                     h = 1  # low heat content (btu/lb)
                     delta = 1  # fuel bed depth (ft)
                     beta = 1.0  # packing ratio (dimentionless)
-                    Mx = 1.0  # dead fuel moisture of extinction (fraction)
+                    Mx = 1  # dead fuel moisture of extinction (fraction)
                     w0 = 1.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
                 elif data.fuel[ry + dy][rx + dx] == 99:
@@ -649,13 +646,15 @@ class Fire:
                 # R0s = rothermelRate(0, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y), h, delta, beta, Mx, w0, sigma)
                 # R0 = rothermelRate(0, ang, 0, 0, h, delta, beta, Mx, w0, sigma)
 
-
-                prob = alexandridisModelProbability(ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y),
+                if data.fuel[ry + dy][rx + dx] == 98 or data.fuel[ry + dy][rx + dx] == 93 or data.fuel[ry + dy][rx + dx] == 91:
+                    prob = (0.7 * (1 + pveg) * (1 + pden))
+                else:
+                    prob = alexandridisModelProbability(ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y),
                                                     pveg, pden, delta, thetaS, Mx)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # pburnSim = int.from_bytes(os.urandom(8), byteorder="big") / ((1 << 64) - 1)
 
-                pburnSim = 0.5
+                pburnSim = np.random.uniform()
 
                 if (pburnSim < prob):
                     # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
@@ -674,7 +673,7 @@ class Fire:
                     # data.p = side length
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
-                    Fire(x + dx * data.p, y + dy * data.p, data, int(tick + 1), self.x, self.y)
+                    Fire(x + dx * data.p, y + dy * data.p, data, int(tick + 11), self.x, self.y)
 
                 ##################################################################
                 # spotting

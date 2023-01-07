@@ -15,7 +15,7 @@ print("Initializing")
 
 # scorer time list
 # scoreTimeList = ["790", "993", "1345", "1509", "1653", "2281"]
-scoreTimeList = ["790"]
+scoreTimeList = ["1509"]
 simBurnList = []
 
 

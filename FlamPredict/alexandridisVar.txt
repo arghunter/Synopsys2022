@@ -1,11 +1,11 @@
 p0 = 0.6 - original val
-0.58
+0.70
 
 c1 = 0.045 - original val
 0.045
 
 c2 = 0.191 - original val
-0.131
+0.191
 
 a = 2.5 - original val
 2.5
@@ -18,4 +18,4 @@ d = 0.88 - original val
 
 # altitude factor
 # asubs = 0.088 - original val
-0.078
+0.088

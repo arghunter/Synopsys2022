@@ -24,7 +24,7 @@ ax.set_axis_off()
 colors_list = [(0, 0.4, 0), (0, 0, 1)]
 bounds = [0.0, 1.0]
 
-simulateTime = 2
+simulateTime = 1653
 for i in range(2, simulateTime, 120):
     colors_list.append(((i) / (simulateTime), 0, 0))
     bounds.append(i)
