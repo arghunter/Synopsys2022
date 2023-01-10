@@ -50,7 +50,7 @@ def solve(data,buffer,safetyTime):
     
     # for i in range(popCount):
         
-    # points=[(10,10),(30,120),(110,80),(90,60)]
+    # points=[(10,10),(30,20),(80,110),(90,60)]
     # X=np.zeros(data.COLORS.shape)
     # # for t in range(bRes):
     # #     px= np.random.randint(10,data.nrows-10);
@@ -79,7 +79,7 @@ def solve(data,buffer,safetyTime):
         print(i/genCount)
         for j in range(popCount):
             print(j)
-            scores[j]=pop[j].getFitness(data,buffer,safetyTime,3,j,X)#add speed
+            scores[j]=pop[j].getFitness(data,buffer,safetyTime,300,j,X)#add speed
         ind= np.argsort(scores)
         scores=scores[ind]
         pop=pop[ind]
@@ -90,23 +90,23 @@ def solve(data,buffer,safetyTime):
             split=np.random.randint(1,min(len(p1)-1,len(p2)-1))
             
             p3=p1[0:split]+p2[split:len(p2)]
-            if(np.random.random()<0.1):
+            if(np.random.random()<0.2):
                 pos=np.random.randint(0,len(p3))
                 point=p3[pos];
-                dx=np.random.randint(1,32)-16;
-                dy=np.random.randint(1,32)-16;
+                dx=np.random.randint(1,64)-32;
+                dy=np.random.randint(1,64)-32;
                 if(point[1]+dx>=0 and point[0]+dy>=0 and point[0]+dy<data.nrows and point[1]+dx<data.ncols ):
                     p3[pos]=(dy+point[0],dx+point[1])
             pop[j]=Genome(p3)
         print(scores)
     
     scores=np.zeros(popCount)
-    for i in range(genCount):
-        X=np.zeros(data.COLORS.shape)
-        print(i/genCount)
-        for j in range(popCount):
-            print(j)
-            scores[j]=pop[j].getFitness(data,buffer,safetyTime,3,j,X)#add speed
+    # for i in range(genCount):
+    X=np.zeros(data.COLORS.shape)
+    # print(i/genCount)
+    for j in range(popCount):
+        print(j)
+        scores[j]=pop[j].getFitness(data,buffer,safetyTime,300,j,X)#add speed
     ind= np.argsort(scores)
     scores=scores[ind]
     pop=pop[ind]
@@ -121,6 +121,8 @@ def solve(data,buffer,safetyTime):
     # # t=pop[0].getFitness(data,buffer,safetyTime,3,genCount+1,)
     # # print(t)
     # # pop[0].execute(data)
+    so=Genome(pop[0].v);
+    so.getFitness(data,buffer,safetyTime,300,j,X)
     sol=Genome(pop[0].v);
     sol.execute(data);
                

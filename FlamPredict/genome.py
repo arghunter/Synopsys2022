@@ -207,33 +207,45 @@ class FireLine:
             lx=rx
             if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
                 X[ry][rx]=1;
-                if(data.BURN[ry][rx][1]<ftime-buffer and data.BURN[ry][rx][1]>1):
-                    score+=1550#line too late
+                if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
+                    score+=15500#line too late
             self.bx.put(rx)
             self.by.put(ry)
-        
+        print(ftime)
+        print("ghhfhgfgdgfdfgdgfdgfdfgdgf^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
         for i in range(data.ncols):
             inp=False
+            lst=False
             for j in range(data.nrows):
                 if(X[j][i]==1):
-                    inp= not inp
+                    
+                    lst=True
+                else:
+                    if(lst):
+                        inp=not inp
+                    lst=False
+                    
+                        
+                        
+                
+                    
                 if not inp:
                     if(data.BURN[j][i][1]>1):
-                        if(data.BURN[j][i][1]<time):
+                        if(data.BURN[j][i][1]<time+buffer):
                             score+=500
-                        elif(data.BURN[j][i][1]<ftime):
+                        elif(data.BURN[j][i][1]<ftime+buffer):
                             score+=500*(ftime-data.BURN[j][i][1])/(ftime-time)
                 else:
                     data.COLORS[j][i]=1;
                     if(data.BURN[j][i][1]>1):
-                        if(data.BURN[j][i][1]<time):
+                        if(data.BURN[j][i][1]<time+buffer):
                             score-=30
-                        elif(data.BURN[j][i][1]<ftime):
+                        elif(data.BURN[j][i][1]<ftime+buffer):
                             score-=30*(ftime-data.BURN[j][i][1])/(ftime-time)
                         else: 
-                            score+=14
+                            score+=10
                     else:
-                        score+=7
+                        score+=25
         return score
        
         

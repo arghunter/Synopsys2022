@@ -595,7 +595,7 @@ class Fire:
                 prob = alexandridisModelProbability(slope, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y), pveg, pden)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # TODO: get prob here
-                if (0.5 <= prob):
+                if (0.66 <= prob):
                     # # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
                     # tanPhi = slope
                     # Uroth= ((data.get_windV(tick, x, y)*3.28084)*60)
