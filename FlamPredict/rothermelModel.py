@@ -99,7 +99,18 @@ SE = 0.010
 
 ########################################################
 
-def rothermelRate(tanPhi, realU, h, delta, beta, Mx, w0, sigma):
+def rothermelRate(Phi, thetaw, thetaf, U, h, delta, beta, Mx, w0, sigma):
+    # relative wind direction for real U
+    thetawf = (thetaw - thetaf)
+    rthetawf = abs(math.radians(thetawf))
+
+    # NOTE: realU = U * cos(relative angle) because relative angle is angle between wind and fire direction
+    # fire direction essentially becomes x, and wind is relative, so relative to x :)
+    realU = (U * math.cos(rthetawf))
+
+
+    tanPhi = math.tan(Phi)
+
     # ratio of moistures (Mf/Mx) (max 1.0)
     rm = (Mf / Mx)
 
@@ -157,18 +168,19 @@ def rothermelRate(tanPhi, realU, h, delta, beta, Mx, w0, sigma):
     phiW = (windC * (realU ** windB) * (1 / ((beta / betaOP) ** windE)))
 
     # rate of spread in feet/min
+    Rftmin = ((IR * xi * (1 + phiS + phiW)) / (rhob * epsilon * Qig))
 
     # albini extension
-    if realU >= 0:
-        if tanPhi >= 0:
-            Rftmin = ((IR * xi * (1 + phiS + phiW)) / (rhob * epsilon * Qig))
-        elif tanPhi < 0:
-            Rftmin = ((IR * xi * (1 + (max(0, (phiW - phiS))))) / (rhob * epsilon * Qig))
-    elif realU < 0:
-        if tanPhi >= 0:
-            Rftmin = ((IR * xi * (1 + (max(0, (phiS - phiW))))) / (rhob * epsilon * Qig))
-        elif tanPhi < 0:
-            Rftmin = (((IR * xi)) / (rhob * epsilon * Qig))
+    # if realU >= 0:
+    #     if tanPhi >= 0:
+    #         Rftmin = ((IR * xi * (1 + phiS + phiW)) / (rhob * epsilon * Qig))
+    #     elif tanPhi < 0:
+    #         Rftmin = ((IR * xi * (1 + (max(0, (phiW - phiS))))) / (rhob * epsilon * Qig))
+    # elif realU < 0:
+    #     if tanPhi >= 0:
+    #         Rftmin = ((IR * xi * (1 + (max(0, (phiS - phiW))))) / (rhob * epsilon * Qig))
+    #     elif tanPhi < 0:
+    #         Rftmin = (((IR * xi)) / (rhob * epsilon * Qig))
 
     # unit conversion
     Rmh = (Rftmin * 18.288)

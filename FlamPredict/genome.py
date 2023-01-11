@@ -13,17 +13,17 @@ class FireLine:
     # nVe = 4
     # v = np.zeros((nV, 2))  # y,x
 
-    def __init__(self, v,nV):
+    def __init__(self, v, nV):
         # print("yCalled")
         self.nV = nV;
-        self.v=v
-        self.avgX=0;
-        self.avgY=0;
+        self.v = v
+        self.avgX = 0;
+        self.avgY = 0;
         for i in v:
-            self.avgX+=i[0]
-            self.avgY+=i[1]
-        self.avgX/=self.nV
-        self.avgY/=self.nV
+            self.avgX += i[0]
+            self.avgY += i[1]
+        self.avgX /= self.nV
+        self.avgY /= self.nV
         self.forwards = np.random.random() <= 0.5
         self.bx = Queue(maxsize=0)
         self.by = Queue(maxsize=0)
@@ -42,7 +42,7 @@ class FireLine:
                 else:
                     slope = (cy-int(self.v[t][1]))/(cx-int(self.v[t][0]))
 
-                if(abs(slope) > 1):
+                if (abs(slope) > 1):
                     lx = cx
                     while(int(cy) != int(self.v[t][1])):
                         d = - \
@@ -50,14 +50,12 @@ class FireLine:
                                 (cy-int(self.v[t][1])))
                         # print(str(cx)+" "+str(cy)+" "+str(lx))
 
-                        cx += d/slope
-                        if(abs(int(cx)-lx) >= 1):
-                            
+                        cx += d / slope
+                        if (abs(int(cx) - lx) >= 1):
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
                             lx = int(cx)
                         cy += d
-                        
 
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
@@ -66,7 +64,7 @@ class FireLine:
                         d = int((int(self.v[t][0])-cx) /
                                 abs((int(self.v[t][0])-cx)))
                         cx += d
-                        
+
                         self.bx.put(int(cx))
                         self.by.put(int(cy))
                 else:
@@ -78,7 +76,7 @@ class FireLine:
                         # print(str(cx)+" "+str(cy)+" "+str(ly))
                         cy += slope
 
-                        if abs(ly-int(cy)) >= 1:
+                        if abs(ly - int(cy)) >= 1:
                             # print(str(cx)+" "+str(cy)+" "+str(ly)+"2")
 
                             self.bx.put(int(cx))
@@ -114,7 +112,7 @@ class FireLine:
                 else:
                     slope = (cy-int(self.v[t][1]))/(cx-int(self.v[t][0]))
 
-                if(abs(slope) > 1):
+                if (abs(slope) > 1):
                     lx = cx
                     while(int(cy) != int(self.v[t][1])):
                         d = - \
@@ -122,9 +120,9 @@ class FireLine:
                                 (cy-int(self.v[t][1])))
                         # print(str(cx)+" "+str(cy)+" "+str(lx))
 
-                        cx += d/slope
+                        cx += d / slope
 
-                        if(abs(int(cx)-lx) >= 1):
+                        if (abs(int(cx) - lx) >= 1):
                             # print(str(cx)+" "+str(cy)+" "+str(lx)+"2")
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
@@ -152,7 +150,7 @@ class FireLine:
                         # print(str(cx)+" "+str(cy)+" "+str(ly))
 
                         cy += slope
-                        if abs(ly-int(cy)) >= 1:
+                        if abs(ly - int(cy)) >= 1:
                             # print(str(cx)+" "+str(cy)+" "+str(ly)+"2")
                             self.bx.put(int(cx))
                             self.by.put(int(cy))
@@ -178,11 +176,11 @@ class FireLine:
   
     def execute(self,data):
         print("Execuring")
-        qs=self.bx.qsize();
-        while(qs>0):
-            qs-=1
-            ry=self.by.get()
-            rx=self.bx.get()
+        qs = self.bx.qsize();
+        while (qs > 0):
+            qs -= 1
+            ry = self.by.get()
+            rx = self.bx.get()
             # print("Executing"+ str(rx)+" "+str(ry))
             if(ry<data.nrows and rx<data.ncols and ry>=0 and rx>=0 ):
                 data.BURN[ry][rx][1]=1;
@@ -252,24 +250,30 @@ class FireLine:
     
     
 class Rectangle:
-    def __init__(self,x1,y1,x2,y2):
-        self.x1=x1
-        self.y1=y1
-        self.y2=y2
-        self.x2=x2
-    def intersects(self,other):
-        return ((self.x1<=other.x1 and self.x2>=other.x1 or other.x1<=self.x1 and other.x2>=self.x1) and (self.y1<=other.y1 and self.y2>=other.y1 or other.y1<=self.y1 and other.y2>=self.y1))
-        
-def dir(bp,p1,p2):
-        det=(p1[1]-bp[1])*(p2[0]-p1[0])-(p1[0]-bp[0])*(p2[1]-p1[1])
-        if det==0:
-            return 0
-        elif det>0:
-            return 1;
-        else:
-            return 2;
-def eulerdist2(p1,p2):
-        return (p1[0]-p2[0])**2+(p1[1]-p2[1])**2
+    def __init__(self, x1, y1, x2, y2):
+        self.x1 = x1
+        self.y1 = y1
+        self.y2 = y2
+        self.x2 = x2
+
+    def intersects(self, other):
+        return ((self.x1 <= other.x1 and self.x2 >= other.x1 or other.x1 <= self.x1 and other.x2 >= self.x1) and (
+                    self.y1 <= other.y1 and self.y2 >= other.y1 or other.y1 <= self.y1 and other.y2 >= self.y1))
+
+
+def dir(bp, p1, p2):
+    det = (p1[1] - bp[1]) * (p2[0] - p1[0]) - (p1[0] - bp[0]) * (p2[1] - p1[1])
+    if det == 0:
+        return 0
+    elif det > 0:
+        return 1;
+    else:
+        return 2;
+
+
+def eulerdist2(p1, p2):
+    return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2
+
 
 class Genome:
     
@@ -338,7 +342,23 @@ class Genome:
         print("exuriutingngjdsh")
         for line in self.lines:
             print("Here")
-            line.execute(data)     
+            line.execute(data)
+
+    def floodFill(self, data, X, simtime):
+
+        q = Queue(0)
+        q.put((rx, ry))
+
+        score = 0
+        while (not q.empty()):
+            p = q.get()
+            rx = p[0]
+            ry = p[1]
+
+            if not (not (rx >= 0 and ry >= 0 and ry < data.nrows and rx < data.ncols) or X[ry][rx] == 0):
+
+                if (data.BURN[ry][rx] > 0 and data.BURN[ry][rx] <= simtime):
+                    score += 1000
 
     def floodFill(self,data,X,rx,ry,simtime):
         
@@ -385,17 +405,3 @@ class Genome:
         #         score+=self.floodFill(data,X,i,j,time)
         return self.score+score
 
-        
-        
-        
-        
-            
-        
-        
-        
-             
-            
-            
-            
-        
-        
