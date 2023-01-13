@@ -21,11 +21,11 @@ ax = fig.add_subplot(111)
 
 # Turns off the x and y axis.
 ax.set_axis_off()
-colors_list = [(0, 0.4, 0), (0, 0, 1)]
+colors_list = [(0, 0.4, 0), (0, 0, 1),(1,1,1)]
 bounds = [0.0, 1.0]
 
-simulateTime = 1653
-for i in range(2, simulateTime, 120):
+simulateTime = 15000
+for i in range(1, simulateTime, 500):
     colors_list.append(((i) / (simulateTime), 0, 0))
     bounds.append(i)
 for i in range(simulateTime, 200000):
@@ -123,10 +123,10 @@ plt.title('Wildfire Propagation Simulation using Alexandridis Model')
 
 # Display the animated figure
 
-timer = fig.canvas.new_timer(interval = 3000) #creating a timer object and setting an interval of 3000 milliseconds
-timer.add_callback(close_event)
+# timer = fig.canvas.new_timer(interval = 3000) #creating a timer object and setting an interval of 3000 milliseconds
+# timer.add_callback(close_event)
 
-timer.start()
+# timer.start()
 plt.show()
 
 

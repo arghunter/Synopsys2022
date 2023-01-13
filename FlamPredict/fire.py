@@ -75,7 +75,7 @@ class Fire:
         if (data.BURN[ry][rx][1] == 0):
             data.BURN[ry][rx][0] = self.speed
             data.BURN[ry][rx][2] = self.direction
-            data.BURN[ry][rx][1] = tick
+            data.BURN[ry][rx][1] = tick+11
 
             # self.preCompute(x,y,p,tick,BURN,A)
             t = threading.Thread(target=self.preCompute, args=(x, y, data, tick))

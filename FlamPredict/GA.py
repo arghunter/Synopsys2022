@@ -77,7 +77,7 @@ def solve(data,buffer,safetyTime):
         print(i/genCount)
         for j in range(popCount):
             print(j)
-            scores[j]=pop[j].getFitness(data,buffer,safetyTime,300,j,X)#add speed
+            scores[j]=pop[j].getFitness(data,buffer,safetyTime,5,j,X)#add speed
         ind= np.argsort(scores)
         scores=scores[ind]
         pop=pop[ind]
@@ -85,10 +85,16 @@ def solve(data,buffer,safetyTime):
         for j in range(popCount):
             p1=pop[np.random.randint(0,elite)].v
             p2=pop[np.random.randint(0,elite)].v
+            if(np.random.random()<0.2):
+                p1=pop[np.random.randint(elite,popCount)].v
+                
+            if(np.random.random()<0.2):
+                p2=pop[np.random.randint(elite,popCount)].v
+            
             split=np.random.randint(1,min(len(p1)-1,len(p2)-1))
             
             p3=p1[0:split]+p2[split:len(p2)]
-            if(np.random.random()<0.2):
+            if(np.random.random()<0.1):
                 pos=np.random.randint(0,len(p3))
                 point=p3[pos];
                 dx=np.random.randint(1,64)-32;
@@ -104,7 +110,7 @@ def solve(data,buffer,safetyTime):
     # print(i/genCount)
     for j in range(popCount):
         print(j)
-        scores[j]=pop[j].getFitness(data,buffer,safetyTime,300,j,X)#add speed
+        scores[j]=pop[j].getFitness(data,buffer,safetyTime,5,j,X)#add speed
     ind= np.argsort(scores)
     scores=scores[ind]
     pop=pop[ind]
@@ -120,7 +126,7 @@ def solve(data,buffer,safetyTime):
     # # print(t)
     # # pop[0].execute(data)
     so=Genome(pop[0].v);
-    so.getFitness(data,buffer,safetyTime,300,j,X)
+    so.getFitness(data,buffer,safetyTime,5,j,X)
     sol=Genome(pop[0].v);
     sol.execute(data);
                

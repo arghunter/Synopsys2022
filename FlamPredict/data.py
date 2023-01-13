@@ -19,7 +19,8 @@ class Data:
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito"
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Creek\\creek"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito" # mac
-        geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito1/mosquito" # winpc
+        # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito1/mosquito" # winpc
+        geoTIFFPath= "/Users/acg/Downloads/mosquito"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/creek (1)/creek" #win pc
         self.spotQ = Queue(maxsize=0)
 
