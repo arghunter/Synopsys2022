@@ -7,6 +7,7 @@ from matplotlib import animation
 from matplotlib import colors
 from queue import Queue
 import threading
+from scipy.spatial import ConvexHull, convex_hull_plot_2d
 
 # import files
 
@@ -33,7 +34,7 @@ def solve(data,buffer,safetyTime):
     popCount=100
     genCount=50
     elite=int(popCount*0.1)
-    bRes=16
+    bRes=30
     pop=np.empty(popCount,Genome)
     seti=set()
     # for i in range (data.ncols):
@@ -54,22 +55,33 @@ def solve(data,buffer,safetyTime):
     # #     px= np.random.randint(10,data.nrows-10);
     # #     py= np.random.randint(10,data.ncols-10);
     # #     points.append((px,py))
-
+    for i in range (data.ncols):
+        for j in range (data.nrows):
+            if(data.BURN[j][i][1]>1 and data.BURN[j][i][1]<buffer+safetyTime):
+                seti.add((i,j));
+                
+    lst=list(seti)
+    hull=ConvexHull(lst)
+    verts=hull.points[hull.vertices];
+    bRes=len(verts)
+    
+                
+    
     # gnme=Genome(points)
     # print(gnme.getFitness(data,buffer,safetyTime,3,1,X))
     # gnme.execute(data)
     for i in range(popCount):
         points=np.zeros((bRes,2))
         for t in range(bRes):
-            px= np.random.randint(10,data.nrows-10);
-            py= np.random.randint(10,data.ncols-10);
-            points[t][0]=px;
-            points[t][1]=py;
-        try:
-            hull=ConvexHull(points)
-            points=hull.points[hull.vertices]
-        except:
-            pass
+            px= np.random.randint(-16,16);
+            py= np.random.randint(-16,16);
+            points[t][0]=px+verts[t][0];
+            points[t][1]=py+verts[t][1];
+        # try:
+        #     hull=ConvexHull(points)
+        #     points=hull.points[hull.vertices]
+        # except:
+        #     pass
         pop[i]=Genome(points)
     scores=np.zeros(popCount)
     for i in range(genCount):
@@ -97,8 +109,8 @@ def solve(data,buffer,safetyTime):
             if(np.random.random()<0.1):
                 pos=np.random.randint(0,len(p3))
                 point=p3[pos];
-                dx=np.random.randint(1,64)-32;
-                dy=np.random.randint(1,64)-32;
+                dx=np.random.randint(-16,16);
+                dy=np.random.randint(-16,16);
                 if(point[1]+dx>=0 and point[0]+dy>=0 and point[0]+dy<data.nrows and point[1]+dx<data.ncols ):
                     p3[pos]=(dy+point[0],dx+point[1])
             pop[j]=Genome(p3)
@@ -127,8 +139,10 @@ def solve(data,buffer,safetyTime):
     # # pop[0].execute(data)
     so=Genome(pop[0].v);
     so.getFitness(data,buffer,safetyTime,5,j,X)
+    
     sol=Genome(pop[0].v);
     sol.execute(data);
+    print(str(pop[0].v))
                
         
     # print(rects)    

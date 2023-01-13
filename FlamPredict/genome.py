@@ -185,7 +185,7 @@ class FireLine:
             if(ry<data.nrows and rx<data.ncols and ry>=0 and rx>=0 ):
                 data.BURN[ry][rx][1]=2;
         
-    def getScore(self,data,buffer,time,speedms,X,color):
+    def getScore(self,data,time,buffer,speedms,X,color):
         X.fill(0)
         score=0;
         lx=-1
@@ -200,7 +200,7 @@ class FireLine:
                 dy=ry-ly;
                 dx=rx-lx;
                 d=np.sqrt(dy**2+dx**2)
-                ftime+=(d/speedms*60)
+                ftime+=(d/(speedms*2))
             ly=ry
             lx=rx
             if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
