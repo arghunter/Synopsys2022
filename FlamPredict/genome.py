@@ -3,8 +3,10 @@ import numpy as np
 import random
 from functools import cmp_to_key
 from scipy.spatial import ConvexHull, convex_hull_plot_2d
+import time
 # from scipy.spatial import Delaunay
-import alphashape
+# import alphashape
+from fire import *
 # import files and variables
 from data import *
 
@@ -184,13 +186,42 @@ class FireLine:
             # print("Executing"+ str(rx)+" "+str(ry))
             if(ry<data.nrows and rx<data.ncols and ry>=0 and rx>=0 ):
                 data.BURN[ry][rx][1]=2;
-        
+            self.bx.put(rx)
+            self.by.put(ry)
+    def executeFuture(self,data,timee,speedms):
+        data.reset();
+        lx=-1
+        ly=-1
+        qs= self.bx.qsize();
+        ftime=timee
+        while(qs>0):
+            qs-=1
+            rx=self.bx.get();
+            ry=self.by.get();
+            if(ly!=-1):
+                dy=ry-ly;
+                dx=rx-lx;
+                d=np.sqrt(dy**2+dx**2)
+                ftime+=(d/(speedms*2))
+            ly=ry
+            lx=rx
+            if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
+                data.FUTURE[ry][rx]=int(ftime)
+                data.BURN[ry][rx][1]=2
+            self.bx.put(rx)
+            self.by.put(ry)
+        fire=Fire(data.ncols/2*data.p,data.nrows/2*data.p,data,1,data.ncols/2*data.p+data.p,data.nrows/2*data.p+data.p)
+        while(threading.activeCount()>1):
+            print(threading.activeCount())
+            time.sleep(1)
+ 
     def getScore(self,data,time,buffer,speedms,X,color):
         X.fill(0)
         score=0;
         lx=-1
         ly=-1
         qs= self.bx.qsize();
+        broke=False
         ftime=time
         while(qs>0):
             qs-=1
@@ -206,7 +237,8 @@ class FireLine:
             if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
                 X[ry][rx]=1;
                 if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
-                    score+=9000#line too late
+                    score+=90000#line too late
+                    # broke=True
             self.bx.put(rx)
             self.by.put(ry)
         print(ftime)
@@ -244,7 +276,10 @@ class FireLine:
                             score+=10
                     else:
                         score+=15
-        return score
+        if broke:
+            return np.absolute(score)
+        else:
+            return score
        
         
     
@@ -277,7 +312,7 @@ def eulerdist2(p1, p2):
 
 class Genome:
     
-    def __init__(self,points):
+    def __init__(self,points,rot=-1):
         self.origin=[0,0]
         avgX=0
         avgY=0
@@ -290,7 +325,9 @@ class Genome:
         self.origin[1]=avgY
         vert=sorted(points,key=self.clockwiseangle_and_distance)
         self.score=0
-        rot=np.random.randint(0,len(vert))
+        if rot ==-1:
+            rot=np.random.randint(0,len(vert))
+        self.rot=rot
         vert=vert[rot:]+vert[:rot];
         self.v=vert;
         # vert=self.convexHull(points)
@@ -345,6 +382,11 @@ class Genome:
         for line in self.lines:
             print("Here")
             line.execute(data)
+    def executeFuture(self,data,time,speed):
+        print("exuriutingngjdsh")
+        for line in self.lines:
+            print("Here")
+            line.executeFuture(data,time,speed)
 
     def floodFill(self, data, X, simtime):
 
@@ -406,4 +448,5 @@ class Genome:
         #     for j in range(data.nrows):
         #         score+=self.floodFill(data,X,i,j,time)
         return self.score+score
+    
 

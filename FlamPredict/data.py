@@ -15,13 +15,14 @@ class Data:
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\T1\\datasmall"
         # geoTIFFPath = "C:/Users/arg/Documents/LandFireData/Mckinney/mckiney"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
-        geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
+        # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Mosquito\\mosquito"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito"
         # geoTIFFPath = "C:\\Users\\arg\\Documents\\LandFireData\\Creek\\creek"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito" # mac
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/mosquito1/mosquito" # winpc
         # geoTIFFPath= "/Users/acg/Downloads/mosquito"
         # geoTIFFPath = "/Users/Samuel Yuan/Downloads/creek (1)/creek" #win pc
+        geoTIFFPath="C:\\Users\\arg\\Documents\\LandFireData\\Oak2\\oak2"
         self.spotQ = Queue(maxsize=0)
 
         # fuel
@@ -70,14 +71,15 @@ class Data:
         print(self.elevation)
         self.BURN = np.zeros((self.nrows, self.ncols, 3))  # probability,time,direction
         self.COLORS = np.zeros((self.nrows, self.ncols))
+        self.FUTURE= np.zeros((self.nrows,self.ncols))
         # atmdir=input("Enter wind directory: ")
         atmdir = geoTIFFPath
         # atmdir = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done
         # atmname=input("Enter wind atm file name")
-        atmname = "elevation_point_09-06-2022_1736_100m.atm"  # TODO: commentout when done
+        atmname = "elevation_point_07-22-2022_1407_100m.atm"  # TODO: commentout when done
 
         # atmfileLines = input("Enter number of lines in atm file: ")
-        atmfileLines = "75"  # TODO: commentout when done
+        atmfileLines = "348"  # TODO: commentout when done
         self.atmLen = int(atmfileLines) - 2
         atm = open(atmdir + "/" + atmname, "r")
         altFs = atm.readline()
@@ -136,7 +138,10 @@ class Data:
             return -(self.wndA[frame][ry][rx] - 270)
         else:
             return -1
-
+    def reset(self):
+        self.BURN = np.zeros((self.nrows, self.ncols, 3))  # probability,time,direction
+        self.COLORS = np.zeros((self.nrows, self.ncols))
+        self.FUTURE= np.zeros((self.nrows,self.ncols))
 # data=Data()
 # print(data.fuel[10,5]);
 # square = 6000

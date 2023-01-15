@@ -71,11 +71,11 @@ class Fire:
         # print("("+str(x)+","+str(y)+") "+" ("+str(lastX)+","+str(lastY)+") " + str(directionRad)+"\n")# TODO change this  # Direction in radians
 
         self.speed = 5  # m/min
-
-        if (data.BURN[ry][rx][1] == 0):
+        # print((data.FUTURE[ry][rx]==0 or data.FUTURE[ry][rx]>tick))
+        if (data.BURN[ry][rx][1] == 0 or (data.BURN[ry][rx][1] == 2 and (data.FUTURE[ry][rx]==0 or data.FUTURE[ry][rx]>tick))):
             data.BURN[ry][rx][0] = self.speed
             data.BURN[ry][rx][2] = self.direction
-            data.BURN[ry][rx][1] = tick+11
+            data.BURN[ry][rx][1] = tick
 
             # self.preCompute(x,y,p,tick,BURN,A)
             t = threading.Thread(target=self.preCompute, args=(x, y, data, tick))

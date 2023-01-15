@@ -89,31 +89,43 @@ def solve(data,buffer,safetyTime):
         print(i/genCount)
         for j in range(popCount):
             print(j)
-            scores[j]=pop[j].getFitness(data,buffer,safetyTime,5,j,X)#add speed
+            scores[j]=pop[j].getFitness(data,buffer,safetyTime,2,j,X)#add speed
         ind= np.argsort(scores)
         scores=scores[ind]
         pop=pop[ind]
         # print(scores)
         for j in range(popCount):
-            p1=pop[np.random.randint(0,elite)].v
-            p2=pop[np.random.randint(0,elite)].v
+            par1=np.random.randint(0,elite)
+            par2=np.random.randint(0,elite)
+            p1=pop[par1].v
+            p2=pop[par2].v
             if(np.random.random()<0.2):
-                p1=pop[np.random.randint(elite,popCount)].v
+                par1=np.random.randint(elite,popCount)
+                p1=pop[par1].v
                 
             if(np.random.random()<0.2):
-                p2=pop[np.random.randint(elite,popCount)].v
+                par2=np.random.randint(elite,popCount)
+                p2=pop[par2].v
             
             split=np.random.randint(1,min(len(p1)-1,len(p2)-1))
             
             p3=p1[0:split]+p2[split:len(p2)]
-            if(np.random.random()<0.1):
+            if(np.random.random()<0.8):
                 pos=np.random.randint(0,len(p3))
                 point=p3[pos];
-                dx=np.random.randint(-16,16);
-                dy=np.random.randint(-16,16);
+                dx=np.random.randint(-8,8);
+                dy=np.random.randint(-8,8);
                 if(point[1]+dx>=0 and point[0]+dy>=0 and point[0]+dy<data.nrows and point[1]+dx<data.ncols ):
                     p3[pos]=(dy+point[0],dx+point[1])
-            pop[j]=Genome(p3)
+            rotV=np.random.random()
+            
+            if rotV<0.45:
+                rot=pop[par1].rot
+            elif rotV>0.55:
+                rot=pop[par2].rot
+            else:
+                rot=int((pop[par1].rot+pop[par2].rot)/2)    
+            pop[j]=Genome(p3,rot)
         print(scores)
     
     scores=np.zeros(popCount)
@@ -122,7 +134,7 @@ def solve(data,buffer,safetyTime):
     # print(i/genCount)
     for j in range(popCount):
         print(j)
-        scores[j]=pop[j].getFitness(data,buffer,safetyTime,5,j,X)#add speed
+        scores[j]=pop[j].getFitness(data,buffer,safetyTime,2,j,X)#add speed
     ind= np.argsort(scores)
     scores=scores[ind]
     pop=pop[ind]
@@ -138,10 +150,10 @@ def solve(data,buffer,safetyTime):
     # # print(t)
     # # pop[0].execute(data)
     so=Genome(pop[0].v);
-    so.getFitness(data,buffer,safetyTime,5,j,X)
+    so.getFitness(data,buffer,safetyTime,2,j,X)
     
     sol=Genome(pop[0].v);
-    sol.execute(data);
+    sol.executeFuture(data,buffer,2);
     print(str(pop[0].v))
                
         
