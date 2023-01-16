@@ -138,6 +138,8 @@ class Data:
             return -(self.wndA[frame][ry][rx] - 270)
         else:
             return -1
+    def getSpeed(self,tick,ry,rx):
+        pass#TODO fill this  return sum of all dozer speeds
     def reset(self):
         self.BURN = np.zeros((self.nrows, self.ncols, 3))  # probability,time,direction
         self.COLORS = np.zeros((self.nrows, self.ncols))
