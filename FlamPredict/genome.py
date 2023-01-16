@@ -189,6 +189,7 @@ class FireLine:
             self.bx.put(rx)
             self.by.put(ry)
     def executeFuture(self,data,timee,speedms):
+        rng = np.random.RandomState(2025)
         data.reset();
         lx=-1
         ly=-1
@@ -210,7 +211,7 @@ class FireLine:
                 data.BURN[ry][rx][1]=2
             self.bx.put(rx)
             self.by.put(ry)
-        fire=Fire(data.ncols/2*data.p,data.nrows/2*data.p,data,1,data.ncols/2*data.p+data.p,data.nrows/2*data.p+data.p)
+        fire=Fire(data.ncols/2*data.p,data.nrows/2*data.p,data,1,data.ncols/2*data.p+data.p,data.nrows/2*data.p+data.p,rng)
         while(threading.activeCount()>1):
             print(threading.activeCount())
             time.sleep(1)
@@ -234,11 +235,13 @@ class FireLine:
                 ftime+=(d/(speedms*2))
             ly=ry
             lx=rx
+            bc=0
             if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
                 X[ry][rx]=1;
                 if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
-                    score+=90000#line too late
-                    # broke=True
+                    score+=12000#line too late
+
+                    broke=True
             self.bx.put(rx)
             self.by.put(ry)
         print(ftime)
@@ -246,6 +249,7 @@ class FireLine:
         for i in range(data.ncols):
             inp=False
             lst=False
+            store=0
             for j in range(data.nrows):
                 if(X[j][i]==1):
                     
@@ -264,22 +268,29 @@ class FireLine:
                         if(data.BURN[j][i][1]<time+buffer):
                             score+=500
                         elif(data.BURN[j][i][1]<ftime+buffer):
-                            score+=500*(ftime-data.BURN[j][i][1])/(ftime-time)
+                            if broke:
+                                score+=1000
+                            else:
+                                score+=500*(ftime-data.BURN[j][i][1])/(ftime-time)
                 else:
                     data.COLORS[j][i]=1;
+                
                     if(data.BURN[j][i][1]>1):
                         if(data.BURN[j][i][1]<time+buffer):
-                            score-=300
+                            
+                            store-=400
                         elif(data.BURN[j][i][1]<ftime+buffer):
-                            score-=300*(ftime-data.BURN[j][i][1])/(ftime-time)
+                            
+                                store-=400*(ftime-data.BURN[j][i][1])/(ftime-time)
                         else: 
                             score+=10
                     else:
                         score+=15
-        if broke:
-            return np.absolute(score)
-        else:
-            return score
+            if inp:
+                score+=np.absolute(store)*10
+            else:
+                score+=store
+        return score
        
         
     

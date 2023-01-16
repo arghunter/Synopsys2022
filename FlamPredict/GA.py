@@ -73,8 +73,8 @@ def solve(data,buffer,safetyTime):
     for i in range(popCount):
         points=np.zeros((bRes,2))
         for t in range(bRes):
-            px= np.random.randint(-16,16);
-            py= np.random.randint(-16,16);
+            px= np.random.randint(-32,32);
+            py= np.random.randint(-32,32);
             points[t][0]=px+verts[t][0];
             points[t][1]=py+verts[t][1];
         # try:
