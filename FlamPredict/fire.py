@@ -673,7 +673,7 @@ class Fire:
                     # data.p = side length
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
-                    Fire(x + dx * data.p, y + dy * data.p, data, int(tick + 11), self.x, self.y,rng)
+                    Fire(x + dx * data.p, y + dy * data.p, data, int(tick + 12), self.x, self.y,rng)
 
                 ##################################################################
                 # spotting
