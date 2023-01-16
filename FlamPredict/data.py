@@ -169,7 +169,8 @@ class Data:
         # make sure SLOPE IS GRADE
         bladeWidth = 10  # (ft) from https://www.fire.ca.gov/media/gagbtzop/dozers.pdf
         lineWidth = 40 # (ft)
-        fuelmodelcode = self.getLineFuelType(self, ry, rx)
+        fuelmodelcode = self.getLineFuelType( ry, rx)
+        dozerSpeed=0
         if fuelmodelcode in (1,2,3,5,8):
             if abs(slope) <= 25:
                 if slope >= 0:
@@ -239,7 +240,7 @@ class Data:
 
         passesNeeded = lineWidth/bladeWidth
         wdozerSpeed = dozerSpeed/passesNeeded
-
+        # print(wdozerSpeed)
 
         if tick < 537:
             n = 1

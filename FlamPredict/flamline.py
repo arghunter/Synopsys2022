@@ -21,7 +21,7 @@ while(threading.activeCount()>1):
     print(threading.activeCount())
     time.sleep(1)
 
-solve(data,3000,60)
+solve(data,3500,60)
 
 file=open("routput.txt",'w')
 for i in range (data.ncols):

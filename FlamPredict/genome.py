@@ -232,7 +232,8 @@ class FireLine:
                 dy=ry-ly;
                 dx=rx-lx;
                 d=np.sqrt(dy**2+dx**2)
-                ftime+=(d/(speedms*2))
+                if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
+                    ftime+=(d/(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))*2))
             ly=ry
             lx=rx
             bc=0
