@@ -169,7 +169,7 @@ class Data:
         # make sure SLOPE IS GRADE
         bladeWidth = 10  # (ft) from https://www.fire.ca.gov/media/gagbtzop/dozers.pdf
         lineWidth = 40 # (ft)
-        fuelmodelcode = self.getLineFuelType( ry, rx)
+        fuelmodelcode = self.getLineFuelType(ry, rx)
         dozerSpeed=0
         if fuelmodelcode in (1,2,3,5,8):
             if abs(slope) <= 25:
@@ -242,20 +242,15 @@ class Data:
         wdozerSpeed = dozerSpeed/passesNeeded
         # print(wdozerSpeed)
 
+        # dozer num calculation
+        # oak dozer Num
         if tick < 537:
-            n = 1
-        elif 537 <= tick < 3500:
-            n = 2
-        elif tick >= 3500:
-            n = 3
-
-
-        with open('dozerNum.txt', 'r') as dozernumFile:
-            dozernumlines = dozernumFile.readlines()
-
-            nthlineD = dozernumlines[(n - 1)]
-            dozernumVal = nthlineD.strip()
-        dozerNum = float(dozernumVal)
+            dozerNum = 0
+        elif 537 <= tick < 27664:
+            dozerNum = ((3.996 * (1 / (10 * 11)) * (tick ** 3)) + (-0.00000194226 * (tick ** 2)) + (
+                        0.024005 * tick))  # r^2 = 0.8927
+        else:
+            dozerNum = 17
 
         totaldozerSpeed = dozerNum * wdozerSpeed
 
@@ -276,13 +271,13 @@ class Data:
         elif fuelmodelcode == 0:
             crewSpeed = 99999999999999999999
 
-
-        with open('crewNum.txt', 'r') as crewnumFile:
-            crewnumlines = crewnumFile.readlines()
-
-            nthlineC = crewnumlines[(n - 1)]
-            crewnumVal = nthlineC.strip()
-        crewNum = float(crewnumVal)
+        # oak crew Num
+        if tick < 537:
+            crewNum = 0
+        elif 537 <= tick < 23323:
+            crewNum = ((1.8511*(1/(10*11))*(tick**3)) + (-0.00000120173*(tick**2)) + (0.0190697*tick)) # r^2 = 0.8927
+        else:
+            crewNum = 9
 
         totalcrewSpeed = crewNum * crewSpeed
         totalSpeedCh = totalcrewSpeed + totaldozerSpeed
