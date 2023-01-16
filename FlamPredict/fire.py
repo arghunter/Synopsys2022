@@ -75,7 +75,7 @@ class Fire:
         if (data.BURN[ry][rx][1] == 0 or (data.BURN[ry][rx][1] == 2 and (data.FUTURE[ry][rx]==0 or data.FUTURE[ry][rx]>tick))):
             data.BURN[ry][rx][0] = self.speed
             data.BURN[ry][rx][2] = self.direction
-            data.BURN[ry][rx][1] = tick+5
+            data.BURN[ry][rx][1] = tick
 
             # self.preCompute(x,y,p,tick,BURN,A)
             t = threading.Thread(target=self.preCompute, args=(x, y, data, tick,rng))
@@ -117,7 +117,7 @@ class Fire:
                 elif dy == 1:
                     ang = 270
 
-                if data.fuel[ry + dy][rx + dx] == 91:
+                if int(data.fuel[ry + dy][rx + dx]) == 91:
                     # NB1 - Urban/Developed
                     # NO FIRE SPREAD
                     pvegCategory = 6
@@ -128,7 +128,7 @@ class Fire:
                     Mx = 1.0  # dead fuel moisture of extinction (fraction)
                     w0 = 1.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 92:
+                elif int(data.fuel[ry + dy][rx + dx]) == 92:
                     # NB2 - Snow/Ice
                     # NO FIRE SPREAD
                     pvegCategory = 1
@@ -139,7 +139,7 @@ class Fire:
                     Mx = 1.0  # dead fuel moisture of extinction (fraction)
                     w0 = 1.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 93:
+                elif int(data.fuel[ry + dy][rx + dx]) == 93:
                     # NB3 - Agricultural
                     # NO FIRE SPREAD
                     pvegCategory = 2
@@ -150,7 +150,7 @@ class Fire:
                     Mx = 1.0  # dead fuel moisture of extinction (fraction)
                     w0 = 1.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 98:
+                elif int(data.fuel[ry + dy][rx + dx]) == 98:
                     # NB8 - Open Water
                     # NO FIRE SPREAD
                     pvegCategory = 5
@@ -161,7 +161,7 @@ class Fire:
                     Mx = 1  # dead fuel moisture of extinction (fraction)
                     w0 = 1.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 99:
+                elif int(data.fuel[ry + dy][rx + dx]) == 99:
                     # NB9 - Barren
                     # NO FIRE SPREAD
                     pvegCategory = 1
@@ -172,7 +172,7 @@ class Fire:
                     Mx = 1.0  # dead fuel moisture of extinction (fraction)
                     w0 = 1.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 100:
+                elif int(data.fuel[ry + dy][rx + dx]) == 100:
                     # NB10 - Next to nb Custom
                     # NO FIRE SPREAD
                     pvegCategory = 1
@@ -183,7 +183,7 @@ class Fire:
                     Mx = 1.0  # dead fuel moisture of extinction (fraction)
                     w0 = 1.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 101:
+                elif int(data.fuel[ry + dy][rx + dx]) == 101:
                     # GR1
                     pvegCategory = 3
                     pdenCategory = 2
@@ -193,7 +193,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 0.4  # oven dry fuel load (lb/ft^2)
                     sigma = 2054  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 102:
+                elif int(data.fuel[ry + dy][rx + dx]) == 102:
                     # GR2
                     pvegCategory = 3
                     pdenCategory = 3
@@ -203,7 +203,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 1.1  # oven dry fuel load (lb/ft^2)
                     sigma = 1820  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 103:
+                elif int(data.fuel[ry + dy][rx + dx]) == 103:
                     # GR3
                     pvegCategory = 3
                     pdenCategory = 3
@@ -213,7 +213,7 @@ class Fire:
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
                     w0 = 1.6  # oven dry fuel load (lb/ft^2)
                     sigma = 1290  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 104:
+                elif int(data.fuel[ry + dy][rx + dx]) == 104:
                     # GR4
                     pvegCategory = 3
                     pdenCategory = 4
@@ -223,7 +223,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 2.15  # oven dry fuel load (lb/ft^2)
                     sigma = 1826  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 105:
+                elif int(data.fuel[ry + dy][rx + dx]) == 105:
                     # GR5
                     pvegCategory = 3
                     pdenCategory = 3
@@ -233,7 +233,7 @@ class Fire:
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
                     w0 = 2.9  # oven dry fuel load (lb/ft^2)
                     sigma = 1631  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 106:
+                elif int(data.fuel[ry + dy][rx + dx]) == 106:
                     # GR6
                     pvegCategory = 3
                     pdenCategory = 4
@@ -243,7 +243,7 @@ class Fire:
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
                     w0 = 3.5  # oven dry fuel load (lb/ft^2)
                     sigma = 2006  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 107:
+                elif int(data.fuel[ry + dy][rx + dx]) == 107:
                     # GR7
                     pvegCategory = 3
                     pdenCategory = 5
@@ -253,7 +253,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 6.4  # oven dry fuel load (lb/ft^2)
                     sigma = 1834  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 108:
+                elif int(data.fuel[ry + dy][rx + dx]) == 108:
                     # GR8
                     pvegCategory = 3
                     pdenCategory = 5
@@ -263,7 +263,7 @@ class Fire:
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
                     w0 = 7.8  # oven dry fuel load (lb/ft^2)
                     sigma = 1302  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 109:
+                elif int(data.fuel[ry + dy][rx + dx]) == 109:
                     # GR9
                     pvegCategory = 3
                     pdenCategory = 6
@@ -273,7 +273,7 @@ class Fire:
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
                     w0 = 10.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1612  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 121:
+                elif int(data.fuel[ry + dy][rx + dx]) == 121:
                     # GS1
                     pvegCategory = 3
                     pdenCategory = 3
@@ -283,7 +283,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 1.35  # oven dry fuel load (lb/ft^2)
                     sigma = 1832  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 122:
+                elif int(data.fuel[ry + dy][rx + dx]) == 122:
                     # GS2
                     pvegCategory = 3
                     pdenCategory = 4
@@ -293,7 +293,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 2.1  # oven dry fuel load (lb/ft^2)
                     sigma = 1827  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 123:
+                elif int(data.fuel[ry + dy][rx + dx]) == 123:
                     # GS3
                     pvegCategory = 3
                     pdenCategory = 4
@@ -303,7 +303,7 @@ class Fire:
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
                     w0 = 3.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1614  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 124:
+                elif int(data.fuel[ry + dy][rx + dx]) == 124:
                     # GS4
                     pvegCategory = 3
                     pdenCategory = 5
@@ -313,7 +313,7 @@ class Fire:
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
                     w0 = 12.4  # oven dry fuel load (lb/ft^2)
                     sigma = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 141:
+                elif int(data.fuel[ry + dy][rx + dx]) == 141:
                     # SH1
                     pvegCategory = 3
                     pdenCategory = 3
@@ -323,7 +323,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 1.7  # oven dry fuel load (lb/ft^2)
                     sigma = 1674  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 142:
+                elif int(data.fuel[ry + dy][rx + dx]) == 142:
                     # SH2
                     pvegCategory = 3
                     pdenCategory = 4
@@ -333,7 +333,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 5.2  # oven dry fuel load (lb/ft^2)
                     sigma = 1672  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 143:
+                elif int(data.fuel[ry + dy][rx + dx]) == 143:
                     # SH3
                     pvegCategory = 3
                     pdenCategory = 4
@@ -343,7 +343,7 @@ class Fire:
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
                     w0 = 6.65  # oven dry fuel load (lb/ft^2)
                     sigma = 1371  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 144:
+                elif int(data.fuel[ry + dy][rx + dx]) == 144:
                     # SH4
                     pvegCategory = 3
                     pdenCategory = 3
@@ -353,7 +353,7 @@ class Fire:
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
                     w0 = 3.4  # oven dry fuel load (lb/ft^2)
                     sigma = 1682  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 145:
+                elif int(data.fuel[ry + dy][rx + dx]) == 145:
                     # SH5
                     pvegCategory = 3
                     pdenCategory = 5
@@ -363,7 +363,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 6.5  # oven dry fuel load (lb/ft^2)
                     sigma = 1252  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 146:
+                elif int(data.fuel[ry + dy][rx + dx]) == 146:
                     # SH6
                     pvegCategory = 3
                     pdenCategory = 3
@@ -373,7 +373,7 @@ class Fire:
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
                     w0 = 4.3  # oven dry fuel load (lb/ft^2)
                     sigma = 1144  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 147:
+                elif int(data.fuel[ry + dy][rx + dx]) == 147:
                     # SH7
                     pvegCategory = 3
                     pdenCategory = 6
@@ -383,7 +383,7 @@ class Fire:
                     Mx = 0.15  # dead fuel moisture of extinction (fraction)
                     w0 = 6.9  # oven dry fuel load (lb/ft^2)
                     sigma = 1233  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 148:
+                elif int(data.fuel[ry + dy][rx + dx]) == 148:
                     # SH8
                     pvegCategory = 3
                     pdenCategory = 5
@@ -393,7 +393,7 @@ class Fire:
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
                     w0 = 6.4  # oven dry fuel load (lb/ft^2)
                     sigma = 1386  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 149:
+                elif int(data.fuel[ry + dy][rx + dx]) == 149:
                     # SH9
                     pvegCategory = 3
                     pdenCategory = 6
@@ -403,7 +403,7 @@ class Fire:
                     Mx = 0.4  # dead fuel moisture of extinction (fraction)
                     w0 = 13.05  # oven dry fuel load (lb/ft^2)
                     sigma = 1378  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 161:
+                elif int(data.fuel[ry + dy][rx + dx]) == 161:
                     # TU1
                     pvegCategory = 4
                     pdenCategory = 3
@@ -413,7 +413,7 @@ class Fire:
                     Mx = 0.2  # dead fuel moisture of extinction (fraction)
                     w0 = 1.3  # oven dry fuel load (lb/ft^2)
                     sigma = 1606  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 162:
+                elif int(data.fuel[ry + dy][rx + dx]) == 162:
                     # TU2
                     pvegCategory = 4
                     pdenCategory = 4
@@ -423,7 +423,7 @@ class Fire:
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
                     w0 = 1.15  # oven dry fuel load (lb/ft^2)
                     sigma = 1767  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 163:
+                elif int(data.fuel[ry + dy][rx + dx]) == 163:
                     # TU3
                     pvegCategory = 4
                     pdenCategory = 4
@@ -433,7 +433,7 @@ class Fire:
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
                     w0 = 2.85  # oven dry fuel load (lb/ft^2)
                     sigma = 1611  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 164:
+                elif int(data.fuel[ry + dy][rx + dx]) == 164:
                     # TU4
                     pvegCategory = 4
                     pdenCategory = 6
@@ -443,7 +443,7 @@ class Fire:
                     Mx = 0.12  # dead fuel moisture of extinction (fraction)
                     w0 = 6.5  # oven dry fuel load (lb/ft^2)
                     sigma = 2216  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 165:
+                elif int(data.fuel[ry + dy][rx + dx]) == 165:
                     # TU5
                     pvegCategory = 4
                     pdenCategory = 6
@@ -453,7 +453,7 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 7.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1224  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 181:
+                elif int(data.fuel[ry + dy][rx + dx]) == 181:
                     # TL1
                     pvegCategory = 4
                     pdenCategory = 3
@@ -463,7 +463,7 @@ class Fire:
                     Mx = 0.3  # dead fuel moisture of extinction (fraction)
                     w0 = 1.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1716  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 182:
+                elif int(data.fuel[ry + dy][rx + dx]) == 182:
                     # TL2
                     pvegCategory = 4
                     pdenCategory = 3
@@ -473,7 +473,7 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 1.4  # oven dry fuel load (lb/ft^2)
                     sigma = 1806  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 183:
+                elif int(data.fuel[ry + dy][rx + dx]) == 183:
                     # TL3
                     pvegCategory = 4
                     pdenCategory = 4
@@ -483,7 +483,7 @@ class Fire:
                     Mx = 0.2  # dead fuel moisture of extinction (fraction)
                     w0 = 0.5  # oven dry fuel load (lb/ft^2)
                     sigma = 1532  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 184:
+                elif int(data.fuel[ry + dy][rx + dx]) == 184:
                     # TL4
                     pvegCategory = 4
                     pdenCategory = 4
@@ -493,7 +493,7 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 0.5  # oven dry fuel load (lb/ft^2)
                     sigma = 1568  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 185:
+                elif int(data.fuel[ry + dy][rx + dx]) == 185:
                     # TL5
                     pvegCategory = 4
                     pdenCategory = 5
@@ -503,7 +503,7 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 1.15  # oven dry fuel load (lb/ft^2)
                     sigma = 1713  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 186:
+                elif int(data.fuel[ry + dy][rx + dx]) == 186:
                     # TL6
                     pvegCategory = 4
                     pdenCategory = 4
@@ -513,7 +513,7 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 2.4  # oven dry fuel load (lb/ft^2)
                     sigma = 1936  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 187:
+                elif int(data.fuel[ry + dy][rx + dx]) == 187:
                     # TL7
                     pvegCategory = 4
                     pdenCategory = 5
@@ -523,7 +523,7 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 0.3  # oven dry fuel load (lb/ft^2)
                     sigma = 1229  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 188:
+                elif int(data.fuel[ry + dy][rx + dx]) == 188:
                     # TL8
                     pvegCategory = 4
                     pdenCategory = 4
@@ -533,7 +533,7 @@ class Fire:
                     Mx = 0.35  # dead fuel moisture of extinction (fraction)
                     w0 = 5.8  # oven dry fuel load (lb/ft^2)
                     sigma = 1770  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 189:
+                elif int(data.fuel[ry + dy][rx + dx]) == 189:
                     # TL9
                     pvegCategory = 4
                     pdenCategory = 6
@@ -543,7 +543,7 @@ class Fire:
                     Mx = 0.35  # dead fuel moisture of extinction (fraction)
                     w0 = 6.65  # oven dry fuel load (lb/ft^2)
                     sigma = 1733  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 201:
+                elif int(data.fuel[ry + dy][rx + dx]) == 201:
                     # SB1
                     pvegCategory = 4
                     pdenCategory = 3
@@ -553,7 +553,7 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 1.5  # oven dry fuel load (lb/ft^2)
                     sigma = 1653  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 202:
+                elif int(data.fuel[ry + dy][rx + dx]) == 202:
                     # SB2
                     pvegCategory = 4
                     pdenCategory = 4
@@ -563,7 +563,7 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 4.5  # oven dry fuel load (lb/ft^2)
                     sigma = 1884  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 203:
+                elif int(data.fuel[ry + dy][rx + dx]) == 203:
                     # SB3
                     pvegCategory = 4
                     pdenCategory = 5
@@ -573,7 +573,7 @@ class Fire:
                     Mx = 0.25  # dead fuel moisture of extinction (fraction)
                     w0 = 5.5  # oven dry fuel load (lb/ft^2)
                     sigma = 1935  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
-                elif data.fuel[ry + dy][rx + dx] == 204:
+                elif int(data.fuel[ry + dy][rx + dx]) == 204:
                     # SB4
                     pvegCategory = 4
                     pdenCategory = 5
@@ -593,7 +593,7 @@ class Fire:
                     w0 = 1.0  # oven dry fuel load (lb/ft^2)
                     sigma = 1  # Surface-area-to-volume ratio of tree (ft^2/ft^3)
 
-                # print(data.fuel[ry + dy][rx + dx])
+                # print(int(data.fuel[ry + dy][rx + dx]))
 
                 # Assign pveg values
                 if pvegCategory == 1:
@@ -646,7 +646,7 @@ class Fire:
                 # R0s = rothermelRate(0, ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y), h, delta, beta, Mx, w0, sigma)
                 # R0 = rothermelRate(0, ang, 0, 0, h, delta, beta, Mx, w0, sigma)
 
-                if data.fuel[ry + dy][rx + dx] == 98 or data.fuel[ry + dy][rx + dx] == 93 or data.fuel[ry + dy][rx + dx] == 91:
+                if int(data.fuel[ry + dy][rx + dx]) == 98 or int(data.fuel[ry + dy][rx + dx]) == 93 or int(data.fuel[ry + dy][rx + dx]) == 91:
                     prob = (0.7 * (1 + pveg) * (1 + pden))
                 else:
                     prob = alexandridisModelProbability(ang, data.get_windA(tick, x, y), data.get_windV(tick, x, y),
