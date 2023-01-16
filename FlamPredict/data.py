@@ -247,7 +247,7 @@ class Data:
         if tick < 537:
             dozerNum = 0
         elif 537 <= tick < 27664:
-            dozerNum = ((3.996 * (1 / (10 * 11)) * (tick ** 3)) + (-0.00000194226 * (tick ** 2)) + (
+            dozerNum = ((3.996 * (1 / (10 ** 11)) * (tick ** 3)) + (-0.00000194226 * (tick ** 2)) + (
                         0.024005 * tick))  # r^2 = 0.8927
         else:
             dozerNum = 17
@@ -275,7 +275,7 @@ class Data:
         if tick < 537:
             crewNum = 0
         elif 537 <= tick < 23323:
-            crewNum = ((1.8511*(1/(10*11))*(tick**3)) + (-0.00000120173*(tick**2)) + (0.0190697*tick)) # r^2 = 0.8927
+            crewNum = ((1.8511*(1/(10**11))*(tick**3)) + (-0.00000120173*(tick**2)) + (0.0190697*tick)) # r^2 = 0.8927
         else:
             crewNum = 9
 
