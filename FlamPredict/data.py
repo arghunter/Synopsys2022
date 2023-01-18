@@ -72,6 +72,10 @@ class Data:
         self.BURN = np.zeros((self.nrows, self.ncols, 3))  # probability,time,direction
         self.COLORS = np.zeros((self.nrows, self.ncols))
         self.FUTURE= np.zeros((self.nrows,self.ncols))
+
+        
+        
+  
         # atmdir=input("Enter wind directory: ")
         atmdir = geoTIFFPath
         # atmdir = "/Users/Samuel Yuan/Downloads/datasmall/datasmall" #TODO: commentout when done

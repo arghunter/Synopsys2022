@@ -189,7 +189,7 @@ class FireLine:
             self.bx.put(rx)
             self.by.put(ry)
     def executeFuture(self,data,timee,speedms):
-        rng = np.random.RandomState(2025)
+        
         data.reset();
         lx=-1
         ly=-1
@@ -213,7 +213,7 @@ class FireLine:
                 data.BURN[ry][rx][1]=2
             self.bx.put(rx)
             self.by.put(ry)
-        fire=Fire(data.ncols/2*data.p,data.nrows/2*data.p,data,1,data.ncols/2*data.p+data.p,data.nrows/2*data.p+data.p,rng)
+        fire=Fire(data.ncols/2*data.p,data.nrows/2*data.p,data,1,data.ncols/2*data.p+data.p,data.nrows/2*data.p+data.p)
         while(threading.activeCount()>1):
             print(threading.activeCount())
             time.sleep(1)

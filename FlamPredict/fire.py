@@ -14,7 +14,7 @@ neighborhood = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
 
 
 class Fire:
-    def __init__(self, x, y, data, tick, lastX, lastY,rng):
+    def __init__(self, x, y, data, tick, lastX, lastY):
         self.x = x
         self.y = y
         self.lastX = lastX;
@@ -73,16 +73,18 @@ class Fire:
         self.speed = 5  # m/min
         # print((data.FUTURE[ry][rx]==0 or data.FUTURE[ry][rx]>tick))
         if (data.BURN[ry][rx][1] == 0 or (data.BURN[ry][rx][1] == 2 and (data.FUTURE[ry][rx]==0 or data.FUTURE[ry][rx]>tick))):
-            data.BURN[ry][rx][0] = self.speed
-            data.BURN[ry][rx][2] = self.direction
+           
+            
             data.BURN[ry][rx][1] = tick
 
             # self.preCompute(x,y,p,tick,BURN,A)
-            t = threading.Thread(target=self.preCompute, args=(x, y, data, tick,rng))
+            t = threading.Thread(target=self.preCompute, args=(x, y, data, tick))
+            # print("Called")
             t.start()
             # self.preCompute(x,y,data,tick)
 
-    def preCompute(self, x, y, data, tick,rng):
+    def preCompute(self, x, y, data, tick):
+        # print("Called")
         # print(str(tick) +" "+str(x)+" "+str(y)+" \n")
         # print(" (" + str(x) + "," + str(y) + ") \n")
         # f = open("output.txt", "a")
@@ -653,10 +655,14 @@ class Fire:
                                                     pveg, pden, delta, thetaS, Mx)
                 # print("wnd:"+str(data.get_windV(self.x,self.y,tick)))
                 # pburnSim = int.from_bytes(os.urandom(8), byteorder="big") / ((1 << 64) - 1)
+                if data.BURN[ry + dy][rx + dx][2] ==0:
+                    pburnSim =np.random.random()
+                else:
+                    pburnSim = data.BURN[ry + dy][rx + dx][2]
+                
+                
 
-                pburnSim = rng.rand()
-
-                if (pburnSim < prob):
+                if (pburnSim <= prob):
                     # Fire(x + dx * data.p, y + dy * data.p,data,tick+1, self.x, self.y)
                     # tanPhi = slope
                     # Uroth = ((data.get_windV(tick, x, y) * 3.28084) * 60)
@@ -673,7 +679,8 @@ class Fire:
                     # data.p = side length
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + (data.p * (1.414 / R)), self.x, self.y)
                     # Fire(x + dx * data.p, y + dy * data.p, data, tick + R, self.x, self.y)
-                    Fire(x + dx * data.p, y + dy * data.p, data, int(tick + 12), self.x, self.y,rng)
+                    data.BURN[ry + dy][rx + dx][2]=pburnSim
+                    Fire(x + dx * data.p, y + dy * data.p, data, int(tick + 11), self.x, self.y)
 
                 ##################################################################
                 # spotting
