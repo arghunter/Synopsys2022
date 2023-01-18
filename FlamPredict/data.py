@@ -165,7 +165,7 @@ class Data:
             fuelmodelcode = 0
         return fuelmodelcode
 
-    def getSpeed(self, tick, ry, rx, slope):
+    def getSpeed(self, tick, ry, rx, slope,deaths):
         # make sure SLOPE IS GRADE
         bladeWidth = 10  # (ft) from https://www.fire.ca.gov/media/gagbtzop/dozers.pdf
         lineWidth = 40 # (ft)
@@ -251,7 +251,9 @@ class Data:
                         0.024005 * tick))  # r^2 = 0.8927
         else:
             dozerNum = 17
-
+        dozerNum-=int(deaths/2)
+        if dozerNum<=0:
+            dozerNum=1
         totaldozerSpeed = dozerNum * wdozerSpeed
 
         if fuelmodelcode == 1:
@@ -278,7 +280,9 @@ class Data:
             crewNum = ((1.8511*(1/(10**11))*(tick**3)) + (-0.00000120173*(tick**2)) + (0.0190697*tick)) # r^2 = 0.8927
         else:
             crewNum = 9
-
+        crewNum-=int(deaths/2)
+        if crewNum<=0:
+            crewNum=1
         totalcrewSpeed = crewNum * crewSpeed
         totalSpeedCh = totalcrewSpeed + totaldozerSpeed
         totalSpeed = totalSpeedCh/179 # ch/hr to m/s

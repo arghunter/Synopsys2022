@@ -203,7 +203,9 @@ class FireLine:
                 dy=ry-ly;
                 dx=rx-lx;
                 d=np.sqrt(dy**2+dx**2)
-                ftime+=(d/(speedms*2))
+                if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
+                    ftime+=(d/(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),0)*2))
+                    
             ly=ry
             lx=rx
             if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
@@ -224,6 +226,7 @@ class FireLine:
         qs= self.bx.qsize();
         broke=False
         ftime=time
+        deaths=0
         while(qs>0):
             qs-=1
             rx=self.bx.get();
@@ -233,7 +236,8 @@ class FireLine:
                 dx=rx-lx;
                 d=np.sqrt(dy**2+dx**2)
                 if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
-                    ftime+=(d/(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))*2))
+                    ftime+=(d/(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths)*2))
+                    # print((data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))))
             ly=ry
             lx=rx
             bc=0
@@ -241,8 +245,9 @@ class FireLine:
                 X[ry][rx]=1;
                 if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
                     score+=12000#line too late
-
-                    broke=True
+                    if(data.BURN[ry][rx][1]<ftime):
+                        broke=True
+                        deaths+=1
             self.bx.put(rx)
             self.by.put(ry)
         print(ftime)

@@ -17,7 +17,8 @@ from scipy.spatial import ConvexHull, convex_hull_plot_2d
 
 # genome init
 from genome import *
-
+neighborhood = [(-1, -1), (-1, 0), (-1, 1), (0, -1),
+                (0, 1), (1, -1), (1, 0), (1, 1)]
 def solve(data,buffer,safetyTime):
     # X=np.zeros(data.COLORS.shape)
     # points= np.array([[15,120],[15,290],[200,290],[100,130],[200,150],[200,120]])
@@ -32,9 +33,10 @@ def solve(data,buffer,safetyTime):
     
     # pass
     popCount=100
-    genCount=50
+    genCount=60
     elite=int(popCount*0.1)
     bRes=30
+    opRounds=10
     pop=np.empty(popCount,Genome)
     seti=set()
     # for i in range (data.ncols):
@@ -117,6 +119,7 @@ def solve(data,buffer,safetyTime):
                 dy=np.random.randint(-8,8);
                 if(point[1]+dx>=0 and point[0]+dy>=0 and point[0]+dy<data.nrows and point[1]+dx<data.ncols ):
                     p3[pos]=(dy+point[0],dx+point[1])
+            
             rotV=np.random.random()
             
             if rotV<0.45:
@@ -124,8 +127,16 @@ def solve(data,buffer,safetyTime):
             elif rotV>0.55:
                 rot=pop[par2].rot
             else:
-                rot=int((pop[par1].rot+pop[par2].rot)/2)    
-            pop[j]=Genome(p3,rot)
+                rot=int((pop[par1].rot+pop[par2].rot)/2)
+            if(np.random.random()<0.1):
+                    # try:
+                    #     hull=ConvexHull(p3)
+                    #     hullvert=hull.points[hull.vertices];
+                    #     pop[j]=Genome(hullvert)
+                    # except:
+                    pop[j]=Genome(p3,rot)
+            else:
+                pop[j]=Genome(p3,rot)
         print(scores)
     
     scores=np.zeros(popCount)
@@ -149,11 +160,78 @@ def solve(data,buffer,safetyTime):
     # # t=pop[0].getFitness(data,buffer,safetyTime,3,genCount+1,)
     # # print(t)
     # # pop[0].execute(data)
-    so=Genome(pop[0].v);
-    so.getFitness(data,buffer,safetyTime,30,j,X)
-    # hull=ConvexHull(pop[0].v)
-    # verts=hull.points[hull.vertices];
-    sol=Genome(pop[0].v);
+    so=Genome(pop[0].v,pop[0].rot);
+    fit=so.getFitness(data,buffer,safetyTime,30,j,X)
+   
+    
+    
+ 
+    vert=pop[0].v
+    rot=pop[0].rot
+    maxrot=rot
+    minfit=fit;
+    for i in range(len(pop[0].v)):
+        tempgnme=Genome(pop[0].v,i)
+        tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,j,X)
+        if tempfit <minfit:
+            maxrot=i
+            minfit=tempfit
+    fit=minfit        
+    # fitarray=np.zeros((len(vert),8))
+    t=0
+    tvv=vert.copy()
+    while t<opRounds: 
+        print(t)
+        print(fit)
+        
+        for i in range(0,len(vert),2):
+            tminfit=fit
+            dir=-1
+            for j in range(len(neighborhood)):
+                tv=tvv.copy()
+                print(tv[i][0])
+                tv[i]=(tv[i][0]+neighborhood[j][0],tv[i][1]+neighborhood[j][1])
+                
+                tempgnme=Genome(tv,i)
+                tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,1,X)
+                if tempfit<tminfit:
+                    tminfit=tempfit
+                    dir=j     
+            if dir!=-1:
+                tvv[i]=(tv[i][0]+neighborhood[dir][0],tv[i][1]+neighborhood[dir][1])
+                fit=tminfit
+        for i in range(1,len(vert),2):
+            tminfit=fit
+            dir=-1
+            for j in range(len(neighborhood)):
+                tv=tvv.copy()
+                tv[i]=(tv[i][0]+neighborhood[j][0],tv[i][1]+neighborhood[j][1])
+                
+                tempgnme=Genome(tv,i)
+                tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,1,X)
+                if tempfit<tminfit:
+                    tminfit=tempfit
+                    dir=j     
+            if dir!=-1:
+                tvv[i]=(tv[i][0]+neighborhood[dir][0],tv[i][1]+neighborhood[dir][1])
+                fit=tminfit
+        t+=1
+        if not (fit<minfit):
+            break;
+    
+
+        
+    
+            
+            
+            
+
+    
+            
+    sol=Genome(tvv,maxrot);    
+            
+                    
+            
     sol.executeFuture(data,buffer,2);
     print(str(sol.v))
                
