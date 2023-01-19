@@ -36,7 +36,7 @@ def solve(data,buffer,safetyTime):
     genCount=60
     elite=int(popCount*0.1)
     bRes=30
-    opRounds=10
+    opRounds=8
     pop=np.empty(popCount,Genome)
     seti=set()
     # for i in range (data.ncols):
@@ -65,6 +65,11 @@ def solve(data,buffer,safetyTime):
     lst=list(seti)
     hull=ConvexHull(lst)
     verts=hull.points[hull.vertices];
+    # verts=list(verts)
+    # bRes=len(verts)
+    # for i in range(1,bRes):
+    #     verts.append(((verts[i-1][0]+verts[i][0])/2,(verts[i-1][1]+verts[i][1])/2))
+    # verts.append(((verts[0][0]+verts[bRes-1][0])/2,(verts[0][1]+verts[bRes-1][1])/2))
     bRes=len(verts)
     
                 
@@ -112,19 +117,19 @@ def solve(data,buffer,safetyTime):
             split=np.random.randint(1,min(len(p1)-1,len(p2)-1))
             
             p3=p1[0:split]+p2[split:len(p2)]
-            if(np.random.random()<0.8):
-                pos=np.random.randint(0,len(p3))
-                point=p3[pos];
-                dx=np.random.randint(-8,8);
-                dy=np.random.randint(-8,8);
-                if(point[1]+dx>=0 and point[0]+dy>=0 and point[0]+dy<data.nrows and point[1]+dx<data.ncols ):
-                    p3[pos]=(dy+point[0],dx+point[1])
+            
+            pos=np.random.randint(0,len(p3))
+            point=p3[pos];
+            dx=np.random.randint(-8,8);
+            dy=np.random.randint(-8,8);
+            if(point[1]+dx>=0 and point[0]+dy>=0 and point[0]+dy<data.nrows and point[1]+dx<data.ncols ):
+                p3[pos]=(dy+point[0],dx+point[1])
             
             rotV=np.random.random()
             
-            if rotV<0.45:
+            if rotV<0.40:
                 rot=pop[par1].rot
-            elif rotV>0.55:
+            elif rotV>0.6:
                 rot=pop[par2].rot
             else:
                 rot=int((pop[par1].rot+pop[par2].rot)/2)
@@ -215,9 +220,18 @@ def solve(data,buffer,safetyTime):
             if dir!=-1:
                 tvv[i]=(tv[i][0]+neighborhood[dir][0],tv[i][1]+neighborhood[dir][1])
                 fit=tminfit
+        for i in range(len(tvv)):
+            tempgnme=Genome(tvv,i)
+            tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,j,X)
+            if tempfit <fit:
+                maxrot=i
+                fit=tempfit
+                
         t+=1
-        if not (fit<minfit):
-            break;
+        # if np.random.random()<0.5:
+        #     p=np.random.randint(1,len(tvv))
+        #     tvv.append((tvv[p][0]+tvv[p-1][0],tvv[p][1]+tvv[p-1][1]))
+        
     
 
         
