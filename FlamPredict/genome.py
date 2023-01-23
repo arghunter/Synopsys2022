@@ -15,10 +15,11 @@ class FireLine:
     # nVe = 4
     # v = np.zeros((nV, 2))  # y,x
 
-    def __init__(self, v, nV):
+    def __init__(self, v, nV,w):
         # print("yCalled")
-        self.nV = nV;
+        self.nV = nV
         self.v = v
+        self.w=w
         self.avgX = 0;
         self.avgY = 0;
         for i in v:
@@ -195,16 +196,28 @@ class FireLine:
         ly=-1
         qs= self.bx.qsize();
         ftime=timee
+        nextp=0
+        dist=20000000000000
         while(qs>0):
             qs-=1
             rx=self.bx.get();
             ry=self.by.get();
+            if ((ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2>dist):
+                ftime=timee
+                nextp+=1
+                dist=20000000000000
+                # print(nextp)
+                if nextp>=self.nV:
+                    nextp=0
+                    deaths=0
+            else:
+                dist=(ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2
             if(ly!=-1):
                 dy=ry-ly;
                 dx=rx-lx;
                 d=np.sqrt(dy**2+dx**2)
                 if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
-                    ftime+=(d/(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),0)*2))
+                    ftime+=(d/(self.w[nextp]*data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*data.p),0)*2))
                     
             ly=ry
             lx=rx
@@ -227,17 +240,32 @@ class FireLine:
         broke=False
         ftime=time
         deaths=0
+        nextp=0
+        dist=20000000000000
         while(qs>0):
             qs-=1
             rx=self.bx.get();
             ry=self.by.get();
+            # print(str(ry)+" "+str(rx)+" "+str(self.v[nextp])+" "+str(nextp))
+            if ((ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2>dist):
+                ftime=time
+                nextp+=1
+                dist=20000000000000
+                # print(nextp)
+                if nextp>=self.nV:
+                    nextp=0
+                    # deaths=0
+            else:
+                dist=(ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2
+                
             if(ly!=-1):
                 dy=ry-ly;
                 dx=rx-lx;
                 d=np.sqrt(dy**2+dx**2)
                 if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
-                    ftime+=(d/(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths)*2))
+                    ftime+=(d/(self.w[nextp]*data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths)*2))
                     # print((data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))))
+                    # print(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths))
             ly=ry
             lx=rx
             bc=0
@@ -269,7 +297,7 @@ class FireLine:
                         
                 
                     
-                if not inp:
+                if not inp :
                     if(data.BURN[j][i][1]>1):
                         if(data.BURN[j][i][1]<time+buffer):
                             score+=500
@@ -284,10 +312,10 @@ class FireLine:
                     if(data.BURN[j][i][1]>1):
                         if(data.BURN[j][i][1]<time+buffer):
                             
-                            store-=400
+                            store-=300
                         elif(data.BURN[j][i][1]<ftime+buffer):
                             
-                                store-=400*(ftime-data.BURN[j][i][1])/(ftime-time)
+                                store-=300*(ftime-data.BURN[j][i][1])/(ftime-time)
                         else: 
                             score+=10
                     else:
@@ -329,7 +357,7 @@ def eulerdist2(p1, p2):
 
 class Genome:
     
-    def __init__(self,points,rot=-1):
+    def __init__(self,points,w):
         self.origin=[0,0]
         avgX=0
         avgY=0
@@ -342,11 +370,12 @@ class Genome:
         self.origin[1]=avgY
         vert=sorted(points,key=self.clockwiseangle_and_distance)
         self.score=0
-        if rot ==-1:
-            rot=np.random.randint(0,len(vert))
+        
+        rot=np.random.randint(0,len(vert))
         self.rot=rot
         vert=vert[rot:]+vert[:rot];
         self.v=vert;
+        self.w=w;
         # vert=self.convexHull(points)
         # try:
         # print (points)
@@ -367,7 +396,7 @@ class Genome:
         #     vert=points
         #     self.v=vert
         
-        self.lines=[FireLine(vert,len(vert))]       
+        self.lines=[FireLine(vert,len(vert),w)]       
   
        
     
