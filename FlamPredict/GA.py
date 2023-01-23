@@ -80,15 +80,23 @@ def solve(data,buffer,safetyTime):
         points=np.zeros((bRes,2))
         w=np.zeros(bRes)
         left=1
+        td=0
+        
         for t in range(bRes):
             px= np.random.randint(-32,32);
             py= np.random.randint(-32,32);
             points[t][0]=px+verts[t][0];
             points[t][1]=py+verts[t][1];
-        for t in range(bRes-1):
-            w[t]=1/bRes
-            # left-=w[t]
-        w[bRes-1]=1/bRes
+            if t>0:
+                td+=np.sqrt((points[t][0]-points[t-1][0])**2+(points[t][1]-points[t-1][1])**2)
+        td+=np.sqrt((points[bRes-1][0]-points[0][0])**2+(points[bRes-1][1]-points[0][1])**2)    
+        for t in range(1,bRes):
+    
+            
+            w[t-1]=np.sqrt((points[t][0]-points[t-1][0])**2+(points[t][1]-points[t-1][1])**2)/td
+        w[bRes-1]=np.sqrt((points[bRes-1][0]-points[0][0])**2+(points[bRes-1][1]-points[0][1])**2)/td
+        
+        
         # ty:
         #     hull=ConvexHull(points)
         #     points=hull.points[hull.vertices]
@@ -140,6 +148,7 @@ def solve(data,buffer,safetyTime):
             w2=np.random.randint(0,bRes);
             valw=np.random.uniform(0,w[w1])
             w[w2]+=valw
+            w[w1]-=valw
             
         pop[0]=Genome(p3,w)
         for j in range(1,popCount):
@@ -182,6 +191,7 @@ def solve(data,buffer,safetyTime):
                 w2=np.random.randint(0,bRes);
                 valw=np.random.uniform(0,w[w1])
                 w[w2]+=valw
+                w[w1]-=valw
            
             pop[j]=Genome(p3,w)
         print(scores)

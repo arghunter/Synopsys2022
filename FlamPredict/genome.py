@@ -198,6 +198,38 @@ class FireLine:
         ftime=timee
         nextp=0
         dist=20000000000000
+        ftimes=np.zeros(self.nV)
+        while(qs>0):
+            qs-=1
+            rx=self.bx.get();
+            ry=self.by.get();
+            # print(str(ry)+" "+str(rx)+" "+str(self.v[nextp])+" "+str(nextp))
+            if ((ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2>dist):
+                ftimes[nextp]=ftime
+                ftime=time
+                nextp+=1
+                dist=20000000000000
+                # print(nextp)
+                if nextp>=self.nV:
+                    nextp=0
+                    # deaths=0
+            else:
+                dist=(ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2
+                
+            if(ly!=-1):
+                dy=ry-ly;
+                dx=rx-lx;
+                d=np.sqrt(dy**2+dx**2)
+                if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
+                    ftime+=(d/(self.w[nextp]*data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths)*2))
+                    # print((data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))))
+                    # print(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths))
+            ly=ry
+            lx=rx
+
+            self.bx.put(rx)
+            self.by.put(ry)
+        reinforce=0
         while(qs>0):
             qs-=1
             rx=self.bx.get();
@@ -212,12 +244,16 @@ class FireLine:
                     deaths=0
             else:
                 dist=(ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2
+            reinforce=0
+            for i in range(len(ftimes)):
+                if(ftimes[i]<ftime and ftimes[i]>0):
+                       reinforce+=self.w[i] 
             if(ly!=-1):
                 dy=ry-ly;
                 dx=rx-lx;
                 d=np.sqrt(dy**2+dx**2)
                 if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
-                    ftime+=(d/(self.w[nextp]*data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*data.p),0)*2))
+                    ftime+=(d/((self.w[nextp]+reinforce)*data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*data.p),0)*2))
                     
             ly=ry
             lx=rx
@@ -242,12 +278,16 @@ class FireLine:
         deaths=0
         nextp=0
         dist=20000000000000
+        
+        ftimes=np.zeros(self.nV)
+        
         while(qs>0):
             qs-=1
             rx=self.bx.get();
             ry=self.by.get();
             # print(str(ry)+" "+str(rx)+" "+str(self.v[nextp])+" "+str(nextp))
             if ((ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2>dist):
+                ftimes[nextp]=ftime
                 ftime=time
                 nextp+=1
                 dist=20000000000000
@@ -264,6 +304,49 @@ class FireLine:
                 d=np.sqrt(dy**2+dx**2)
                 if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
                     ftime+=(d/(self.w[nextp]*data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths)*2))
+                    # print((data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))))
+                    # print(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths))
+            ly=ry
+            lx=rx
+            bc=0
+            if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
+                # X[ry][rx]=1;
+                if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
+                    # score+=12000#line too late
+                    if(data.BURN[ry][rx][1]<ftime):
+                        # broke=True
+                        deaths+=1
+            self.bx.put(rx)
+            self.by.put(ry)
+        reinforce=0
+        deaths=0
+        nextp=0
+        while(qs>0):
+            qs-=1
+            rx=self.bx.get();
+            ry=self.by.get();
+            # print(str(ry)+" "+str(rx)+" "+str(self.v[nextp])+" "+str(nextp))
+            if ((ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2>dist):
+        
+                ftime=time
+                nextp+=1
+                dist=20000000000000
+                # print(nextp)
+                if nextp>=self.nV:
+                    nextp=0
+                    # deaths=0
+            else:
+                dist=(ry-self.v[nextp][1])**2 and (rx-self.v[nextp][0])**2
+            reinforce=0
+            for i in range(len(ftimes)):
+                if(ftimes[i]<ftime and ftimes[i]>0):
+                       reinforce+=self.w[i] 
+            if(ly!=-1):
+                dy=ry-ly;
+                dx=rx-lx;
+                d=np.sqrt(dy**2+dx**2)
+                if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
+                    ftime+=(d/((self.w[nextp]+reinforce)*data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths)*2))
                     # print((data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))))
                     # print(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths))
             ly=ry
@@ -303,7 +386,7 @@ class FireLine:
                             score+=500
                         elif(data.BURN[j][i][1]<ftime+buffer):
                             if broke:
-                                score+=1000
+                                score+=1200
                             else:
                                 score+=500*(ftime-data.BURN[j][i][1])/(ftime-time)
                 else:
