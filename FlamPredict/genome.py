@@ -340,7 +340,7 @@ class Genome:
         avgY/=len(points)
         self.origin[0]=avgX;
         self.origin[1]=avgY
-        vert=sorted(points,key=self.clockwiseangle_and_distance)
+        vert=sorted(points,key=self.clockwise_sort)
         self.score=0
         if rot ==-1:
             rot=np.random.randint(0,len(vert))
@@ -370,29 +370,20 @@ class Genome:
         self.lines=[FireLine(vert,len(vert))]       
   
        
-    
-    def clockwiseangle_and_distance(self,point):
-        refvec = [0, 1]
+    def clockwise_sort(self,p):
+        vec=[0,1]
+        v=[p[0]-self.origin[0],p[1]-self.origin[1]]
+        length=np.hypot(v[0],v[1])
+        if length==0:
+            return 0,-np.pi
+        normalized=[v[0]/length,v[1]/length]
+        dotProduct=normalized[0]*vec[0]+normalized[1]*vec[1]
+        diffProduct=vec[1]*normalized[0]-vec[0]*normalized[1]
+        ang=np.arctan2(diffProduct,dotProduct)
+        if ang<0:
+            return 2*np.pi+ang,length
+        return ang,length
 
-    # Vector between point and the origin: v = p - o
-        vector = [point[0]-self.origin[0], point[1]-self.origin[1]]
-        # Length of vector: ||v||
-        lenvector = np.hypot(vector[0], vector[1])
-        # If length is zero there is no angle
-        if lenvector == 0:
-            return -np.pi, 0
-        # Normalize vector: v/||v||
-        normalized = [vector[0]/lenvector, vector[1]/lenvector]
-        dotprod  = normalized[0]*refvec[0] + normalized[1]*refvec[1]     # x1*x2 + y1*y2
-        diffprod = refvec[1]*normalized[0] - refvec[0]*normalized[1]     # x1*y2 - y1*x2
-        angle = np.arctan2(diffprod, dotprod)
-        # Negative angles represent counter-clockwise angles so we need to subtract them 
-        # from 2*pi (360 degrees)
-        if angle < 0:
-            return 2*np.pi+angle, lenvector
-        # I return first the angle because that's the primary sorting criterium
-        # but if two vectors have the same angle then the shorter distance should come first.
-        return angle, lenvector
        
     def execute(self,data):
         print("exuriutingngjdsh")
