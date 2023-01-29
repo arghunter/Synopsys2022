@@ -54,6 +54,7 @@ class Data:
             file.write("\n")
         fuel.close()
         print(self.fuel)
+        
         # elevation
         elevation = open(geoTIFFPath + "/elevation.asc", "r")
         elevationstring = elevation.readline()
