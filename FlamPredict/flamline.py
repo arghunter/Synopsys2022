@@ -12,6 +12,8 @@ rng = np.random.RandomState(2025)
 data=Data()
 fire=Fire(data.ncols/2*data.p,data.nrows/2*data.p,data,1,data.ncols/2*data.p+data.p,data.nrows/2*data.p+data.p,rng)
 
+gnmes=[]
+scores=[]
 
 # fire=Fire(100,100,data,1,data.nrows/2*data.p+data.p,data.ncols/2*data.p+data.p)
 # fire=Fire(data.ncols/2*data.p,165*data.p,data,1,data.ncols/2*data.p+data.p,data.nrows/2*data.p+data.p)
@@ -21,8 +23,28 @@ while(threading.activeCount()>1):
     print(threading.activeCount())
     time.sleep(1)
 
-solve(data,3840,60)
-
+# solve(data,3840,60).executeFuture(data,3840,60)
+t=threading.Thread(target=solve,args=(data,3840,60,gnmes))
+t.start()
+t=threading.Thread(target=solve,args=(data,3840,60,gnmes))
+t.start()
+# t=threading.Thread(target=solve,args=(data,3840,60,gnmes))
+# t.start()
+# t=threading.Thread(target=solve,args=(data,3840,60,gnmes))
+# t.start()
+while(threading.activeCount()>1):
+    print(threading.activeCount())
+    time.sleep(10)
+X=np.zeros(data.COLORS.shape)
+for gnme in gnmes:
+    scores.append(gnme.getFitness(data,3840,60,30,0,X))
+min=0
+mini=0
+for i in range(len(scores)):
+    if(scores[i]<min):
+        mmin=scores[i]
+        mini=i;
+gnmes[mini].executeFuture(data,3840,60)
 file=open("routput.txt",'w')
 for i in range (data.ncols):
     for j in range (data.nrows):

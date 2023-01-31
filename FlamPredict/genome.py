@@ -177,7 +177,7 @@ class FireLine:
                 
   
     def execute(self,data):
-        print("Execuring")
+        # print("Execuring")
         qs = self.bx.qsize();
         while (qs > 0):
             qs -= 1
@@ -269,7 +269,7 @@ class FireLine:
                         deaths+=1
             self.bx.put(rx)
             self.by.put(ry)
-        print(ftime)
+        # print(ftime)
         # print("ghhfhgfgdgfdfgdgfdgfdfgdgf^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
         for i in range(data.ncols):
             inp=False
@@ -405,14 +405,14 @@ class Genome:
 
        
     def execute(self,data):
-        print("exuriutingngjdsh")
+        # print("exuriutingngjdsh")
         for line in self.lines:
-            print("Here")
+            # print("Here")
             line.execute(data)
     def executeFuture(self,data,time,speed):
-        print("exuriutingngjdsh")
+        # print("exuriutingngjdsh")
         for line in self.lines:
-            print("Here")
+            # print("Here")
             line.executeFuture(data,time,speed)
 
     def floodFill(self, data, X, simtime):

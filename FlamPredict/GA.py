@@ -19,7 +19,7 @@ from scipy.spatial import ConvexHull, convex_hull_plot_2d
 from genome import *
 neighborhood = [(-1, -1), (-1, 0), (-1, 1), (0, -1),
                 (0, 1), (1, -1), (1, 0), (1, 1)]
-def solve(data,buffer,safetyTime):
+def solve(data,buffer,safetyTime,gnmes):
     # X=np.zeros(data.COLORS.shape)
     # points= np.array([[15,120],[15,290],[200,290],[100,130],[200,150],[200,120]])
 # hull=ConvexHull(points);
@@ -66,7 +66,7 @@ def solve(data,buffer,safetyTime):
     hull=ConvexHull(lst)
     verts=hull.points[hull.vertices];
     bRes=len(verts)
-    
+    # file=open("soutput.txt",'w')
                 
     
     # gnme=Genome(points)
@@ -95,6 +95,7 @@ def solve(data,buffer,safetyTime):
         ind= np.argsort(scores)
         scores=scores[ind]
         pop=pop[ind]
+        # file.write(""+str(scores[0])+"\n")
         # print(scores)
         for j in range(popCount):
             par1=np.random.randint(0,elite)
@@ -231,9 +232,9 @@ def solve(data,buffer,safetyTime):
     sol=Genome(tvv,maxrot);    
             
                     
-            
-    sol.executeFuture(data,buffer,2);
-    print(str(sol.v))
+    gnmes.append(sol)       
+    # sol.executeFuture(data,buffer,2);
+    # print(str(sol.v))
                
         
     # print(rects)    
