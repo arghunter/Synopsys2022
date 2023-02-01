@@ -32,7 +32,7 @@ def solve(data,buffer,safetyTime):
     # g1.execute(data);
     
     # pass
-    popCount=100
+    popCount=120
     genCount=60
     elite=int(popCount*0.1)
     bRes=30
@@ -66,7 +66,7 @@ def solve(data,buffer,safetyTime):
     hull=ConvexHull(lst)
     verts=hull.points[hull.vertices];
     bRes=len(verts)
-    
+    file=open("soutput.txt",'w')
                 
     
     # gnme=Genome(points)
@@ -95,6 +95,7 @@ def solve(data,buffer,safetyTime):
         ind= np.argsort(scores)
         scores=scores[ind]
         pop=pop[ind]
+        file.write(""+str(scores[0])+"\n")
         # print(scores)
         for j in range(popCount):
             par1=np.random.randint(0,elite)

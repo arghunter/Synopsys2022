@@ -263,7 +263,7 @@ class FireLine:
             if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
                 X[ry][rx]=1;
                 if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
-                    score+=15000#line too late
+                    score+=12000#line too late
                     if(data.BURN[ry][rx][1]<ftime):
                         broke=True
                         deaths+=1
@@ -294,7 +294,7 @@ class FireLine:
                             score+=500
                         elif(data.BURN[j][i][1]<ftime+buffer):
                             if broke:
-                                score+=2000
+                                score+=1000
                             else:
                                 score+=500*(ftime-data.BURN[j][i][1])/(ftime-time)
                 else:
