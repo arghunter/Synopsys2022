@@ -3,7 +3,7 @@
 import math
 
 
-p0 = 0.72
+p0 = 0.71
 c1 = 0.045
 c2 = 0.191
 
@@ -45,7 +45,7 @@ def alexandridisModelProbability(thetaf, thetaw, mgw, pveg, pden, h, rthetaS, Mx
     # print("wind influenced prob", pw)
 
     # moisture content: data link: https://www.wfas.net/index.php/national-fuel-moisture-database-moisture-drought-103
-    Cm = 6.9
+    Cm = 6
     MxP = Mx * 100
     #
     # threshold with extinction fuel moisture
