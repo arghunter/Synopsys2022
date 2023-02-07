@@ -24,27 +24,31 @@ while(threading.activeCount()>1):
     time.sleep(1)
 
 # solve(data,3840,60).executeFuture(data,3840,60)
-t=threading.Thread(target=solve,args=(data,3840,60,gnmes))
-t.start()
-t=threading.Thread(target=solve,args=(data,3840,60,gnmes))
-t.start()
 # t=threading.Thread(target=solve,args=(data,3840,60,gnmes))
 # t.start()
 # t=threading.Thread(target=solve,args=(data,3840,60,gnmes))
 # t.start()
+# solve(data,3840,60,gnmes)
+# solve(data,3840,60,gnmes)
+timeBegin=3300
+buffer=90
+t=threading.Thread(target=solve,args=(data,timeBegin,buffer,gnmes))
+t.start()
+t=threading.Thread(target=solve,args=(data,timeBegin,buffer-30,gnmes))
+t.start()
 while(threading.activeCount()>1):
     print(threading.activeCount())
     time.sleep(10)
 X=np.zeros(data.COLORS.shape)
 for gnme in gnmes:
-    scores.append(gnme.getFitness(data,3840,60,30,0,X))
+    scores.append(gnme.getFitness(data,timeBegin,buffer,30,0,X))
 min=0
 mini=0
 for i in range(len(scores)):
     if(scores[i]<min):
         mmin=scores[i]
         mini=i;
-gnmes[mini].executeFuture(data,3840,60)
+gnmes[mini].executeFuture(data,timeBegin,buffer)
 file=open("routput.txt",'w')
 for i in range (data.ncols):
     for j in range (data.nrows):

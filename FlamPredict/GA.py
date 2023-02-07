@@ -102,18 +102,18 @@ def solve(data,buffer,safetyTime,gnmes):
             par2=np.random.randint(0,elite)
             p1=pop[par1].v
             p2=pop[par2].v
-            if(np.random.random()<0.2):
+            if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
                 par1=np.random.randint(elite,popCount)
                 p1=pop[par1].v
                 
-            if(np.random.random()<0.2):
+            if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
                 par2=np.random.randint(elite,popCount)
                 p2=pop[par2].v
             
             split=np.random.randint(1,min(len(p1)-1,len(p2)-1))
             
             p3=p1[0:split]+p2[split:len(p2)]
-            if(np.random.random()<0.8):
+            if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
                 pos=np.random.randint(0,len(p3))
                 point=p3[pos];
                 dx=np.random.randint(-8,8);
