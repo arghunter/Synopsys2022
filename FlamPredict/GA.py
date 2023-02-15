@@ -19,7 +19,7 @@ from scipy.spatial import ConvexHull, convex_hull_plot_2d
 from genome import *
 neighborhood = [(-1, -1), (-1, 0), (-1, 1), (0, -1),
                 (0, 1), (1, -1), (1, 0), (1, 1)]
-def solve(data,buffer,safetyTime,gnmes):
+def solve(data,buffer,safetyTime,gnmes,ep,id):
     # X=np.zeros(data.COLORS.shape)
     # points= np.array([[15,120],[15,290],[200,290],[100,130],[200,150],[200,120]])
 # hull=ConvexHull(points);
@@ -38,6 +38,7 @@ def solve(data,buffer,safetyTime,gnmes):
     bRes=30
     opRounds=10
     pop=np.empty(popCount,Genome)
+    ep.append(pop)
     seti=set()
     # for i in range (data.ncols):
     #     for j in range (data.nrows):
@@ -97,6 +98,17 @@ def solve(data,buffer,safetyTime,gnmes):
         pop=pop[ind]
         # file.write(""+str(scores[0])+"\n")
         # print(scores)
+        if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
+            pos=id+1
+            if(pos>=len(ep)):
+                pos=0;
+            for j in range(2):
+                swpp=np.random.randint(0,popCount)
+                if(ep[pos][swpp].getFitness(data,buffer,safetyTime,30,j,X)<pop[swpp].getFitness(data,buffer,safetyTime,30,j,X)):
+                    pop[swpp]=Genome(ep[pos][swpp].v,ep[pos][swpp].rot)
+                
+            
+                
         for j in range(popCount):
             par1=np.random.randint(0,elite)
             par2=np.random.randint(0,elite)
@@ -179,9 +191,9 @@ def solve(data,buffer,safetyTime,gnmes):
             minfit=tempfit
     fit=minfit        
     # fitarray=np.zeros((len(vert),8))
-    t=0
+    t=opRounds
     tvv=vert.copy()
-    while t<opRounds: 
+    while t>0: 
         print(t)
         print(fit)
         
@@ -191,7 +203,7 @@ def solve(data,buffer,safetyTime,gnmes):
             for j in range(len(neighborhood)):
                 tv=tvv.copy()
                 print(tv[i][0])
-                tv[i]=(tv[i][0]+neighborhood[j][0],tv[i][1]+neighborhood[j][1])
+                tv[i]=(tv[i][0]+neighborhood[j][0]*t,tv[i][1]+neighborhood[j][1]*t)
                 
                 tempgnme=Genome(tv,i)
                 tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,1,X)
@@ -199,14 +211,14 @@ def solve(data,buffer,safetyTime,gnmes):
                     tminfit=tempfit
                     dir=j     
             if dir!=-1:
-                tvv[i]=(tv[i][0]+neighborhood[dir][0],tv[i][1]+neighborhood[dir][1])
+                tvv[i]=(tv[i][0]+neighborhood[dir][0]*t,tv[i][1]+neighborhood[dir][1]*t)
                 fit=tminfit
         for i in range(1,len(vert),2):
             tminfit=fit
             dir=-1
             for j in range(len(neighborhood)):
                 tv=tvv.copy()
-                tv[i]=(tv[i][0]+neighborhood[j][0],tv[i][1]+neighborhood[j][1])
+                tv[i]=(tv[i][0]+neighborhood[j][0]*t,tv[i][1]+neighborhood[j][1]*t)
                 
                 tempgnme=Genome(tv,i)
                 tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,1,X)
@@ -214,9 +226,9 @@ def solve(data,buffer,safetyTime,gnmes):
                     tminfit=tempfit
                     dir=j     
             if dir!=-1:
-                tvv[i]=(tv[i][0]+neighborhood[dir][0],tv[i][1]+neighborhood[dir][1])
+                tvv[i]=(tv[i][0]+neighborhood[dir][0]*t,tv[i][1]+neighborhood[dir][1]*t)
                 fit=tminfit
-        t+=1
+        t-=1
         if not (fit<minfit):
             break;
     

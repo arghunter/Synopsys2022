@@ -41,7 +41,7 @@ flatXlen = len(flatX)
 # print("flat X len", flatXlen)
 burntSq = 0
 for i in range(flatXlen):
-    if (flatX[i] != 0) and (flatX[i] <= simulateTime):
+    if (flatX[i] >2) and (flatX[i] <= simulateTime):
         burntSq += 1
 
 # print("burnt sq #", burntSq)

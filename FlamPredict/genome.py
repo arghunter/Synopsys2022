@@ -222,7 +222,7 @@ class FireLine:
             p=pq.get();
             rx=p[0]
             ry=p[1]
-            if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and (data.BURN[ry][rx][1]==0 or data.BURN[ry][rx][1]==2 and data.FUTURE[ry][rx]>oldburn[ry][rx][1])and oldburn[ry][rx][1]!=0  ):
+            if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and (data.BURN[ry][rx][1]==0 or (data.BURN[ry][rx][1]==2 and data.FUTURE[ry][rx]-10>oldburn[ry][rx][1]))and oldburn[ry][rx][1]!=0  ):
                  data.BURN[ry][rx][1]=oldburn[ry][rx][1]
                  oldburn[ry][rx][1]=0
                 #  print(p)
@@ -234,6 +234,7 @@ class FireLine:
                  pq.put((rx-1,ry+1))
                  pq.put((rx-1,ry-1))
                  pq.put((rx+1,ry-1))
+        
         
         
  
@@ -308,9 +309,9 @@ class FireLine:
                             
                                 store-=400*(ftime-data.BURN[j][i][1])/(ftime-time)
                         else: 
-                            score+=10
+                            score+=80
                     else:
-                        score+=15
+                        score+=100
             if inp:
                 score+=np.absolute(store)*10
             else:
