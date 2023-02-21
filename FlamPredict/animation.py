@@ -10,7 +10,7 @@ from matplotlib import colors
 
 
 
-file = open("routput1.txt", 'r')
+file = open("routput25.txt", 'r')
 X = np.loadtxt(file)
 
 # comment back these lines to animate (17 and 20)

@@ -237,7 +237,7 @@ class FireLine:
         
         
  
-    def getScore(self,data,time,buffer,speedms,X,color):
+    def getScore(self,data,time,buffer,speedms,X,color,type):
         X.fill(0)
         score=0;
         lx=-1
@@ -246,78 +246,152 @@ class FireLine:
         broke=False
         ftime=time
         deaths=0
-        while(qs>0):
-            qs-=1
-            rx=self.bx.get();
-            ry=self.by.get();
-            if(ly!=-1):
-                dy=ry-ly;
-                dx=rx-lx;
-                d=np.sqrt(dy**2+dx**2)
-                if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
-                    ftime+=(d/(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths)*2))
-                    # print((data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))))
-            ly=ry
-            lx=rx
-            bc=0
-            if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
-                X[ry][rx]=1;
-                if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
-                    #line too late
-                    score+=130000
-                    if(data.BURN[ry][rx][1]<ftime):
-                        broke=True
-                        score+=130000
-                        deaths+=1
-                        X[ry][rx]=0
-            self.bx.put(rx)
-            self.by.put(ry)
-        # print(ftime)
-        # print("ghhfhgfgdgfdfgdgfdgfdfgdgf^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-        for i in range(data.ncols):
-            inp=False
-            lst=False
-            store=0
-            for j in range(data.nrows):
-                if(X[j][i]==1):
-                    
-                    lst=True
-                else:
-                    if(lst):
-                        inp=not inp
-                    lst=False
-                    
+        if(type=="risky"):
+            while(qs>0):
+                qs-=1
+                rx=self.bx.get();
+                ry=self.by.get();
+                if(ly!=-1):
+                    dy=ry-ly;
+                    dx=rx-lx;
+                    d=np.sqrt(dy**2+dx**2)
+                    if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
+                        ftime+=(d/(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths)*2))
+                        # print((data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))))
+                ly=ry
+                lx=rx
+                bc=0
+                if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
+                    X[ry][rx]=1;
+                    if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
+                        #line too late
+                        score+=600000
+                        if(data.BURN[ry][rx][1]<ftime):
+                            broke=True
+                            score+=1200000
+                            deaths+=1
+                            X[ry][rx]=0
+                self.bx.put(rx)
+                self.by.put(ry)
+            # print(ftime)
+            # print("ghhfhgfgdgfdfgdgfdgfdfgdgf^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            for i in range(data.ncols):
+                inp=False
+                lst=False
+                store=0
+                for j in range(data.nrows):
+                    if(X[j][i]==1):
                         
-                        
-                
-                    
-                if not inp:
-                    if(data.BURN[j][i][1]>1):
-                        if(data.BURN[j][i][1]<time):
-                            score+=7000
-                        elif(data.BURN[j][i][1]<ftime):
-                            if broke:
-                                score+=14000
-                            else:
-                                score+=7000*(ftime-data.BURN[j][i][1])/(ftime-time)
-                else:
-                    data.COLORS[j][i]=1;
-                
-                    if(data.BURN[j][i][1]>1):
-                        if(data.BURN[j][i][1]<time):
-                            
-                            store+=0.1
-                        elif(data.BURN[j][i][1]<ftime):
-                            
-                                store+=0.1+0.1*(ftime-data.BURN[j][i][1])/(ftime-time)
-                        else: 
-                            score+=200
+                        lst=True
                     else:
-                        score+=300
-            if inp:
-                score+=np.absolute(store)*10
-            else:
-                score+=store
+                        if(lst):
+                            inp=not inp
+                        lst=False
+                        
+                            
+                            
+                    
+                        
+                    if not inp:
+                        if(data.BURN[j][i][1]>1):
+                            if(data.BURN[j][i][1]<time):
+                                score+=70000
+                            elif(data.BURN[j][i][1]<ftime):
+                                if broke:
+                                    score+=100000
+                                else:
+                                    score+=35000+35000*(ftime-data.BURN[j][i][1])/(ftime-time)
+                    else:
+                        data.COLORS[j][i]=1;
+                    
+                        if(data.BURN[j][i][1]>1):
+                            if(data.BURN[j][i][1]<time):
+                                
+                                store+=1
+                            elif(data.BURN[j][i][1]<ftime):
+                                
+                                    store+=1+1*(ftime-data.BURN[j][i][1])/(ftime-time)
+                            else: 
+                                score+=80
+                        else:
+                            score+=100
+                if inp:
+                    score+=np.absolute(store)*10
+                else:
+                    score+=store
+        elif (type == "fast"):
+            while(qs>0):
+                qs-=1
+                rx=self.bx.get();
+                ry=self.by.get();
+                if(ly!=-1):
+                    dy=ry-ly;
+                    dx=rx-lx;
+                    d=np.sqrt(dy**2+dx**2)
+                    if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and lx>=0 and ly>=0 and lx<data.ncols and ly<data.nrows  ):
+                        ftime+=(d/(data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30),deaths)*2))
+                        # print((data.getSpeed(ftime,ry,rx,(data.elevation[ry][rx]-data.elevation[ly][lx])/(d*30))))
+                ly=ry
+                lx=rx
+                bc=0
+                if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
+                    X[ry][rx]=1;
+                    if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
+                        #line too late
+                        score+=12000
+                        if(data.BURN[ry][rx][1]<ftime):
+                            broke=True
+                            score+=12000
+                            deaths+=1
+                            X[ry][rx]=0
+                self.bx.put(rx)
+                self.by.put(ry)
+            # print(ftime)
+            # print("ghhfhgfgdgfdfgdgfdgfdfgdgf^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            for i in range(data.ncols):
+                inp=False
+                lst=False
+                store=0
+                for j in range(data.nrows):
+                    if(X[j][i]==1):
+                        
+                        lst=True
+                    else:
+                        if(lst):
+                            inp=not inp
+                        lst=False
+                        
+                            
+                            
+                    
+                        
+                    if not inp:
+                        if(data.BURN[j][i][1]>1):
+                            if(data.BURN[j][i][1]<time):
+                                score+=600
+                            elif(data.BURN[j][i][1]<ftime):
+                                if broke:
+                                    score+=1200
+                                else:
+                                    score+=600*(ftime-data.BURN[j][i][1])/(ftime-time)
+                    else:
+                        data.COLORS[j][i]=1;
+                    
+                        if(data.BURN[j][i][1]>1):
+                            if(data.BURN[j][i][1]<time):
+                                
+                                store-=500
+                            elif(data.BURN[j][i][1]<ftime):
+                                
+                                    store-=500*(ftime-data.BURN[j][i][1])/(ftime-time)
+                            else: 
+                                score+=80
+                        else:
+                            score+=100
+                if inp:
+                    score+=np.absolute(store)*10
+                else:
+                    score+=store
         return score
        
         
@@ -463,14 +537,14 @@ class Genome:
                 q.put((rx-1,ry+1))
         return score
                 
-    def getFitness(self,data,buffer,time,speedms,color,X):
+    def getFitness(self,data,buffer,time,speedms,color,X,type):
         score=0;
         
             
         for l in self.lines:
             
             # print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1")
-            score+=l.getScore(data,buffer,time,speedms,X,color)
+            score+=l.getScore(data,buffer,time,speedms,X,color,type)
             
             # print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2")
             #fix flood fill here

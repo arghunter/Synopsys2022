@@ -19,7 +19,7 @@ from scipy.spatial import ConvexHull, convex_hull_plot_2d
 from genome import *
 neighborhood = [(-1, -1), (-1, 0), (-1, 1), (0, -1),
                 (0, 1), (1, -1), (1, 0), (1, 1)]
-def solve(data,buffer,safetyTime,gnmes,ep,id):
+def solve(data,buffer,safetyTime,gnmes,ep,id,type):
     # X=np.zeros(data.COLORS.shape)
     # points= np.array([[15,120],[15,290],[200,290],[100,130],[200,150],[200,120]])
 # hull=ConvexHull(points);
@@ -32,14 +32,17 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
     # g1.execute(data);
     
     # pass
-    popCount=45
-    genCount=160
+    popCount=80
+    genCount=80
     elite=int(popCount*0.1)
     bRes=30
     opRounds=10
     pop=np.empty(popCount,Genome)
     ep.append(pop)
     seti=set()
+    ctype=type
+    if type=="hybrid":
+        ctype="fast"
     # for i in range (data.ncols):
     #     for j in range (data.nrows):
     #         if(data.BURN[j][i][1]!=0 and data.COLORS[j][i]==0):
@@ -67,7 +70,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
     hull=ConvexHull(lst)
     verts=hull.points[hull.vertices];
     bRes=len(verts)
-    file=open("smoutput"+str(id)+".txt",'w');
+    # file=open("smoutput"+str(id)+".txt",'w');
                 
     
     # gnme=Genome(points)
@@ -90,20 +93,23 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
     for i in range(genCount):
         X=np.zeros(data.COLORS.shape)
         print(i/genCount)
+        if(type=="hybrid"and i/genCount>0.6):
+            ctype="risky"
+            
         for j in range(popCount):
             print(j)
-            scores[j]=pop[j].getFitness(data,buffer,safetyTime,30,j,X)#add speed
+            scores[j]=pop[j].getFitness(data,buffer,safetyTime,30,j,X,ctype)#add speed
         ind= np.argsort(scores)
         scores=scores[ind]
         pop=pop[ind]
-        gnmes.append(pop[0])
-        file.write(""+str(scores[0])+"\n")
+        
+        # file.write(""+str(scores[0])+"\n")
         # print(scores)
         if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
             pos=id+1
             if(pos>=len(ep)):
                 pos=0;
-            for j in range(1):
+            for j in range(int(elite/3)):
                 swpp=np.random.randint(0,popCount)
               
                 pop[swpp]=Genome(ep[pos][swpp].v,ep[pos][swpp].rot)
@@ -129,8 +135,8 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
             if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
                 pos=np.random.randint(0,len(p3))
                 point=p3[pos];
-                dx=np.random.randint(-12,12);
-                dy=np.random.randint(-12,12);
+                dx=np.random.randint(-8,8);
+                dy=np.random.randint(-8,8);
                 if(point[1]+dx>=0 and point[0]+dy>=0 and point[0]+dy<data.nrows and point[1]+dx<data.ncols ):
                     p3[pos]=(dy+point[0],dx+point[1])
             
@@ -159,7 +165,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
     # print(i/genCount)
     for j in range(popCount):
         print(j)
-        scores[j]=pop[j].getFitness(data,buffer,safetyTime,30,j,X)#add speed
+        scores[j]=pop[j].getFitness(data,buffer,safetyTime,30,j,X,ctype)#add speed
     ind= np.argsort(scores)
     scores=scores[ind]
     pop=pop[ind]
@@ -175,7 +181,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
     # # print(t)
     # # pop[0].execute(data)
     so=Genome(pop[0].v,pop[0].rot);
-    fit=so.getFitness(data,buffer,safetyTime,30,j,X)
+    fit=so.getFitness(data,buffer,safetyTime,30,j,X,ctype)
    
     
     
@@ -186,7 +192,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
     minfit=fit;
     for i in range(len(pop[0].v)):
         tempgnme=Genome(pop[0].v,i)
-        tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,j,X)
+        tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,j,X,ctype)
         if tempfit <minfit:
             maxrot=i
             minfit=tempfit
@@ -207,7 +213,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
                 tv[i]=(tv[i][0]+neighborhood[j][0]*t,tv[i][1]+neighborhood[j][1]*t)
                 
                 tempgnme=Genome(tv,i)
-                tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,1,X)
+                tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,1,X,ctype)
                 if tempfit<tminfit:
                     tminfit=tempfit
                     dir=j     
@@ -222,7 +228,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
                 tv[i]=(tv[i][0]+neighborhood[j][0]*t,tv[i][1]+neighborhood[j][1]*t)
                 
                 tempgnme=Genome(tv,i)
-                tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,1,X)
+                tempfit=tempgnme.getFitness(data,buffer,safetyTime,30,1,X,ctype)
                 if tempfit<tminfit:
                     tminfit=tempfit
                     dir=j     

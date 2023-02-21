@@ -33,7 +33,7 @@ while(threading.activeCount()>1):
 timeBegin=3300
 buffer=90
 ep=[]
-t=threading.Thread(target=solve,args=(data,timeBegin,buffer,gnmes,ep,0))
+t=threading.Thread(target=solve,args=(data,timeBegin,buffer,gnmes,ep,0,"hybrid"))
 t.start()
 # t=threading.Thread(target=solve,args=(data,timeBegin,buffer+30,gnmes,ep,1))
 # t.start()
@@ -44,7 +44,7 @@ while(threading.activeCount()>1):
     time.sleep(10)
 X=np.zeros(data.COLORS.shape)
 for gnme in gnmes:
-    scores.append(gnme.getFitness(data,timeBegin,buffer,30,0,X))
+    scores.append(gnme.getFitness(data,timeBegin,buffer,30,0,X,"risky"))
 min=100000000000000000000000
 mini=0
 for i in range(len(scores)):
@@ -52,7 +52,7 @@ for i in range(len(scores)):
         min=scores[i]
         mini=i;
 gnmes[mini].executeFuture(data,timeBegin,buffer)
-file=open("routput6.txt",'w')
+file=open("routput25hybrid.txt",'w')
 for i in range (data.ncols):
     for j in range (data.nrows):
         file.write( str(data.BURN[j][i][1])+" ")
