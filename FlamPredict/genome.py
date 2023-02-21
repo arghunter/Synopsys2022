@@ -210,8 +210,9 @@ class FireLine:
             ly=ry
             lx=rx
             if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
-                data.FUTURE[ry][rx]=int(ftime)
-                data.BURN[ry][rx][1]=2
+                if(oldburn[ry][rx][1]>=ftime-10 or oldburn[ry][rx][1]==0):
+                    data.FUTURE[ry][rx]=int(ftime)
+                    data.BURN[ry][rx][1]=2
             self.bx.put(rx)
             self.by.put(ry)
         rx=int(data.ncols/2)
@@ -222,7 +223,7 @@ class FireLine:
             p=pq.get();
             rx=p[0]
             ry=p[1]
-            if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and (data.BURN[ry][rx][1]==0 or (data.BURN[ry][rx][1]==2 and data.FUTURE[ry][rx]-10>oldburn[ry][rx][1]))and oldburn[ry][rx][1]!=0  ):
+            if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows and (data.BURN[ry][rx][1]==0 )and oldburn[ry][rx][1]!=0  ):
                  data.BURN[ry][rx][1]=oldburn[ry][rx][1]
                  oldburn[ry][rx][1]=0
                 #  print(p)
@@ -230,10 +231,8 @@ class FireLine:
                  pq.put((rx,ry+1))
                  pq.put((rx,ry-1))
                  pq.put((rx-1,ry))
-                 pq.put((rx+1,ry+1))
-                 pq.put((rx-1,ry+1))
-                 pq.put((rx-1,ry-1))
-                 pq.put((rx+1,ry-1))
+              
+        print(ftime)
         
         
         
@@ -264,10 +263,13 @@ class FireLine:
             if(rx>=0 and ry>=0 and rx<data.ncols and ry<data.nrows):
                 X[ry][rx]=1;
                 if(data.BURN[ry][rx][1]<ftime+buffer and data.BURN[ry][rx][1]>1):
-                    score+=12000#line too late
+                    #line too late
+                    score+=130000
                     if(data.BURN[ry][rx][1]<ftime):
                         broke=True
+                        score+=130000
                         deaths+=1
+                        X[ry][rx]=0
             self.bx.put(rx)
             self.by.put(ry)
         # print(ftime)
@@ -291,27 +293,27 @@ class FireLine:
                     
                 if not inp:
                     if(data.BURN[j][i][1]>1):
-                        if(data.BURN[j][i][1]<time+buffer):
-                            score+=500
-                        elif(data.BURN[j][i][1]<ftime+buffer):
+                        if(data.BURN[j][i][1]<time):
+                            score+=7000
+                        elif(data.BURN[j][i][1]<ftime):
                             if broke:
-                                score+=1000
+                                score+=14000
                             else:
-                                score+=500*(ftime-data.BURN[j][i][1])/(ftime-time)
+                                score+=7000*(ftime-data.BURN[j][i][1])/(ftime-time)
                 else:
                     data.COLORS[j][i]=1;
                 
                     if(data.BURN[j][i][1]>1):
-                        if(data.BURN[j][i][1]<time+buffer):
+                        if(data.BURN[j][i][1]<time):
                             
-                            store-=400
-                        elif(data.BURN[j][i][1]<ftime+buffer):
+                            store+=0.1
+                        elif(data.BURN[j][i][1]<ftime):
                             
-                                store-=400*(ftime-data.BURN[j][i][1])/(ftime-time)
+                                store+=0.1+0.1*(ftime-data.BURN[j][i][1])/(ftime-time)
                         else: 
-                            score+=80
+                            score+=200
                     else:
-                        score+=100
+                        score+=300
             if inp:
                 score+=np.absolute(store)*10
             else:

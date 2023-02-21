@@ -35,10 +35,10 @@ buffer=90
 ep=[]
 t=threading.Thread(target=solve,args=(data,timeBegin,buffer,gnmes,ep,0))
 t.start()
-t=threading.Thread(target=solve,args=(data,timeBegin,buffer+30,gnmes,ep,1))
-t.start()
-t=threading.Thread(target=solve,args=(data,timeBegin,buffer-30,gnmes,ep,2))
-t.start()
+# t=threading.Thread(target=solve,args=(data,timeBegin,buffer+30,gnmes,ep,1))
+# t.start()
+# t=threading.Thread(target=solve,args=(data,timeBegin,buffer-30,gnmes,ep,2))
+# t.start()
 while(threading.activeCount()>1):
     print(threading.activeCount())
     time.sleep(10)
@@ -52,7 +52,7 @@ for i in range(len(scores)):
         min=scores[i]
         mini=i;
 gnmes[mini].executeFuture(data,timeBegin,buffer)
-file=open("routput.txt",'w')
+file=open("routput6.txt",'w')
 for i in range (data.ncols):
     for j in range (data.nrows):
         file.write( str(data.BURN[j][i][1])+" ")

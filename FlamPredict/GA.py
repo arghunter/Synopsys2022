@@ -32,8 +32,8 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
     # g1.execute(data);
     
     # pass
-    popCount=100
-    genCount=60
+    popCount=45
+    genCount=160
     elite=int(popCount*0.1)
     bRes=30
     opRounds=10
@@ -67,7 +67,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
     hull=ConvexHull(lst)
     verts=hull.points[hull.vertices];
     bRes=len(verts)
-    # file=open("soutput.txt",'w')
+    file=open("smoutput"+str(id)+".txt",'w');
                 
     
     # gnme=Genome(points)
@@ -96,16 +96,17 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
         ind= np.argsort(scores)
         scores=scores[ind]
         pop=pop[ind]
-        # file.write(""+str(scores[0])+"\n")
+        gnmes.append(pop[0])
+        file.write(""+str(scores[0])+"\n")
         # print(scores)
         if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
             pos=id+1
             if(pos>=len(ep)):
                 pos=0;
-            for j in range(2):
+            for j in range(1):
                 swpp=np.random.randint(0,popCount)
-                if(ep[pos][swpp].getFitness(data,buffer,safetyTime,30,j,X)<pop[swpp].getFitness(data,buffer,safetyTime,30,j,X)):
-                    pop[swpp]=Genome(ep[pos][swpp].v,ep[pos][swpp].rot)
+              
+                pop[swpp]=Genome(ep[pos][swpp].v,ep[pos][swpp].rot)
                 
             
                 
@@ -128,8 +129,8 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
             if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
                 pos=np.random.randint(0,len(p3))
                 point=p3[pos];
-                dx=np.random.randint(-8,8);
-                dy=np.random.randint(-8,8);
+                dx=np.random.randint(-12,12);
+                dy=np.random.randint(-12,12);
                 if(point[1]+dx>=0 and point[0]+dy>=0 and point[0]+dy<data.nrows and point[1]+dx<data.ncols ):
                     p3[pos]=(dy+point[0],dx+point[1])
             
