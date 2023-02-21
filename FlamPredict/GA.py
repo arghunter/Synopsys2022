@@ -67,7 +67,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
     hull=ConvexHull(lst)
     verts=hull.points[hull.vertices];
     bRes=len(verts)
-    # file=open("soutput.txt",'w')
+    # file=open("soutput"+str(id)+".txt",'w')
                 
     
     # gnme=Genome(points)
@@ -87,16 +87,20 @@ def solve(data,buffer,safetyTime,gnmes,ep,id):
         #     pass
         pop[i]=Genome(points)
     scores=np.zeros(popCount)
+   
     for i in range(genCount):
         X=np.zeros(data.COLORS.shape)
         print(i/genCount)
+        sumscores=0
         for j in range(popCount):
             print(j)
             scores[j]=pop[j].getFitness(data,buffer,safetyTime,30,j,X)#add speed
+            sumscores+=scores[j]/popCount
+            
         ind= np.argsort(scores)
         scores=scores[ind]
         pop=pop[ind]
-        # file.write(""+str(scores[0])+"\n")
+        # file.write(""+str(sumscores)+"\n")
         # print(scores)
         if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
             pos=id+1
