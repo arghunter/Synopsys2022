@@ -70,7 +70,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id,type):
     hull=ConvexHull(lst)
     verts=hull.points[hull.vertices];
     bRes=len(verts)
-    # file=open("smoutput"+str(id)+".txt",'w');
+    file=open("shoutput"+str(id)+".txt",'w');
                 
     
     # gnme=Genome(points)
@@ -93,7 +93,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id,type):
     for i in range(genCount):
         X=np.zeros(data.COLORS.shape)
         print(i/genCount)
-        if(type=="hybrid"and i/genCount>0.6):
+        if(type=="hybrid"and i/genCount>0.5):
             ctype="risky"
             
         for j in range(popCount):
@@ -103,7 +103,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id,type):
         scores=scores[ind]
         pop=pop[ind]
         
-        # file.write(""+str(scores[0])+"\n")
+        file.write(""+str(scores[0])+"\n")
         # print(scores)
         if(np.random.random()<(genCount+2*np.sqrt(i))/(3*genCount)):
             pos=id+1
@@ -112,8 +112,9 @@ def solve(data,buffer,safetyTime,gnmes,ep,id,type):
             for j in range(int(elite/3)):
                 swpp=np.random.randint(0,popCount)
               
-                pop[swpp]=Genome(ep[pos][swpp].v,ep[pos][swpp].rot)
-                
+                tempg=Genome(ep[pos][swpp].v,ep[pos][swpp].rot)
+                ep[pos][swpp]=Genome(pop[swpp].v,pop[swpp].rot)
+                pop[swpp]=tempg
             
                 
         for j in range(popCount):

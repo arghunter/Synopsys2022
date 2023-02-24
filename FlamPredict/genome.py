@@ -312,9 +312,9 @@ class FireLine:
                                 
                                     store+=1+1*(ftime-data.BURN[j][i][1])/(ftime-time)
                             else: 
-                                score+=80
+                                score+=800
                         else:
-                            score+=100
+                            score+=1000
                 if inp:
                     score+=np.absolute(store)*10
                 else:
@@ -385,9 +385,9 @@ class FireLine:
                                 
                                     store-=500*(ftime-data.BURN[j][i][1])/(ftime-time)
                             else: 
-                                score+=80
+                                score+=8
                         else:
-                            score+=100
+                            score+=10
                 if inp:
                     score+=np.absolute(store)*10
                 else:
