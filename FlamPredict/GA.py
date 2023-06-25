@@ -33,7 +33,7 @@ def solve(data,buffer,safetyTime,gnmes,ep,id,type):
     
     # pass
     popCount=80
-    genCount=80
+    genCount=60
     elite=int(popCount*0.1)
     bRes=30
     opRounds=10

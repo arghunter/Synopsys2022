@@ -10,7 +10,7 @@ from matplotlib import colors
 
 
 
-file = open("routput101.txt", 'r')
+file = open("routput1.txt", 'r')
 X = np.loadtxt(file)
 
 # comment back these lines to animate (17 and 20)
@@ -24,7 +24,8 @@ ax.set_axis_off()
 colors_list = [(0, 0.4, 0), (0, 0, 1),(1,1,1)]
 bounds = [0.0, 1.0]
 
-simulateTime =26200
+simulateTime =8000
+
 for i in range(1, simulateTime, 20):
     colors_list.append(((i) / (simulateTime), 0, 0))
     bounds.append(i)

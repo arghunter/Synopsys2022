@@ -33,7 +33,7 @@ while(threading.activeCount()>1):
 # timeBegin=3300
 # buffer=90
 # ep=[]
-# t=threading.Thread(target=solve,args=(data,timeBegin,buffer,gnmes,ep,0,"fast"))
+# t=threading.Thread(target=solve,args=(data,timeBegin,buffer,gnmes,ep,0,"hybrid"))
 # t.start()
 # # t=threading.Thread(target=solve,args=(data,timeBegin,buffer,gnmes,ep,1,"fast"))
 # # t.start()
@@ -52,7 +52,7 @@ while(threading.activeCount()>1):
 #         min=scores[i]
 #         mini=i;
 # gnmes[mini].executeFuture(data,timeBegin,buffer)
-file=open("routput101.txt",'w') #40-45 hybrid #50-55 fas
+file=open("routput102.txt",'w') #40-45 hybrid #50-55 fas
 for i in range (data.ncols):
     for j in range (data.nrows):
         file.write( str(data.BURN[j][i][1])+" ")

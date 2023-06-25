@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 # dataset = [[16564, 14804, 15178, 14149, 13807], [16478, 15026, 16129, 15916, 15911], [14408, 16185, 16119, 15163, 18791]]
-dataset = [[38380, 19194], [38694, 17952], [39729, 17427], [38255, 20020]]
+dataset = [[38380, 19194], [38694, 17952], [39729, 17427]]
 # dataset = np.random.default_rng().uniform(60,95,(20,4))
 print(dataset)
 df = pd.DataFrame(dataset, columns=['Uncontained','RPGA'])

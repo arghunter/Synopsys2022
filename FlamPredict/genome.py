@@ -231,7 +231,11 @@ class FireLine:
                  pq.put((rx,ry+1))
                  pq.put((rx,ry-1))
                  pq.put((rx-1,ry))
-              
+        file=open("ftoutput.txt",'w')
+        for i in range (data.ncols):
+            for j in range (data.nrows):
+                file.write( str(data.FUTURE[j][i])+" ")
+            file.write("\n")
         print(ftime)
         
         
